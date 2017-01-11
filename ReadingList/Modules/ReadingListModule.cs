@@ -6,15 +6,9 @@ namespace ReadingList
 	public class ReadingListModule : NancyModule 
 	{
 		private readonly IReadingListService m_readingListService;
-		private readonly ITrelloAuthorizationWrapper m_trelloAuth; 
 
 		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService) : base("/api/")
 		{
-			if (m_trelloAuth == null) 
-			{
-				m_trelloAuth = trelloAuthService;
-			}
-
 			m_readingListService = readingListService;
 
 			Get["/readingList"] = parameters =>
