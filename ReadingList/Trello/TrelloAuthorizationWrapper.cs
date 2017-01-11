@@ -7,8 +7,6 @@ namespace ReadingList
 {
 	public class TrelloAuthorizationWrapper : ITrelloAuthorizationWrapper
 	{
-		private string ApiKey { get; set; }
-		private string UserToken { get; set; }
 
 		public TrelloAuthorizationWrapper(string apiKey, string userToken)
 		{
@@ -16,18 +14,14 @@ namespace ReadingList
 			{
 				throw new ArgumentNullException(); 
 			}
-		}
-
-		public void Authorize() 
-		{
 			var serializer = new ManateeSerializer();
 			TrelloConfiguration.Serializer = serializer;
 			TrelloConfiguration.Deserializer = serializer;
 			TrelloConfiguration.JsonFactory = new ManateeFactory();
 			TrelloConfiguration.RestClientProvider = new WebApiClientProvider();
-			TrelloAuthorization.Default.AppKey = ApiKey;
-			TrelloAuthorization.Default.UserToken = UserToken;
+			TrelloAuthorization.Default.AppKey = apiKey;
+			TrelloAuthorization.Default.UserToken = userToken;
 		}
-	
+
 	}
 }

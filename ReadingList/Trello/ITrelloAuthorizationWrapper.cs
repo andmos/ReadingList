@@ -3,6 +3,6 @@ namespace ReadingList
 {
 	public interface ITrelloAuthorizationWrapper
 	{
-		void Authorize();
+		
 	}
 }
