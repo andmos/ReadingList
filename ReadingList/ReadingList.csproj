@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ReadingList</RootNamespace>
     <AssemblyName>ReadingList</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +55,25 @@
     <Reference Include="LightInject">
       <HintPath>..\packages\LightInject.4.1.5\lib\net45\LightInject.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="Nancy">
+      <HintPath>..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Topshelf.Linux">
+      <HintPath>..\packages\Topshelf.Linux.1.0.12.11\lib\Topshelf.Linux.dll</HintPath>
+    </Reference>
+    <Reference Include="Topshelf">
+      <HintPath>..\packages\Topshelf.3.2.0\lib\net40-full\Topshelf.dll</HintPath>
+    </Reference>
+    <Reference Include="Topshelf.Nancy">
+      <HintPath>..\packages\Topshelf.Nancy.1.0.0.39\lib\net40\Topshelf.Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="LightInject.Nancy">
+      <HintPath>..\packages\LightInject.Nancy.1.1.0\lib\net45\LightInject.Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Hosting.Self">
+      <HintPath>..\packages\Nancy.Hosting.Self.1.4.1\lib\net40\Nancy.Hosting.Self.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -62,12 +81,21 @@
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="Trello\TrelloAuthorizationWrapper.cs" />
     <Compile Include="Trello\ITrelloAuthorizationWrapper.cs" />
+    <Compile Include="ReadinListSelfHost.cs" />
+    <Compile Include="Modules\ReadingListModule.cs" />
+    <Compile Include="Trello\ReadingListService.cs" />
+    <Compile Include="Trello\IReadingListService.cs" />
+    <Compile Include="BootStrapper.cs" />
+    <Compile Include="Trello\TrelloBoardConstans.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Trello\" />
+    <Folder Include="Modules\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
