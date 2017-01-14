@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using LightInject; 
 namespace ReadingList
 {
@@ -9,7 +8,7 @@ namespace ReadingList
 		public void Compose(IServiceRegistry serviceRegistry)
 		{
 			serviceRegistry.Register<ITrelloAuthorizationWrapper>(factory => new TrelloAuthorizationWrapper(ConfigurationManager.AppSettings["TrelloAPIKey"], ConfigurationManager.AppSettings["TrelloUserToken"]), new PerContainerLifetime());
-			serviceRegistry.Register<IReadingListService>(factory => new ReadingListService("hWsZ9uhl", "51c1bff352ec1db00f003e96"),new PerContainerLifetime());
+			serviceRegistry.Register<IReadingListService>(factory => new ReadingListService(TrelloBoardConstans.BoardId, TrelloBoardConstans.ReadingListId),new PerContainerLifetime());
 		}
 	}
 }
