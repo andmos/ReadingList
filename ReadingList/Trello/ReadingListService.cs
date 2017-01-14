@@ -18,10 +18,19 @@ namespace ReadingList
 			BooksBoard = new Board(boardId);
 		}
 
-		public IEnumerable<string> GetReadingList(string listName)
+		public IEnumerable<string> GetReadingList(string listName, string label = null)
 		{
 			var readingListTable = new List(ListId);
-			var cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards;
+			IEnumerable<Card> cardList;
+
+			if (string.IsNullOrEmpty(label))
+			{
+				cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards;
+			}
+			else 
+			{
+				cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.Equals(label)));
+			}
 
 			var readingList = new List<string>();
 
