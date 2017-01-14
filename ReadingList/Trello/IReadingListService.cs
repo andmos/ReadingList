@@ -4,6 +4,6 @@ namespace ReadingList
 {
 	public interface IReadingListService
 	{
-		IEnumerable<string> GetReadingList(string listName);
+		IEnumerable<string> GetReadingList(string listName, string label = null);
 	}
 }
