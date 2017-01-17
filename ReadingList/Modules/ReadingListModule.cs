@@ -13,19 +13,22 @@ namespace ReadingList
 
 			Get["/readingList"] = parameters =>
 			{
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading);
+				string requestLabel = Request.Query["label"];
+				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
 				return Response.AsJson(readingList); 
 			};
 
 			Get["/backlogList"] = parameters =>
 			{
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.Backlog);
+				string requestLabel = Request.Query["label"];
+				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
 			Get["/doneList"] = parameters =>
 			{
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading);
+				string requestLabel = Request.Query["label"];
+				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
 				return Response.AsJson(readingList);
 			};
 		
