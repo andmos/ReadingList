@@ -29,7 +29,7 @@ namespace ReadingList
 			}
 			else 
 			{
-				cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.Equals(label)));
+				cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 			}
 
 			var readingList = new List<string>();
