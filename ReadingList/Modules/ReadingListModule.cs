@@ -11,6 +11,11 @@ namespace ReadingList
 		{
 			m_readingListService = readingListService;
 
+			Get["/ping"] = parameters =>
+			{
+				return "pong";
+			};
+
 			Get["/readingList"] = parameters =>
 			{
 				string requestLabel = Request.Query["label"];
