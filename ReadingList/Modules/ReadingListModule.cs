@@ -9,6 +9,7 @@ namespace ReadingList
 
 		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService) : base("/api/")
 		{
+			this.EnableCors();
 			m_readingListService = readingListService;
 
 			Get["/ping"] = parameters =>

@@ -88,6 +88,7 @@
     <Compile Include="Trello\IReadingListService.cs" />
     <Compile Include="BootStrapper.cs" />
     <Compile Include="Trello\TrelloBoardConstans.cs" />
+    <Compile Include="Modules\ModuleExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
