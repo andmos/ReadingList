@@ -43,18 +43,35 @@ namespace ReadingList
 				string author = Request.Query["author"];
 				string bookTitle = Request.Query["title"];
 				string bookLabel = Request.Query["label"];
+				Response response; 
 
-				if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle))
+				if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle) || string.IsNullOrWhiteSpace(bookLabel))
 				{
-					return Response.AsText("author, title and label is required.").StatusCode = HttpStatusCode.BadRequest;
+					response = Response.AsJson("author, title and label is required.");
+					response.StatusCode = HttpStatusCode.UnprocessableEntity;
+					return response; 
 				}
 				try
 				{
-					return Response.AsJson(m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel));
+					if (m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel))
+					{
+						response = Response.AsJson("created");
+						response.StatusCode = HttpStatusCode.Created;
+
+					}
+					else 
+					{
+						response = Response.AsJson("Something went wrong when adding book to list");
+						response.StatusCode = HttpStatusCode.InternalServerError;
+					}
+
+					return response;
 				}
 				catch(Exception ex) 
 				{
-					return Response.AsText(ex.ToString());
+					response = Response.AsJson(ex.ToString());
+					response.StatusCode = HttpStatusCode.InternalServerError;
+					return response;
 				}
 			}; 
 		

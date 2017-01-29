@@ -53,7 +53,6 @@ namespace ReadingList
 				backlogCardList.Cards.Add(name: FormatCardName(book, author), labels: new[] { bookLabel});
 				return true;
 			}
-
 			catch(Exception ex) 
 			{
 				throw ex;
