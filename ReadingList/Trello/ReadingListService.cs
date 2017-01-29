@@ -42,5 +42,28 @@ namespace ReadingList
 			return readingList;
 		}
 
+		public bool AddBookToBacklog(string book,string author, string label)
+		{
+			var readingListTable = new List(ListId);
+			string backlogCardListId = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog)).Id;
+			var backlogCardList = new List(backlogCardListId);
+			try
+			{
+				var bookLabel = readingListTable.Board.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
+				backlogCardList.Cards.Add(name: FormatCardName(book, author), labels: new[] { bookLabel});
+				return true;
+			}
+
+			catch(Exception ex) 
+			{
+				throw ex;
+			}
+
+		}
+
+		private string FormatCardName(string book, string author) 
+		{
+			return $"{book} - {author}";
+		}
 	}
 }

@@ -37,6 +37,27 @@ namespace ReadingList
 				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
 				return Response.AsJson(readingList);
 			};
+
+			Put["/backlogList"] = parameters =>
+			{
+				string author = Request.Query["author"];
+				string bookTitle = Request.Query["title"];
+				string bookLabel = Request.Query["label"];
+
+				if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle))
+				{
+					return Response.AsText("author, title and label is required.").StatusCode = HttpStatusCode.BadRequest;
+				}
+				try
+				{
+					return Response.AsJson(m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel));
+				}
+				catch(Exception ex) 
+				{
+					return Response.AsText(ex.ToString());
+				}
+			}; 
+		
 		
 		}
 	
