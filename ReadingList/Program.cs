@@ -10,9 +10,9 @@ namespace ReadingList
 			var host = HostFactory.New(x =>
 			{
 				x.UseLinuxIfAvailable();
-				x.Service<ReadinListSelfHost>(s =>
+				x.Service<ReadingListSelfHost>(s =>
 				{
-					s.ConstructUsing(settings => new ReadinListSelfHost());
+					s.ConstructUsing(settings => new ReadingListSelfHost());
 					s.WhenStarted(service => service.Start());
 					s.WhenStopped(service => service.Stop());
 					s.WithNancyEndpoint(x, c =>
