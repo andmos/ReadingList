@@ -7,18 +7,21 @@ namespace ReadingList
 {
 	public class ReadingListService : IReadingListService
 	{
-		private string BoardId { get; set; }
-		private string ListId { get; set; }
-		private Board BooksBoard { get; set; }
+		private string BoardId;
+		private string ListId;
+		private Board BooksBoard; 
+		private IBookParser m_bookParser; 
 
-		public ReadingListService(string boardId, string listId)
+		public ReadingListService(string boardId, string listId, IBookParser bookParser)
 		{
 			BoardId = boardId;
 			ListId = listId;
 			BooksBoard = new Board(boardId);
+			m_bookParser = bookParser; 
+
 		}
 
-		public IEnumerable<string> GetReadingList(string listName, string label = null)
+		public IEnumerable<Book> GetReadingList(string listName, string label = null)
 		{
 			var readingListTable = new List(ListId);
 			IEnumerable<Card> cardList;
@@ -27,22 +30,22 @@ namespace ReadingList
 			{
 				cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards;
 			}
-			else 
+			else
 			{
 				cardList = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 			}
 
-			var readingList = new List<string>();
+			var readingList = new List<Book>();
 
-			foreach (var card in cardList) 
+			foreach (var card in cardList)
 			{
-				readingList.Add(card.Name);
+				readingList.Add(m_bookParser.ParseBook(card.Name));
 			}
 
 			return readingList;
 		}
 
-		public bool AddBookToBacklog(string book,string author, string label)
+		public bool AddBookToBacklog(string book,string authors, string label)
 		{
 			var readingListTable = new List(ListId);
 			string backlogCardListId = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog)).Id;
@@ -50,17 +53,16 @@ namespace ReadingList
 			try
 			{
 				var bookLabel = readingListTable.Board.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
-				backlogCardList.Cards.Add(name: FormatCardName(book, author), labels: new[] { bookLabel});
+				backlogCardList.Cards.Add(name: FormatCardName(book, authors), labels: new[] { bookLabel});
 				return true;
 			}
-			catch(Exception ex) 
+			catch(Exception ex)
 			{
 				throw ex;
 			}
-
 		}
 
-		private string FormatCardName(string book, string author) 
+		private string FormatCardName(string book, string author)
 		{
 			return $"{book} - {author}";
 		}

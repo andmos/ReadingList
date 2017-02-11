@@ -89,6 +89,9 @@
     <Compile Include="BootStrapper.cs" />
     <Compile Include="Trello\TrelloBoardConstans.cs" />
     <Compile Include="Modules\ModuleExtensions.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Helpers\TrelloBookParser.cs" />
+    <Compile Include="Helpers\IBookParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -98,6 +101,7 @@
     <Folder Include="Trello\" />
     <Folder Include="Modules\" />
     <Folder Include="Models\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
