@@ -3,7 +3,7 @@ using Nancy.Hosting.Self;
 
 namespace ReadingList
 {
-	public class ReadinListSelfHost
+	public class ReadingListSelfHost
 	{
 
 		public bool Start()

@@ -82,7 +82,7 @@
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="Trello\TrelloAuthorizationWrapper.cs" />
     <Compile Include="Trello\ITrelloAuthorizationWrapper.cs" />
-    <Compile Include="ReadinListSelfHost.cs" />
+    <Compile Include="ReadingListSelfHost.cs" />
     <Compile Include="Modules\ReadingListModule.cs" />
     <Compile Include="Trello\ReadingListService.cs" />
     <Compile Include="Trello\IReadingListService.cs" />
