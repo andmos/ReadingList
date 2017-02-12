@@ -90,8 +90,8 @@
     <Compile Include="Trello\TrelloBoardConstans.cs" />
     <Compile Include="Modules\ModuleExtensions.cs" />
     <Compile Include="Models\Book.cs" />
-    <Compile Include="Helpers\TrelloBookParser.cs" />
     <Compile Include="Helpers\IBookParser.cs" />
+    <Compile Include="Trello\TrelloBookParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
