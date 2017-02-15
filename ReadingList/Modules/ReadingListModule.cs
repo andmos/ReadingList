@@ -13,6 +13,8 @@ namespace ReadingList
 		{
 			this.EnableCors();
 			m_readingListService = readingListService;
+			m_webHookSource = webHookSource; 
+			StaticConfiguration.DisableErrorTraces = false;
 
 			Get["/ping"] = parameters =>
 			{
@@ -79,13 +81,14 @@ namespace ReadingList
 			Post["/callBack"] = parameters => 
 			{
 				Response respons; 
-				if (m_webHookSource.ValidWebhookSources().Any(source => source.Equals(Request.UserHostAddress))) 
+
+				if (m_webHookSource.ValidWebhookSources().ToList().Any(source => source.Equals(Request.UserHostAddress))) 
 				{
 					Console.WriteLine("Got Callback"); 
 				}
 
 				respons = Response.AsJson("Callback recived");
-				respons.StatusCode = HttpStatusCode.Accepted;
+				respons.StatusCode = HttpStatusCode.OK;
 				return respons;
 			};
 				
