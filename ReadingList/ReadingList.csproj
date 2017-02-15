@@ -92,6 +92,8 @@
     <Compile Include="Models\Book.cs" />
     <Compile Include="Helpers\IBookParser.cs" />
     <Compile Include="Trello\TrelloBookParser.cs" />
+    <Compile Include="Trello\ITrelloWebHookSources.cs" />
+    <Compile Include="Trello\TrelloWebHookSourcesConfigFileReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
