@@ -13,8 +13,8 @@ namespace ReadingList
 		{
 			this.EnableCors();
 			m_readingListService = readingListService;
-			m_webHookSource = webHookSource; 
-			StaticConfiguration.DisableErrorTraces = false;
+			m_webHookSource = webHookSource;
+			StaticConfiguration.EnableHeadRouting = true; 
 
 			Get["/ping"] = parameters =>
 			{
