@@ -1,13 +1,15 @@
 ﻿using System;
 using Nancy;
+using System.Linq;
 
 namespace ReadingList
 {
 	public class ReadingListModule : NancyModule 
 	{
 		private readonly IReadingListService m_readingListService;
+		private ITrelloWebHookSources m_webHookSource; 
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource) : base("/api/")
 		{
 			this.EnableCors();
 			m_readingListService = readingListService;
@@ -73,7 +75,20 @@ namespace ReadingList
 					response.StatusCode = HttpStatusCode.InternalServerError;
 					return response;
 				}
-			}; 
+			};
+			Post["/callBack"] = parameters => 
+			{
+				Response respons; 
+				if (m_webHookSource.ValidWebhookSources().Any(source => source.Equals(Request.UserHostAddress))) 
+				{
+					Console.WriteLine("Got Callback"); 
+				}
+
+				respons = Response.AsJson("Callback recived");
+				respons.StatusCode = HttpStatusCode.Accepted;
+				return respons;
+			};
+				
 		
 		
 		}
