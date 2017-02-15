@@ -78,6 +78,15 @@ namespace ReadingList
 					return response;
 				}
 			};
+
+			Head["/callBack"] = parameters =>
+			{
+				Response respons;
+				respons = Response.AsJson("Head recived");
+				respons.StatusCode = HttpStatusCode.OK;
+				return respons;
+			};
+
 			Post["/callBack"] = parameters => 
 			{
 				Response respons; 
