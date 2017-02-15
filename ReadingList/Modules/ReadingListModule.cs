@@ -95,7 +95,7 @@ namespace ReadingList
 				{
 					Console.WriteLine("Got Callback"); 
 				}
-
+				Console.WriteLine("Got Callback from IP not in list");
 				respons = Response.AsJson("Callback recived");
 				respons.StatusCode = HttpStatusCode.OK;
 				return respons;
