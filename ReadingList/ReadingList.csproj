@@ -94,6 +94,7 @@
     <Compile Include="Trello\TrelloBookParser.cs" />
     <Compile Include="Trello\ITrelloWebHookSources.cs" />
     <Compile Include="Trello\TrelloWebHookSourcesConfigFileReader.cs" />
+    <Compile Include="Trello\TrelloWebhook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
