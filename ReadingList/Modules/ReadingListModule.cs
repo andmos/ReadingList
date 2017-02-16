@@ -7,13 +7,15 @@ namespace ReadingList
 	public class ReadingListModule : NancyModule 
 	{
 		private readonly IReadingListService m_readingListService;
-		private ITrelloWebHookSources m_webHookSource; 
+		private ITrelloWebHookSources m_webHookSource;
+		private ILog m_logger; 
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource, ILogFactory logger) : base("/api/")
 		{
 			this.EnableCors();
 			m_readingListService = readingListService;
 			m_webHookSource = webHookSource;
+			m_logger = logger.GetLogger(GetType()); 
 			StaticConfiguration.EnableHeadRouting = true; 
 
 			Get["/ping"] = parameters =>
@@ -93,9 +95,9 @@ namespace ReadingList
 
 				if (m_webHookSource.ValidWebhookSources().ToList().Any(source => source.Equals(Request.UserHostAddress))) 
 				{
-					Console.WriteLine("Got Callback"); 
+					m_logger.Info($"Got Callback from valid source: {Request.UserHostAddress}"); 
 				}
-				Console.WriteLine($"Got Callback from IP not in list: {Request.UserHostAddress}");
+
 				respons = Response.AsJson("Callback recived");
 				respons.StatusCode = HttpStatusCode.OK;
 				return respons;
