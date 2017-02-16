@@ -102,6 +102,8 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\Log4NetLogFactory.cs" />
     <Compile Include="Logging\ILogFactory.cs" />
+    <Compile Include="Trello\IWebHookCaller.cs" />
+    <Compile Include="Trello\WebHookCaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

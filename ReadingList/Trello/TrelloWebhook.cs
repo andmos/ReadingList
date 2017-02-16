@@ -7,7 +7,7 @@ namespace ReadingList
 	public class TrelloWebhook
 	{
 		public string description { get; set; }
-		public string callBackURL { get; set; }
+		public string callbackURL { get; set; }
 		public string idModel { get; set; }
 	}
 }
