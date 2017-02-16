@@ -75,6 +75,9 @@
       <HintPath>..\packages\Nancy.Hosting.Self.1.4.1\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -95,6 +98,10 @@
     <Compile Include="Trello\ITrelloWebHookSources.cs" />
     <Compile Include="Trello\TrelloWebHookSourcesConfigFileReader.cs" />
     <Compile Include="Trello\TrelloWebhook.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\Log4NetLogFactory.cs" />
+    <Compile Include="Logging\ILogFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -105,6 +112,7 @@
     <Folder Include="Modules\" />
     <Folder Include="Models\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Logging\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
