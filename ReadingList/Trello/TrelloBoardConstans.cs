@@ -9,6 +9,7 @@ namespace ReadingList
 		public static string DoneReading => "Done";
 		public static string BoardId => "hWsZ9uhl";
 		public static string ReadingListId => "51c1bff352ec1db00f003e96";
+		public static string BoardWebhookId => "510d1b2bca2dfcea6c0016e3";
 
 	}
 }
