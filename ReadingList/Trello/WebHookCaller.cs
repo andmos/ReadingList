@@ -13,7 +13,7 @@ namespace ReadingList
 			m_logger = logFactory.GetLogger(GetType());
 		}
 
-		public async Task<string> SetUpWebHook(TrelloWebhook webHook, string apiKey, string token)
+		public async Task SetUpWebHook(TrelloWebhook webHook, string apiKey, string token)
 		{
 			using (var httpClient = new HttpClient()) 
 			{
@@ -22,7 +22,6 @@ namespace ReadingList
 
 				m_logger.Info(resultString);
 
-				return response.Content.ToString();
 			}
 		}
 	}
