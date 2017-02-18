@@ -13,7 +13,8 @@ namespace ReadingList
 			serviceRegistry.RegisterConstructorDependency(
 			(factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
 
-			serviceRegistry.Register<ITrelloAuthorizationWrapper>(factory => new TrelloAuthorizationWrapper(ConfigurationManager.AppSettings["TrelloAPIKey"], ConfigurationManager.AppSettings["TrelloUserToken"]), new PerContainerLifetime());
+			serviceRegistry.Register<ITrelloAuthModel, TrelloAuthModel>();
+			serviceRegistry.Register<ITrelloAuthorizationWrapper, TrelloAuthorizationWrapper>(new PerContainerLifetime());
 			serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 			serviceRegistry.Register<IBookParser, TrelloBookParser>();
 			serviceRegistry.Register<IWebHookCaller, WebHookCaller>(); 

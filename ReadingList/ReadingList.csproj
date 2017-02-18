@@ -104,6 +104,8 @@
     <Compile Include="Logging\ILogFactory.cs" />
     <Compile Include="Trello\IWebHookCaller.cs" />
     <Compile Include="Trello\WebHookCaller.cs" />
+    <Compile Include="Trello\ITrelloAuthModel.cs" />
+    <Compile Include="Trello\TrelloAuthModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

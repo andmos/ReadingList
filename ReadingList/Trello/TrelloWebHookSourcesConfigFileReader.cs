@@ -6,14 +6,9 @@ namespace ReadingList
 {
 	public class TrelloWebHookSourcesConfigFileReader : ITrelloWebHookSources
 	{
-
 		private readonly char SourcesDelimitorCharacter = ',';
 
-		public IEnumerable<string> ValidWebhookSources()
-		{
-			return ConfigurationManager.AppSettings.Get("WebhookSources").Split(SourcesDelimitorCharacter);
-		}
-
+		public IEnumerable<string> ValidWebhookSources() => ConfigurationManager.AppSettings.Get("WebhookSources").Split(SourcesDelimitorCharacter);
 
 	}
 }
