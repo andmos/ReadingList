@@ -8,9 +8,9 @@ namespace ReadingList
 	public class TrelloAuthorizationWrapper : ITrelloAuthorizationWrapper
 	{
 
-		public TrelloAuthorizationWrapper(string apiKey, string userToken)
+		public TrelloAuthorizationWrapper(ITrelloAuthModel authModel)
 		{
-			if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(userToken)) 
+			if (string.IsNullOrEmpty(authModel.TrelloAPIKey) || string.IsNullOrEmpty(authModel.TrelloUserToken)) 
 			{
 				throw new ArgumentNullException(); 
 			}
@@ -19,8 +19,8 @@ namespace ReadingList
 			TrelloConfiguration.Deserializer = serializer;
 			TrelloConfiguration.JsonFactory = new ManateeFactory();
 			TrelloConfiguration.RestClientProvider = new WebApiClientProvider();
-			TrelloAuthorization.Default.AppKey = apiKey;
-			TrelloAuthorization.Default.UserToken = userToken;
+			TrelloAuthorization.Default.AppKey = authModel.TrelloAPIKey;
+			TrelloAuthorization.Default.UserToken = authModel.TrelloUserToken;
 		}
 
 	}
