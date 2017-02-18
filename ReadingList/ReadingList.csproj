@@ -106,6 +106,7 @@
     <Compile Include="Trello\WebHookCaller.cs" />
     <Compile Include="Trello\ITrelloAuthModel.cs" />
     <Compile Include="Trello\TrelloAuthModel.cs" />
+    <Compile Include="Trello\ReadingListServiceProfiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
