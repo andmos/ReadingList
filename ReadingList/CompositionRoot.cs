@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using LightInject;
 namespace ReadingList
 {
@@ -19,6 +18,7 @@ namespace ReadingList
 			serviceRegistry.Register<IBookParser, TrelloBookParser>();
 			serviceRegistry.Register<IWebHookCaller, WebHookCaller>(); 
 			serviceRegistry.Register<IReadingListService>(factory => new ReadingListService(TrelloBoardConstans.BoardId, TrelloBoardConstans.ReadingListId, factory.GetInstance<IBookParser>()),new PerContainerLifetime());
+			serviceRegistry.Decorate<IReadingListService, ReadingListServiceProfiler>();
 		}
 	}
 }
