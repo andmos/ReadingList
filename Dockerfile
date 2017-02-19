@@ -1,4 +1,5 @@
 FROM mono:latest
+MAINTAINER Andreas Mosti (andreas.mosti[at]gmail.com)
 ADD ReadingList.sln ReadingList.sln 
 ADD ReadingList ReadingList
 
