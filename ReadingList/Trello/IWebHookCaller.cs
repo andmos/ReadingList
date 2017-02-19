@@ -13,8 +13,6 @@ namespace ReadingList
 		/// </summary>
 		/// <returns>The up web hook.</returns>
 		/// <param name="webHook">Web hook.</param>
-		/// <param name="apiKey">API key.</param>
-		/// <param name="token">Token.</param>
 		Task SetUpWebHook(TrelloWebhook webHook);
 	}
 }
