@@ -1,6 +1,7 @@
 ﻿using LightInject.Nancy;
 using Nancy;
 using System.Configuration;
+using System;
 
 namespace ReadingList
 {
@@ -9,11 +10,11 @@ namespace ReadingList
 		protected override IRootPathProvider RootPathProvider => new Nancy.Hosting.Self.FileSystemRootPathProvider();
 		protected override void ApplicationStartup(LightInject.IServiceContainer container, Nancy.Bootstrapper.IPipelines pipelines)
 		{
-			SetupWebHook(container.GetInstance<IWebHookCaller>(), container.GetInstance<ILogFactory>().GetLogger(GetType()));
+			SetupWebHook(container.GetInstance<Lazy<IWebHookCaller>>(), container.GetInstance<ILogFactory>().GetLogger(GetType()));
 			base.ApplicationStartup(container, pipelines);
 		}
 
-		private void SetupWebHook(IWebHookCaller caller, ILog logger) 
+		private void SetupWebHook(Lazy<IWebHookCaller> caller, ILog logger) 
 		{
 			var callBackUrl = ConfigurationManager.AppSettings["HostUrl"];
 			if (string.IsNullOrEmpty(callBackUrl)) 
@@ -22,7 +23,7 @@ namespace ReadingList
 				return; 
 			}
 			var webhookObject = new TrelloWebhook { callbackURL = $"{ConfigurationManager.AppSettings["HostUrl"]}/api/callBack", description = "ReadingListWebhook", idModel = TrelloBoardConstans.BoardWebhookId };
-			caller.SetUpWebHook(webhookObject);
+			caller.Value.SetUpWebHook(webhookObject);
 		}
 	}
 }
