@@ -19,5 +19,8 @@ namespace ReadingList
 		/// <param name="authors">Authors.</param>
 		/// <param name="label">Label.</param>
 		bool AddBookToBacklog(string book, string authors, string label);
+
+
+		bool UpdateDoneList(string book);
 	}
 }

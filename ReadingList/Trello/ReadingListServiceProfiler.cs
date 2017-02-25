@@ -20,7 +20,7 @@ namespace ReadingList
 			var stopWatch = Stopwatch.StartNew();
 			var addResult = m_readingListService.AddBookToBacklog(book, authors, label);
 			stopWatch.Stop();
-			m_logger.Info(string.Format("AddBookToBacklig: Call took {0} Ms", stopWatch.ElapsedMilliseconds));
+			m_logger.Info($"AddBookToBacklig: Call took {stopWatch.ElapsedMilliseconds} Ms");
 			return addResult;
 		}
 
@@ -29,8 +29,17 @@ namespace ReadingList
 			var stopWatch = Stopwatch.StartNew();
 			var list = m_readingListService.GetReadingList(listName, label);
 			stopWatch.Stop();
-			m_logger.Info(string.Format("GetReadingList: Call for list {0} took {1} Ms", listName, stopWatch.ElapsedMilliseconds));
+			m_logger.Info($"GetReadingList: Call for list {listName} took {stopWatch.ElapsedMilliseconds} Ms");
 			return list; 
+		}
+
+		public bool UpdateDoneList(string book)
+		{
+			var stopWatch = Stopwatch.StartNew();
+			var result = m_readingListService.UpdateDoneList(book);
+			stopWatch.Stop();
+			m_logger.Info($"UpdateDoneList: Call took {stopWatch.ElapsedMilliseconds}");
+			return result; 
 		}
 	}
 }
