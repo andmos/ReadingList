@@ -16,7 +16,8 @@ namespace ReadingList
 			m_readingListService = readingListService;
 			m_webHookSource = webHookSource;
 			m_logger = logger.GetLogger(GetType()); 
-			StaticConfiguration.EnableHeadRouting = true; 
+			StaticConfiguration.EnableHeadRouting = true;
+			StaticConfiguration.DisableErrorTraces = false;
 
 			Get["/ping"] = parameters =>
 			{
@@ -74,6 +75,30 @@ namespace ReadingList
 					return response;
 				}
 				catch(Exception ex) 
+				{
+					response = Response.AsJson(ex.ToString());
+					response.StatusCode = HttpStatusCode.InternalServerError;
+					return response;
+				}
+			};
+
+			Put["/doneList"] = parameters =>
+			{
+				string bookTitle = Request.Query["title"];
+				Response response;
+				if (string.IsNullOrWhiteSpace(bookTitle))
+				{
+					response = Response.AsJson("title is needed to move card from reading to done");
+					response.StatusCode = HttpStatusCode.UnprocessableEntity;
+				}
+				try
+				{
+					m_readingListService.UpdateDoneList(bookTitle);
+					response = Response.AsJson("updated");
+					response.StatusCode = HttpStatusCode.OK;
+					return response; 
+				}
+				catch (Exception ex)
 				{
 					response = Response.AsJson(ex.ToString());
 					response.StatusCode = HttpStatusCode.InternalServerError;

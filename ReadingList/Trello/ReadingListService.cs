@@ -62,9 +62,30 @@ namespace ReadingList
 			}
 		}
 
+		public bool UpdateDoneList(string book)
+		{
+			var readingListTable = new List(ListId);
+			string doneCardListId = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading)).Id;
+			var doneCardList = new List(doneCardListId);
+			try
+			{
+				var card = readingListTable.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
+				card.List = doneCardList;
+				card.Position = new Position(1);
+				return true;
+			}
+			catch (Exception ex) 
+			{
+				throw ex; 
+			}
+			
+		}
+
 		private string FormatCardName(string book, string author)
 		{
 			return $"{book} - {author}";
 		}
+
+
 	}
 }
