@@ -7,8 +7,8 @@ namespace ReadingList
 	public class ReadingListModule : NancyModule 
 	{
 		private readonly IReadingListService m_readingListService;
-		private ITrelloWebHookSources m_webHookSource;
-		private ILog m_logger; 
+		private readonly ITrelloWebHookSources m_webHookSource;
+		private readonly ILog m_logger;
 
 		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource, ILogFactory logger) : base("/api/")
 		{
@@ -93,7 +93,7 @@ namespace ReadingList
 				}
 				try
 				{
-					m_readingListService.UpdateDoneList(bookTitle);
+					m_readingListService.UpdateDoneListFromReadingList(bookTitle);
 					response = Response.AsJson("updated");
 					response.StatusCode = HttpStatusCode.OK;
 					return response; 

@@ -62,7 +62,7 @@ namespace ReadingList
 			}
 		}
 
-		public bool UpdateDoneList(string book)
+		public bool UpdateDoneListFromReadingList(string book)
 		{
 			var readingListTable = new List(ListId);
 			string doneCardListId = readingListTable.Board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading)).Id;
