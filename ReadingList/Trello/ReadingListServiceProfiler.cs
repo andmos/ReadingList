@@ -33,10 +33,10 @@ namespace ReadingList
 			return list; 
 		}
 
-		public bool UpdateDoneList(string book)
+		public bool UpdateDoneListFromReadingList(string book)
 		{
 			var stopWatch = Stopwatch.StartNew();
-			var result = m_readingListService.UpdateDoneList(book);
+			var result = m_readingListService.UpdateDoneListFromReadingList(book);
 			stopWatch.Stop();
 			m_logger.Info($"UpdateDoneList: Call took {stopWatch.ElapsedMilliseconds}");
 			return result; 
