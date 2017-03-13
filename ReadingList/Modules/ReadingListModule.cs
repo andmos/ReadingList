@@ -1,6 +1,7 @@
 ﻿using System;
 using Nancy;
 using System.Linq;
+using Nancy.Routing;
 
 namespace ReadingList
 {
@@ -8,16 +9,23 @@ namespace ReadingList
 	{
 		private readonly IReadingListService m_readingListService;
 		private readonly ITrelloWebHookSources m_webHookSource;
+		private readonly IRouteCacheProvider m_routeCacheProvider;
 		private readonly ILog m_logger;
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource, ILogFactory logger) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource, ILogFactory logger, IRouteCacheProvider routeCacheProvider) : base("/api/")
 		{
 			this.EnableCors();
 			m_readingListService = readingListService;
 			m_webHookSource = webHookSource;
+			m_routeCacheProvider = routeCacheProvider; 
 			m_logger = logger.GetLogger(GetType()); 
 			StaticConfiguration.EnableHeadRouting = true;
 			StaticConfiguration.DisableErrorTraces = false;
+
+			Get["/"] = parameters =>
+			{
+				return Response.AsJson(m_routeCacheProvider.GetCache().SelectMany(x => x.Value).ToList());
+			};
 
 			Get["/ping"] = parameters =>
 			{
