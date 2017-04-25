@@ -1,4 +1,3 @@
-﻿using System;
 namespace ReadingList
 {
 	public static class TrelloBoardConstans

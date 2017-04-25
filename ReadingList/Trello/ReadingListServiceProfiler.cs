@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -6,8 +5,8 @@ namespace ReadingList
 {
 	public class ReadingListServiceProfiler : IReadingListService
 	{
-		private IReadingListService m_readingListService; 
-		private ILog m_logger; 
+		private IReadingListService m_readingListService;
+		private ILog m_logger;
 		public ReadingListServiceProfiler(IReadingListService readingListService, ILogFactory logFactory)
 		{
 			m_readingListService = readingListService;
@@ -30,7 +29,7 @@ namespace ReadingList
 			var list = m_readingListService.GetReadingList(listName, label);
 			stopWatch.Stop();
 			m_logger.Info($"GetReadingList: Call for list {listName} took {stopWatch.ElapsedMilliseconds} Ms");
-			return list; 
+			return list;
 		}
 
 		public bool UpdateDoneListFromReadingList(string book)
@@ -39,7 +38,7 @@ namespace ReadingList
 			var result = m_readingListService.UpdateDoneListFromReadingList(book);
 			stopWatch.Stop();
 			m_logger.Info($"UpdateDoneList: Call took {stopWatch.ElapsedMilliseconds}");
-			return result; 
+			return result;
 		}
 	}
 }
