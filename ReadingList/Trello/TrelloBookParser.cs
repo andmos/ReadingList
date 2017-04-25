@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,9 +15,9 @@ namespace ReadingList
 			return new Book(bookArray[0].Trim(), ExtractAuthors(bookArray[1]));
 		}
 
-		private IEnumerable<string> ExtractAuthors(string authors) 
+		private IEnumerable<string> ExtractAuthors(string authors)
 		{
-			return authors.Split(m_authorsDelimitor).Select(author => author.Trim()).ToList();  
+			return authors.Split(m_authorsDelimitor).Select(author => author.Trim()).ToList();
 
 		}
 	}

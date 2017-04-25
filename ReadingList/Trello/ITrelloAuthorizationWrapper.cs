@@ -1,4 +1,3 @@
-﻿using System;
 namespace ReadingList
 {
 	/// <summary>
@@ -6,6 +5,6 @@ namespace ReadingList
 	/// </summary>
 	public interface ITrelloAuthorizationWrapper
 	{
-		
+
 	}
 }

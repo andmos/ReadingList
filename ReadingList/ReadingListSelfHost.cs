@@ -1,5 +1,3 @@
-﻿using System;
-using Nancy.Hosting.Self;
 
 namespace ReadingList
 {
@@ -14,6 +12,6 @@ namespace ReadingList
 		public bool Stop()
 		{
 			return false;
-		}	
+		}
 	}
 }
