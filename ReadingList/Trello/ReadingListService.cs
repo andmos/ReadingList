@@ -39,7 +39,7 @@ namespace ReadingList
 
 			foreach (var card in cardList)
 			{
-				readingList.Add(m_bookParser.ParseBook(card.Name));
+				readingList.Add(m_bookParser.ParseBook(card.Name, card.Labels.FirstOrDefault().Name.ToLower()));
 			}
 
 			return readingList;
