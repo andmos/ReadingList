@@ -131,6 +131,13 @@ namespace ReadingList
 					m_logger.Info($"Got Callback from valid source: {Request.UserHostAddress}"); 
 				}
 
+				// TODO: This is a bit leaky..
+				if (m_readingListService is ReadingListCache) 
+				{
+					((ReadingListCache)m_readingListService).InvalidateCache();
+					m_logger.Info("Invalidating cache"); 
+				}
+
 				respons = Response.AsJson("Callback recived");
 				respons.StatusCode = HttpStatusCode.OK;
 				return respons;

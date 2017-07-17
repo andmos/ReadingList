@@ -107,6 +107,7 @@
     <Compile Include="Trello\ITrelloAuthModel.cs" />
     <Compile Include="Trello\TrelloAuthModel.cs" />
     <Compile Include="Trello\ReadingListServiceProfiler.cs" />
+    <Compile Include="Trello\ReadingListCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
