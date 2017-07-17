@@ -7,6 +7,6 @@
 		/// </summary>
 		/// <returns>The book object.</returns>
 		/// <param name="bookString">Book string.</param>
-		Book ParseBook(string bookString); 
+		Book ParseBook(string bookString, string listLabel); 
 	}
 }
