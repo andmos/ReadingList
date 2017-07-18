@@ -8,13 +8,11 @@ namespace ReadingList
 	public class ReadingListService : IReadingListService
 	{
 		private string BoardId;
-		private Board BooksBoard; 
 		private IBookParser m_bookParser; 
 
 		public ReadingListService(string boardId, IBookParser bookParser)
 		{
 			BoardId = boardId;
-			BooksBoard = new Board(boardId);
 			m_bookParser = bookParser; 
 
 		}
