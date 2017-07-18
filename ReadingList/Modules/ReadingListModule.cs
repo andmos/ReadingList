@@ -10,12 +10,14 @@ namespace ReadingList
 		private readonly IReadingListService m_readingListService;
 		private readonly ITrelloWebHookSources m_webHookSource;
 		private readonly IRouteCacheProvider m_routeCacheProvider;
+		private readonly IReadingBoardService m_readingBoardService;
 		private readonly ILog m_logger;
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, ITrelloWebHookSources webHookSource, ILogFactory logger, IRouteCacheProvider routeCacheProvider) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, IReadingBoardService readingBoardService, ITrelloWebHookSources webHookSource, ILogFactory logger, IRouteCacheProvider routeCacheProvider) : base("/api/")
 		{
 			this.EnableCors();
 			m_readingListService = readingListService;
+			m_readingBoardService = readingBoardService;
 			m_webHookSource = webHookSource;
 			m_routeCacheProvider = routeCacheProvider; 
 			m_logger = logger.GetLogger(GetType()); 
@@ -51,6 +53,12 @@ namespace ReadingList
 				string requestLabel = Request.Query["label"];
 				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
 				return Response.AsJson(readingList);
+			};
+
+			Get["/allLists"] = parameters =>
+			{
+				var allLists = m_readingBoardService.GetAllReadingLists();
+				return Response.AsJson(allLists);
 			};
 
 			Put["/backlogList"] = parameters =>
