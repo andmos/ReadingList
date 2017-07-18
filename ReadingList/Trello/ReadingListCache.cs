@@ -35,6 +35,7 @@ namespace ReadingList
 				}
 				return books;
 			}
+
 			m_logger.Info($"Cache miss for {listName}, {label}");
 			books = m_readingListService.GetReadingList(listName, label);
 			m_cache.TryAdd(new KeyValuePair<string, string>(listName, label), books);

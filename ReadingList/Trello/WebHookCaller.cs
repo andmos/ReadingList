@@ -21,7 +21,7 @@ namespace ReadingList
 				var response = await httpClient.PostAsJsonAsync($"https://api.trello.com/1/tokens/{m_authModel.TrelloUserToken}/webhooks/?key={m_authModel.TrelloAPIKey}", webHook);
 				var resultString = await response.Content.ReadAsStringAsync();
 
-				m_logger.Info(resultString);
+				m_logger.Info(resultString);	
 
 			}
 		}

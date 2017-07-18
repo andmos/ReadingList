@@ -26,5 +26,6 @@ namespace ReadingList
 		/// <returns><c>true</c>, if done list was updated, <c>false</c> otherwise.</returns>
 		/// <param name="book">Book.</param>
 		bool UpdateDoneListFromReadingList(string book);
-	}
+
+}
 }
