@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<configSections>
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
@@ -7,16 +7,16 @@
 	<startup><supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2"/></startup>
 
 	<appSettings>
- 	<add key="TrelloAPIKey" value="" />
-	<add key="TrelloUserToken" value="" />
+ 	<add key="TrelloAPIKey" value="{{ getenv "APIKey" }}" />
+	<add key="TrelloUserToken" value="{{ getenv "UserToken" }}" />
 	<add key="WebhookSources" value="107.23.104.115,107.23.149.70,54.152.166.250,54.164.77.56,172.17.0.1" />
-	<add key="HostUrl" value=""  />
+	<add key="HostUrl" value="{{ getenv "HostURL" }}"  />
   </appSettings>
 
 	<log4net>
     <root>
       <level value="DEBUG" />
-      <appender-ref ref="ConsoleAppender" />     
+      <appender-ref ref="ConsoleAppender" />
     </root>
     <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
       <layout type="log4net.Layout.PatternLayout">
@@ -24,6 +24,5 @@
       </layout>
     </appender>
 </log4net>
-	
+
 </configuration>
-	
