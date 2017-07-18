@@ -1,5 +1,7 @@
 FROM mono:latest
 MAINTAINER Andreas Mosti (andreas.mosti[at]gmail.com)
+
+ADD docker-entrypoint.sh docker-entrypoint.sh 
 ADD ReadingList.sln ReadingList.sln 
 ADD ReadingList ReadingList
 
@@ -8,4 +10,4 @@ RUN xbuild /property:Configuration=Release ReadingList.sln
 
 expose 1337
 
-CMD mono /ReadingList/bin/Release/ReadingList.exe
+ENTRYPOINT ["./docker-entrypoint.sh"]
