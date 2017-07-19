@@ -7,28 +7,28 @@ namespace ReadingList
 {
 	public class ReadingListService : IReadingListService
 	{
-		private string BoardId;
+		private readonly Board m_board;
 		private IBookParser m_bookParser; 
+
 
 		public ReadingListService(string boardId, IBookParser bookParser)
 		{
-			BoardId = boardId;
+			m_board = new Board(boardId);
 			m_bookParser = bookParser; 
 
 		}
 
 		public IEnumerable<Book> GetReadingList(string listName, string label = null)
 		{
-			var readingListTable = new Board(BoardId);
 			IEnumerable<Card> cardList;
 
 			if (string.IsNullOrEmpty(label))
 			{
-				cardList = readingListTable.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards;
+				cardList = m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards;
 			}
 			else
 			{
-				cardList = readingListTable.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
+				cardList = m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 			}
 
 			var readingList = new List<Book>();
@@ -43,12 +43,11 @@ namespace ReadingList
 
 		public bool AddBookToBacklog(string book,string authors, string label)
 		{
-			var readingListTable = new Board(BoardId);
-			string backlogCardListId = readingListTable.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog)).Id;
+			string backlogCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog)).Id;
 			var backlogCardList = new List(backlogCardListId);
 			try
 			{
-				var bookLabel = readingListTable.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
+				var bookLabel = m_board.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
 				backlogCardList.Cards.Add(name: FormatCardName(book, authors), labels: new[] { bookLabel});
 				return true;
 			}
@@ -60,12 +59,11 @@ namespace ReadingList
 
 		public bool UpdateDoneListFromReadingList(string book)
 		{
-			var readingListTable = new Board(BoardId);
-			string doneCardListId = readingListTable.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading)).Id;
+			string doneCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading)).Id;
 			var doneCardList = new List(doneCardListId);
 			try
 			{
-				var card = readingListTable.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
+				var card = m_board.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
 				card.List = doneCardList;
 				card.Position = new Position(1);
 				return true;
@@ -81,7 +79,6 @@ namespace ReadingList
 		{
 			return $"{book} - {author}";
 		}
-
 
 	}
 }
