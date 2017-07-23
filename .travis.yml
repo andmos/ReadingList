@@ -1,6 +1,18 @@
+sudo: required
+
 language: csharp
 
-before_script: 
+services:
+  - docker
+
+before_script:
   - chmod +x build.sh
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
-  - ./build.sh
+  - docker build -t andmos/readinglist
+
+after_success:
+ - if [ "$TRAVIS_BRANCH" == "master" ]; then
+   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+   docker push andmos/readinglist;
+   fi
