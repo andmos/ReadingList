@@ -9,7 +9,7 @@ before_script:
   - chmod +x build.sh
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
-  - docker build -t andmos/readinglist
+  - docker build -t andmos/readinglist .
 
 after_success:
  - if [ "$TRAVIS_BRANCH" == "master" ]; then
