@@ -111,6 +111,7 @@
     <Compile Include="Models\ReadingBoard.cs" />
     <Compile Include="Trello\IReadingBoardService.cs" />
     <Compile Include="Trello\ReadingBoardService.cs" />
+    <Compile Include="Models\IndexModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
