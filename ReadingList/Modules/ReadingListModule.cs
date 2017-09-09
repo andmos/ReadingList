@@ -2,6 +2,7 @@
 using Nancy;
 using System.Linq;
 using Nancy.Routing;
+using System.Collections.Generic;
 
 namespace ReadingList
 {
@@ -26,7 +27,12 @@ namespace ReadingList
 
 			Get["/"] = parameters =>
 			{
-				return Response.AsJson(m_routeCacheProvider.GetCache().SelectMany(x => x.Value).ToList());
+				var responseObject = new IndexModel();
+				var cache = m_routeCacheProvider.GetCache();
+
+				responseObject.Routes = cache.Values.SelectMany(t => t.Select(t1 => t1.Item2));
+
+				return Response.AsJson(responseObject.Routes.Select(p => new KeyValuePair<string, string>(p.Path, p.Method)));
 			};
 
 			Get["/ping"] = parameters =>
