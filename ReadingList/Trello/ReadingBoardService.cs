@@ -8,18 +8,17 @@ namespace ReadingList
 	public class ReadingBoardService : IReadingBoardService
 	{
 		private readonly IReadingListService m_readingListService;
-		private readonly string BoardId;
+		private readonly Board m_readingListBoard; 
 
 		public ReadingBoardService(IReadingListService readingListService, string boardId)
 		{
 			m_readingListService = readingListService;
-			BoardId = boardId;
+			m_readingListBoard = new Board(boardId);
 		}
 
 		public ReadingBoard GetAllReadingLists()
 		{
-			var readingListBoard = new Board(BoardId);
-			IEnumerable<string> listNames = new List<string>(readingListBoard.Lists.Select(l => l.Name).ToList());
+			IEnumerable<string> listNames = new List<string>(m_readingListBoard.Lists.Select(l => l.Name).ToList());
 	        var readingBoard = new ReadingBoard { ReadingLists = new Dictionary<string, IEnumerable<Book>>() };
 
 			foreach (var listName in listNames)
