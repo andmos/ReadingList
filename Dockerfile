@@ -12,6 +12,6 @@ ADD https://github.com/kelseyhightower/confd/releases/download/v0.14.0/confd-0.1
 RUN chmod +x /usr/local/bin/confd
 ADD confd /etc/confd
 
-expose 1337
+EXPOSE 1337
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
