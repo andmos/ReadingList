@@ -1,5 +1,5 @@
 FROM mono:latest
-MAINTAINER Andreas Mosti (andreas.mosti[at]gmail.com)
+LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
 
 ADD docker-entrypoint.sh docker-entrypoint.sh
 ADD ReadingList.sln ReadingList.sln
