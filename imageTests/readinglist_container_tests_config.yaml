@@ -1,0 +1,13 @@
+schemaVersion: "2.0.0"
+
+fileExistsTests:
+- name: 'ReadingList.exe'
+  path: '/ReadingList/bin/Release/ReadingList.exe'
+  shouldExist: true
+- name: 'ReadingList.exe.config'
+  path: '/ReadingList/bin/Release/ReadingList.exe.config'
+  shouldExist: true
+
+metadataTest:
+    entrypoint: ["./docker-entrypoint.sh"]
+    exposedPorts: ["1337"]
