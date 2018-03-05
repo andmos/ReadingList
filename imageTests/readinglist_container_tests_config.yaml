@@ -1,11 +1,17 @@
 schemaVersion: "2.0.0"
 
-fileExistsTests:
+fileExistenceTests:
 - name: 'ReadingList.exe'
   path: '/ReadingList/bin/Release/ReadingList.exe'
   shouldExist: true
 - name: 'ReadingList.exe.config'
   path: '/ReadingList/bin/Release/ReadingList.exe.config'
+  shouldExist: true
+- name: 'ReadingList.exe.config.template'
+  path: '/etc/confd/templates/ReadingList.exe.config.template'
+  shouldExist: true
+- name: 'ReadingList.exe.config.toml'
+  path: '/etc/confd/conf.d/ReadingList.exe.config.toml'
   shouldExist: true
 
 metadataTest:
