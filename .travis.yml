@@ -4,14 +4,15 @@ language: csharp
 
 services:
   - docker
-
 before_script:
   - chmod +x build.sh
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
   - docker build -t andmos/readinglist .
   - docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gcr.io/gcp-runtimes/container-structure-test:v0.2.1 -image andmos/readinglist -test.v  /tests/imageTests/readinglist_container_tests_config.yaml
-
+  - docker run --name readinglist -dt -p 1337:1337 -e APIKey=$TrelloAPIKey -e UserToken=$TrelloUserToken andmos/readinglist
+  - sleep 3
+  - docker run --link readinglist:readlinglist --rm -v $(pwd):/app graze/bats /app/batsTests
 after_success:
  - if [ "$TRAVIS_BRANCH" == "master" ]; then
    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
