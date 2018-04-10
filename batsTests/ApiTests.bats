@@ -31,3 +31,8 @@ readingListUrl="http://readinglist:1337"
     result="$(curl -s $readingListUrl/api/doneList?label=fact | jq '.[0].authors')"
     [ "$result" != "null" ]
 }
+
+@test "allLists endpoint should return JSON with 'done' element containing book entry" {
+    result="$(curl -s $readingListUrl/api/allLists | jq '.readingLists.done | .[1]')"
+    [ "$result" != "null" ]
+}
