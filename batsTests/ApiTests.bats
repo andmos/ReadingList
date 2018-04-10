@@ -32,6 +32,11 @@ readingListUrl="http://readinglist:1337"
     [ "$result" != "null" ]
 }
 
+@test "doneList endpoint should return JSON containing the title 'Inferno' with label 'fiction'" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .label')"
+    [ "$result" == '"fiction"' ]
+}
+
 @test "allLists endpoint should return JSON with 'done' element containing book entry" {
     result="$(curl -s $readingListUrl/api/allLists | jq '.readingLists.done | .[1]')"
     [ "$result" != "null" ]
