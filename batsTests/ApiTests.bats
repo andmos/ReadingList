@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-readingListUrl="http://localhost:1337"
+readingListUrl="http://readinglist:1337"
 
 @test "api endpoint should be HTTP Statuscode 200" {
     result="$(curl -s -o /dev/null -w '%{http_code}' $readingListUrl/api/)"
