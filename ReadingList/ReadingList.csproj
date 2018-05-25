@@ -112,6 +112,7 @@
     <Compile Include="Trello\IReadingBoardService.cs" />
     <Compile Include="Trello\ReadingBoardService.cs" />
     <Compile Include="Models\IndexModel.cs" />
+    <Compile Include="Modules\RouteModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
