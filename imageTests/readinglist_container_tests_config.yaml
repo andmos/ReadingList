@@ -14,6 +14,19 @@ fileExistenceTests:
   path: '/etc/confd/conf.d/ReadingList.exe.config.toml'
   shouldExist: true
 
+fileContentTests:
+- name: 'ReadingList.exe.config.template, APIKey'
+  path: '/etc/confd/templates/ReadingList.exe.config.template'
+  expectedContents: ['getenv "APIKey"']
+
+- name: 'ReadingList.exe.config.template, UserToken'
+  path: '/etc/confd/templates/ReadingList.exe.config.template'
+  expectedContents: ['getenv "UserToken"']
+
+- name: 'ReadingList.exe.config.template, HostURL'
+  path: '/etc/confd/templates/ReadingList.exe.config.template'
+  expectedContents: ['getenv "HostURL"']
+
 metadataTest:
     entrypoint: ["./docker-entrypoint.sh"]
     exposedPorts: ["1337"]
