@@ -1,7 +1,4 @@
 sudo: required
-
-language: csharp
-
 services:
   - docker
 before_script:
