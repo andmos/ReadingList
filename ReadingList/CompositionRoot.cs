@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using LightInject;
 namespace ReadingList
 {
@@ -12,7 +13,7 @@ namespace ReadingList
 			serviceRegistry.RegisterConstructorDependency(
 			(factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
 
-			serviceRegistry.Register<ITrelloAuthModel, TrelloAuthModel>();
+			serviceRegistry.Register<ITrelloAuthModel>(factory => new TrelloAuthModel(ConfigurationManager.AppSettings["TrelloAPIKey"], ConfigurationManager.AppSettings["TrelloUserToken"]), new PerContainerLifetime());
 			serviceRegistry.Register<ITrelloAuthorizationWrapper, TrelloAuthorizationWrapper>(new PerContainerLifetime());
 			serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 			serviceRegistry.Register<IBookParser, TrelloBookParser>();

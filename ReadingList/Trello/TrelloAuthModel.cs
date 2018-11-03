@@ -5,9 +5,15 @@ namespace ReadingList
 	public class TrelloAuthModel : ITrelloAuthModel
 	{
 
-		public string TrelloAPIKey => ConfigurationManager.AppSettings["TrelloAPIKey"];
+		public TrelloAuthModel(string apiKey, string userToken) 
+		{
+			TrelloAPIKey = apiKey;
+			TrelloUserToken = userToken;
+		}
 
-		public string TrelloUserToken => ConfigurationManager.AppSettings["TrelloUserToken"];
+		public string TrelloAPIKey { get; }
+
+		public string TrelloUserToken { get; }
 
 	}
 }
