@@ -98,6 +98,7 @@ namespace ReadingList
 				}
 				catch(Exception ex)
 				{
+					m_logger.Error(ex.ToString());
 					response = Response.AsJson(ex.ToString());
 					response.StatusCode = HttpStatusCode.InternalServerError;
 					return response;
@@ -137,6 +138,7 @@ namespace ReadingList
 				}
 				catch (Exception ex)
 				{
+					m_logger.Error(ex.ToString());
 					response = Response.AsJson(ex.ToString());
 					response.StatusCode = HttpStatusCode.InternalServerError;
 					return response;
