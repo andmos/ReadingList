@@ -52,6 +52,11 @@ readingListUrl="http://readinglist:1337"
     [ "$result" != "null" ]
 }
 
+@test "backlogList endpoint should return FORBIDDEN if PUT is done without APIKey and UserToken in header" {
+  result="$(curl -X PUT -s -o /dev/null -w '%{http_code}' $readingListUrl/backlogList?author=TestAuthor&title=TestTitle&label=fact)"
+  [ "$result" -eq 403 ]
+}
+
 function teardown {
   echo "Teardown: result value was $result"
 }
