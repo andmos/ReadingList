@@ -11,11 +11,13 @@ namespace ReadingList
 		private readonly IReadingListService m_readingListService;
 		private readonly ITrelloWebHookSources m_webHookSource;
 		private readonly IReadingBoardService m_readingBoardService;
+		private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper; 
 		private readonly ILog m_logger;
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthService, IReadingListService readingListService, IReadingBoardService readingBoardService, ITrelloWebHookSources webHookSource, ILogFactory logger) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService, ITrelloWebHookSources webHookSource, ILogFactory logger) : base("/api/")
 		{
 			this.EnableCors();
+			m_trelloAuthWrapper = trelloAuthWrapper;
 			m_readingListService = readingListService;
 			m_readingBoardService = readingBoardService;
 			m_webHookSource = webHookSource;
@@ -52,10 +54,10 @@ namespace ReadingList
 
 			Put["/backlogList"] = parameters =>
 			{
+				Response response;
 				string author = Request.Query["author"];
 				string bookTitle = Request.Query["title"];
 				string bookLabel = Request.Query["label"];
-				Response response;
 
 				if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle) || string.IsNullOrWhiteSpace(bookLabel))
 				{
@@ -63,6 +65,21 @@ namespace ReadingList
 					response.StatusCode = HttpStatusCode.UnprocessableEntity;
 					return response;
 				}
+
+				var authTokens = CheckHeaderForMandatoryTokens(Request);
+				if (!authTokens.Value) 
+				{
+					response = Response.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
+					response.StatusCode = HttpStatusCode.Forbidden;
+					return response;
+				}
+				if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
+				{ 
+					response = Response.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
+					response.StatusCode = HttpStatusCode.Forbidden;
+					return response;
+				}
+
 				try
 				{
 					if (m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel))
@@ -90,12 +107,27 @@ namespace ReadingList
 			Put["/doneList"] = parameters =>
 			{
 				string bookTitle = Request.Query["title"];
-				Response response;
+				Response response = new Response();
 				if (string.IsNullOrWhiteSpace(bookTitle))
 				{
 					response = Response.AsJson("title is needed to move card from reading to done");
 					response.StatusCode = HttpStatusCode.UnprocessableEntity;
 				}
+
+				var authTokens = CheckHeaderForMandatoryTokens(Request);
+				if (!authTokens.Value) 
+				{
+					response = Response.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
+					response.StatusCode = HttpStatusCode.Forbidden;
+					return response;
+				}
+				if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
+				{ 
+					response = Response.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
+					response.StatusCode = HttpStatusCode.Forbidden;
+					return response;
+				}
+
 				try
 				{
 					m_readingListService.UpdateDoneListFromReadingList(bookTitle);
@@ -134,15 +166,23 @@ namespace ReadingList
 					((ReadingListCache)m_readingListService).InvalidateCache();
 					m_logger.Info("Invalidating cache");
 				}
-
+				
 				respons = Response.AsJson("Callback recived");
 				respons.StatusCode = HttpStatusCode.OK;
 				return respons;
 			};
 
-
-
 		}
+
+		private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(Request request)
+		{
+			string providedAPIKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
+			string providedUserToken = request.Headers["TrelloUserToken"].FirstOrDefault();
+
+			return new KeyValuePair<ITrelloAuthModel, bool>(new TrelloAuthModel(providedAPIKey, providedUserToken), !string.IsNullOrWhiteSpace(providedAPIKey) && !string.IsNullOrWhiteSpace(providedUserToken));
+		}
+
+		private bool CheckTokens(ITrelloAuthModel authTokens, ITrelloAuthorizationWrapper authWrapper) => authWrapper.IsValidKeys(authTokens);
 
 	}
 }
