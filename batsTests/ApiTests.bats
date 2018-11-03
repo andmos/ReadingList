@@ -52,6 +52,11 @@ readingListUrl="http://readinglist:1337"
     [ "$result" != "null" ]
 }
 
+@test "backlogList endpoint should return FORBIDDEN if PUT is done without APIKey and UserToken in header" {
+  result="$(curl -s -o /dev/null -w '%{http_code}' -X PUT "$readingListUrl/api/backlogList?author=Test%20Author&title=Test%20Title&label=fact" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'postman-token: b523205c-4c2c-e317-c7ae-4c43745f8b00' -H 'trelloapikey: 77777777'   -H 'trellousertokennn: 7777777' -d '{ "data": "this is my new testdata from a PUT" }')"
+  [ "$result" -eq 403 ]
+}
+
 function teardown {
   echo "Teardown: result value was $result"
 }

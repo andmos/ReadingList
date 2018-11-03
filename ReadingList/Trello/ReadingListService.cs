@@ -8,13 +8,13 @@ namespace ReadingList
 	public class ReadingListService : IReadingListService
 	{
 		private readonly Board m_board;
-		private IBookParser m_bookParser; 
+		private IBookParser m_bookParser;
 
 
 		public ReadingListService(string boardId, IBookParser bookParser)
 		{
 			m_board = new Board(boardId);
-			m_bookParser = bookParser; 
+			m_bookParser = bookParser;
 
 		}
 
@@ -68,11 +68,11 @@ namespace ReadingList
 				card.Position = new Position(1);
 				return true;
 			}
-			catch (Exception ex) 
+			catch (Exception ex)
 			{
-				throw ex; 
+				throw ex;
 			}
-			
+
 		}
 
 		private string FormatCardName(string book, string author)
