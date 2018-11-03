@@ -45,18 +45,22 @@ namespace ReadingList
 
 		public bool AddBookToBacklog(string book,string authors, string label)
 		{
+			bool addSuccessfull; 
 			string backlogCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog)).Id;
 			var backlogCardList = new List(backlogCardListId);
 			try
 			{
 				var bookLabel = m_board.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
 				backlogCardList.Cards.Add(name: FormatCardName(book, authors), labels: new[] { bookLabel});
-				return true;
+				m_logger.Info($"Adding {book}, {authors}, {label} to {TrelloBoardConstans.Backlog}");
+				addSuccessfull = true;
 			}
 			catch(Exception ex)
 			{
-				throw ex;
+				m_logger.Error($"Error when trying to add {book}, {authors}, {label} to {TrelloBoardConstans.Backlog}: ", ex);
+				addSuccessfull = false;
 			}
+			return addSuccessfull;
 		}
 
 		public bool UpdateDoneListFromReadingList(string book)
@@ -75,6 +79,7 @@ namespace ReadingList
 				card.List = doneCardList;
 				card.Position = new Position(1);
 				updateSuccessful = true;
+				m_logger.Info($"Moving {book} to {TrelloBoardConstans.DoneReading} from {TrelloBoardConstans.CurrentlyReading}");
 			}
 			catch (Exception ex)
 			{
