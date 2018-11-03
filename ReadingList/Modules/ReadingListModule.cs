@@ -67,42 +67,32 @@ namespace ReadingList
 				}
 
 				var authTokens = CheckHeaderForMandatoryTokens(Request);
-				if (!authTokens.Value) 
+				if (!authTokens.Value)
 				{
 					response = Response.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
 					response.StatusCode = HttpStatusCode.Forbidden;
 					return response;
 				}
 				if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
-				{ 
+				{
 					response = Response.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
 					response.StatusCode = HttpStatusCode.Forbidden;
 					return response;
 				}
 
-				try
+				var addBookToBacklog = m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
+				response = Response.AsJson(addBookToBacklog);
+
+				if (addBookToBacklog)
 				{
-					if (m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel))
-					{
-						response = Response.AsJson("created");
-						response.StatusCode = HttpStatusCode.Created;
-
-					}
-					else
-					{
-						response = Response.AsJson("Something went wrong when adding book to list");
-						response.StatusCode = HttpStatusCode.InternalServerError;
-					}
-
-					return response;
+					response.StatusCode = HttpStatusCode.Created;
 				}
-				catch(Exception ex)
+				else
 				{
-					m_logger.Error(ex.ToString());
-					response = Response.AsJson(ex.ToString());
 					response.StatusCode = HttpStatusCode.InternalServerError;
-					return response;
 				}
+
+				return response;
 			};
 
 			Put["/doneList"] = parameters =>
