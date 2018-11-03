@@ -57,6 +57,11 @@ readingListUrl="http://readinglist:1337"
     [ "$result" -eq 403 ]
 }
 
+@test "doneList endpoint should return 'false' if PUT is done without booktitle present in ReadingList" {
+    result="$(curl -s -X PUT "$readingListUrl/api/doneList?title=Test%20Title" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'postman-token: b523205c-4c2c-e317-c7ae-4c43745f8b00' -H "TrelloAPIKey:$APIKey"  -H "TrelloUserToken:$UserToken" -d '{ "data": "this is my new testdata from a PUT" }')"
+    [ "$result" == false ]
+}
+
 function teardown {
   echo "Teardown: result value was $result"
 }
