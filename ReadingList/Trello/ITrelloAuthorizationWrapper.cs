@@ -5,6 +5,6 @@ namespace ReadingList
 	/// </summary>
 	public interface ITrelloAuthorizationWrapper
 	{
-
+		bool IsValidKeys(ITrelloAuthModel authModel);
 	}
 }
