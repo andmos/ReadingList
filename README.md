@@ -10,3 +10,4 @@ docker run --link readinglist:readlinglist --rm -v $(pwd):/app graze/bats /app/b
 ```
 
 [![Build Status](https://travis-ci.org/andmos/ReadingList.svg?branch=master)](https://travis-ci.org/andmos/ReadingList)
+[![Docker Project](https://img.shields.io/docker/pulls/andmos/readinglist.svg)](https://hub.docker.com/r/andmos/readinglist/)
