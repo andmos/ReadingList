@@ -78,7 +78,7 @@ namespace ReadingList
 			}
 			catch (Exception ex)
 			{
-				m_logger.Error($"Error when trying to move {book} to DoneList: ", ex);
+				m_logger.Error($"Error when trying to move {book} to {TrelloBoardConstans.DoneReading}: ", ex);
 				updateSuccessful = false;
 			}
 			return updateSuccessful;
