@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace ReadingList
 {
-	public class TrelloBookParser : IBookParser
+	public class BookFactory : IBookFactory
 	{
 		private char m_bookTitleDelimitor => '-';
 		private char m_authorsDelimitor => ',';
 
-		public Book ParseBook(string bookString, string listLabel)
+		public Book Create(string bookString, string listLabel)
 		{
 			var bookArray = bookString.Split(m_bookTitleDelimitor);
 
