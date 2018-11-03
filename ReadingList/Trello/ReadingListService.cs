@@ -9,12 +9,14 @@ namespace ReadingList
 	{
 		private readonly Board m_board;
 		private IBookParser m_bookParser;
+		private ILog m_logger;
 
 
-		public ReadingListService(string boardId, IBookParser bookParser)
+		public ReadingListService(string boardId, IBookParser bookParser, ILogFactory logFactory)
 		{
 			m_board = new Board(boardId);
 			m_bookParser = bookParser;
+			m_logger = logFactory.GetLogger(this.GetType());
 
 		}
 
@@ -59,19 +61,27 @@ namespace ReadingList
 
 		public bool UpdateDoneListFromReadingList(string book)
 		{
+			bool updateSuccessful; 
 			string doneCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading)).Id;
 			var doneCardList = new List(doneCardListId);
 			try
 			{
-				var card = m_board.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
+				var card = m_board.Lists.Where(l => l.Name.Equals(TrelloBoardConstans.CurrentlyReading)).FirstOrDefault().Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
+				if (card == null) 
+				{
+					m_logger.Info($"Could not find {book} in {TrelloBoardConstans.CurrentlyReading}, so can't move to {TrelloBoardConstans.DoneReading}.");
+					return updateSuccessful = false;
+				}
 				card.List = doneCardList;
 				card.Position = new Position(1);
-				return true;
+				updateSuccessful = true;
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				m_logger.Error($"Error when trying to move {book} to {TrelloBoardConstans.DoneReading}: ", ex);
+				updateSuccessful = false;
 			}
+			return updateSuccessful;
 
 		}
 

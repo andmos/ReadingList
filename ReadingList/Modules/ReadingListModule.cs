@@ -129,20 +129,13 @@ namespace ReadingList
 					return response;
 				}
 
-				try
-				{
-					m_readingListService.UpdateDoneListFromReadingList(bookTitle);
-					response = Response.AsJson("updated");
-					response.StatusCode = HttpStatusCode.OK;
-					return response;
-				}
-				catch (Exception ex)
-				{
-					m_logger.Error(ex.ToString());
-					response = Response.AsJson(ex.ToString());
-					response.StatusCode = HttpStatusCode.InternalServerError;
-					return response;
-				}
+
+				var updateStatus = m_readingListService.UpdateDoneListFromReadingList(bookTitle);
+
+				response = Response.AsJson(updateStatus);
+				response.StatusCode = HttpStatusCode.OK;
+				return response;
+
 			};
 
 			Head["/callBack"] = parameters =>
