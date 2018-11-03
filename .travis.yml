@@ -9,7 +9,7 @@ script:
   - docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gcr.io/gcp-runtimes/container-structure-test:v1.2.2 test --image andmos/readinglist --config /tests/imageTests/readinglist_container_tests_config.yaml
   - docker run --name readinglist -dt -p 1337:1337 -e APIKey=$TrelloAPIKey -e UserToken=$TrelloUserToken andmos/readinglist
   - sleep 3
-  - docker run --link readinglist:readlinglist --rm -v $(pwd):/app graze/bats /app/batsTests
+  - docker run --link readinglist:readlinglist --rm -e APIKey=$TrelloAPIKey -e UserToken=$TrelloUserToken -v $(pwd):/app graze/bats /app/batsTests
 after_success:
  - if [ "$TRAVIS_BRANCH" == "master" ]; then
    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
