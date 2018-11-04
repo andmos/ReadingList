@@ -7,7 +7,7 @@ namespace ReadingList
 	public class ReadingListServiceProfiler : IReadingListService
 	{
 		private IReadingListService m_readingListService;
-		private ILog m_logger;
+		private readonly ILog m_logger;
 		public ReadingListServiceProfiler(IReadingListService readingListService, ILogFactory logFactory)
 		{
 			m_readingListService = readingListService;
