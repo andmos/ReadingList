@@ -8,14 +8,14 @@ namespace ReadingList
 	public class ReadingListService : IReadingListService
 	{
 		private readonly Board m_board;
-		private IBookParser m_bookParser;
+		private IBookFactory m_bookFactory;
 		private ILog m_logger;
 
 
-		public ReadingListService(string boardId, IBookParser bookParser, ILogFactory logFactory)
+		public ReadingListService(string boardId, IBookFactory bookFactory, ILogFactory logFactory)
 		{
 			m_board = new Board(boardId);
-			m_bookParser = bookParser;
+			m_bookFactory = bookFactory;
 			m_logger = logFactory.GetLogger(this.GetType());
 
 		}
@@ -37,7 +37,7 @@ namespace ReadingList
 
 			foreach (var card in cardList)
 			{
-				readingList.Add(m_bookParser.ParseBook(card.Name, card.Labels.FirstOrDefault().Name.ToLower()));
+				readingList.Add(m_bookFactory.Create(card.Name, card.Labels.FirstOrDefault().Name.ToLower()));
 			}
 
 			return readingList;
