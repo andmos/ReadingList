@@ -37,7 +37,10 @@ namespace ReadingList
 
 			foreach (var card in cardList)
 			{
-				readingList.Add(m_bookFactory.Create(card.Name, card.Labels.FirstOrDefault().Name.ToLower()));
+					readingList.Add(
+					m_bookFactory.Create(
+						card.Name, 
+						card.Labels.FirstOrDefault()?.Name.ToLower() ?? TrelloBoardConstans.UnspecifiedLabel));
 			}
 
 			return readingList;
