@@ -24,6 +24,8 @@ namespace ReadingList
 			}
 			var webhookObject = new TrelloWebhook { callbackURL = $"{ConfigurationManager.AppSettings["HostUrl"]}/api/callBack", description = "ReadingListWebhook", idModel = TrelloBoardConstans.BoardWebhookId };
 			caller.Value.SetUpWebHook(webhookObject);
-		}
+            caller.Value.Configured = true; 
+
+        }
 	}
 }
