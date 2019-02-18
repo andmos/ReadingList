@@ -13,6 +13,6 @@ script:
 after_success:
  - if [ "$TRAVIS_BRANCH" == "master" ]; then
    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-   docker tag andmos/readinglist:ci andmos/readinglist:latest
+   docker tag andmos/readinglist:ci andmos/readinglist:latest;
    docker push andmos/readinglist:latest;
    fi
