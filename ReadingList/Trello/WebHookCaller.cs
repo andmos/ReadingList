@@ -11,10 +11,13 @@ namespace ReadingList
 		public WebHookCaller(ILogFactory logFactory, ITrelloAuthModel authModel)
 		{
 			m_logger = logFactory.GetLogger(GetType());
-      		m_authModel = authModel;
-    }
+      		m_authModel = authModel; 
 
-		public async Task SetUpWebHook(TrelloWebhook webHook)
+        }
+
+        public bool Configured { get; set; }
+
+        public async Task SetUpWebHook(TrelloWebhook webHook)
 		{
 			using (var httpClient = new HttpClient())
 			{
