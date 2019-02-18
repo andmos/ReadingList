@@ -21,9 +21,9 @@ namespace ReadingList
 			serviceRegistry.Register<IWebHookCaller, WebHookCaller>(); 
 			serviceRegistry.Register<IReadingListService>(factory => new ReadingListService(TrelloBoardConstans.BoardId, factory.GetInstance<IBookFactory>(), factory.GetInstance<ILogFactory>()), new PerContainerLifetime());
 			serviceRegistry.Register<IReadingBoardService>(factory => new ReadingBoardService(factory.GetInstance<IReadingListService>(), TrelloBoardConstans.BoardId), new PerContainerLifetime());
-            serviceRegistry.Decorate<IReadingListService, ReadingListCache>();
             serviceRegistry.Decorate<IReadingListService, ReadingListServiceProfiler>();
-			
-		}
+            serviceRegistry.Decorate<IReadingListService, ReadingListCache>();
+
+        }
 	}
 }
