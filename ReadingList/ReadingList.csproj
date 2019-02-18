@@ -113,7 +113,6 @@
     <Compile Include="Trello\ReadingBoardService.cs" />
     <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Modules\RouteModule.cs" />
-    <Compile Include="Helpers\RetryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
