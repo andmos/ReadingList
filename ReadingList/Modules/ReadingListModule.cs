@@ -9,22 +9,20 @@ namespace ReadingList
 	public class ReadingListModule : NancyModule
 	{
 		private readonly IReadingListService m_readingListService;
-		private readonly ITrelloWebHookSources m_webHookSource;
 		private readonly IReadingBoardService m_readingBoardService;
 		private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper; 
 		private readonly ILog m_logger;
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService, ITrelloWebHookSources webHookSource, ILogFactory logger) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService, ILogFactory logger) : base("/api/")
 		{
 			this.EnableCors();
 			m_trelloAuthWrapper = trelloAuthWrapper;
 			m_readingListService = readingListService;
 			m_readingBoardService = readingBoardService;
-			m_webHookSource = webHookSource;
 			m_logger = logger.GetLogger(GetType());
 			StaticConfiguration.EnableHeadRouting = true;
 			StaticConfiguration.DisableErrorTraces = false;
-
+            
 			Get["/readingList"] = parameters =>
 			{
 				string requestLabel = Request.Query["label"];
@@ -127,36 +125,7 @@ namespace ReadingList
 				return response;
 
 			};
-
-			Head["/callBack"] = parameters =>
-			{
-				Response respons;
-				respons = Response.AsJson("Head recived");
-				respons.StatusCode = HttpStatusCode.OK;
-				return respons;
-			};
-
-			Post["/callBack"] = parameters =>
-			{
-				Response respons;
-
-				if (m_webHookSource.ValidWebhookSources().ToList().Any(source => source.Equals(Request.UserHostAddress)))
-				{
-					m_logger.Info($"Got Callback from valid source: {Request.UserHostAddress}");
-				}
-
-				// TODO: This is a bit leaky..
-				if (m_readingListService is ReadingListCache)
-				{
-					((ReadingListCache)m_readingListService).InvalidateCache();
-					m_logger.Info("Invalidating cache");
-				}
-				
-				respons = Response.AsJson("Callback recived");
-				respons.StatusCode = HttpStatusCode.OK;
-				return respons;
-			};
-
+            
 		}
 
 		private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(Request request)
