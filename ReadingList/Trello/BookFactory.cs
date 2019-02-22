@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace ReadingList
 {
@@ -13,6 +14,18 @@ namespace ReadingList
 			var bookArray = bookString.Split(m_bookTitleDelimitor);
 
 			return new Book(bookArray[0].Trim(), ExtractAuthors(bookArray[1]), listLabel);
+		}
+
+		public Book Create(string jsonString)
+		{
+			try
+			{
+				return JsonConvert.DeserializeObject<Book>(jsonString);	
+			}
+			catch(JsonSerializationException serializationExeption)
+			{
+				throw serializationExeption;
+			}
 		}
 
 		private IEnumerable<string> ExtractAuthors(string authors)

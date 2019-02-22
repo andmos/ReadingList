@@ -9,6 +9,12 @@
 		/// <returns>The Book Object</returns>
 		/// <param name="bookString">Book string. format: [BookTitle - Author1, Author2]</param>
 		/// <param name="listLabel">List string.</param>
-		Book Create(string bookString, string listLabel); 
+		Book Create(string bookString, string listLabel);
+        /// <summary>
+        /// Create Book object from valid json String.
+        /// </summary>
+		/// <returns>The Book Object</returns>
+        /// <param name="jsonString">Valid Json string.</param>
+		Book Create(string jsonString);
 	}
 }
