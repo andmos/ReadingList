@@ -2,20 +2,24 @@
 using System.Linq; 
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using ReadingList.Helpers;
 
 namespace ReadingList
 {
-	public class ReadingListCache : IReadingListService
+	public class CachedReadingListService : IReadingListService
 	{
-		private readonly IReadingListService m_readingListService;
-		private readonly ConcurrentDictionary<KeyValuePair<string, string>, IEnumerable<Book>> m_cache;
-		private readonly ILog m_logger; 
 
-		public ReadingListCache(IReadingListService readingListService, ILogFactory logFactory)
+        // abstraher ut selve cache, med ICacheSomething -> GetOrAdd og Invalidate
+
+		private readonly IReadingListService m_readingListService;
+		private readonly ILog m_logger;
+		private readonly IReadingListCache m_readingListCache;
+
+		public CachedReadingListService(IReadingListService readingListService, IReadingListCache readingListCache, ILogFactory logFactory)
 		{
 			m_readingListService = readingListService;
 			m_logger = logFactory.GetLogger(this.GetType());
-			m_cache = new ConcurrentDictionary<KeyValuePair<string, string>, IEnumerable<Book>>();
+			m_readingListCache = readingListCache;
 		}
 
 		public bool AddBookToBacklog(string book, string authors, string label)
@@ -27,7 +31,7 @@ namespace ReadingList
 		public IEnumerable<Book> GetReadingList(string listName, string label = null)
 		{
 			IEnumerable<Book> books;
-			if (m_cache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
+			if (m_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
 			{
 				if (!string.IsNullOrEmpty(label)) 
 				{
@@ -38,7 +42,7 @@ namespace ReadingList
 
 			m_logger.Info($"Cache miss for {listName}, {label}");
 			books = m_readingListService.GetReadingList(listName, label);
-			m_cache.TryAdd(new KeyValuePair<string, string>(listName, label), books);
+			m_readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), books);
 			return books; 
 
 		}
@@ -53,7 +57,7 @@ namespace ReadingList
 		public void InvalidateCache() 
 		{
 			m_logger.Info("Invalidating cache");
-			m_cache.Clear();
+			m_readingListCache.InvalidateCache();
 		}
 	}
 }

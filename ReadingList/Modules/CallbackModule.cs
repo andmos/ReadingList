@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Linq;
 using Nancy;
+using ReadingList.Helpers;
+
 namespace ReadingList.Modules
 {
 	public class CallbackModule : NancyModule 
     {
-		private readonly IReadingListService m_readingListService;
+		private readonly IReadingListCache m_readingListCache;
         private readonly ITrelloWebHookSources m_webHookSource;
 		private readonly ILog m_logger;
 
-		public CallbackModule(IReadingListService readingListService, ILogFactory logger, ITrelloWebHookSources webHookSource) : base("/api/")
+		public CallbackModule(IReadingListCache readingListCache, ILogFactory logger, ITrelloWebHookSources webHookSource) : base("/api/")
         {
 			this.EnableCors();
 			m_logger = logger.GetLogger(GetType());
-			m_readingListService = readingListService;
+			m_readingListCache = readingListCache;
             m_webHookSource = webHookSource;
 
 			Head["/callBack"] = parameters =>
@@ -33,12 +35,10 @@ namespace ReadingList.Modules
                     m_logger.Info($"Got Callback from valid source: {Request.UserHostAddress}");
                 }
 
-                // TODO: This is a bit leaky..
-                if (m_readingListService is ReadingListCache)
-                {
-                    ((ReadingListCache)m_readingListService).InvalidateCache();
-                    m_logger.Info("Invalidating cache");
-                }
+                
+				m_readingListCache.InvalidateCache();
+                m_logger.Info("Invalidating cache");
+                
 
                 respons = Response.AsJson("Callback recived");
                 respons.StatusCode = HttpStatusCode.OK;
