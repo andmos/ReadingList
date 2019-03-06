@@ -107,13 +107,15 @@
     <Compile Include="Trello\ITrelloAuthModel.cs" />
     <Compile Include="Trello\TrelloAuthModel.cs" />
     <Compile Include="Trello\ReadingListServiceProfiler.cs" />
-    <Compile Include="Trello\ReadingListCache.cs" />
+    <Compile Include="Trello\CachedReadingListService.cs" />
     <Compile Include="Models\ReadingBoard.cs" />
     <Compile Include="Trello\IReadingBoardService.cs" />
     <Compile Include="Trello\ReadingBoardService.cs" />
     <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Modules\RouteModule.cs" />
     <Compile Include="Modules\CallbackModule.cs" />
+    <Compile Include="Helpers\IReadingListCache.cs" />
+    <Compile Include="Helpers\ReadingListCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

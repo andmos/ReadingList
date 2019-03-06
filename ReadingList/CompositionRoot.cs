@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using LightInject;
+using ReadingList.Helpers;
 
 namespace ReadingList
 {
@@ -18,11 +19,12 @@ namespace ReadingList
 			serviceRegistry.Register<ITrelloAuthorizationWrapper, TrelloAuthorizationWrapper>(new PerContainerLifetime());
 			serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 			serviceRegistry.Register<IBookFactory, BookFactory>();
-			serviceRegistry.Register<IWebHookCaller, WebHookCaller>(); 
+			serviceRegistry.Register<IWebHookCaller, WebHookCaller>();
+			serviceRegistry.Register<IReadingListCache, ReadingListCache>(new PerContainerLifetime());
 			serviceRegistry.Register<IReadingListService>(factory => new ReadingListService(TrelloBoardConstans.BoardId, factory.GetInstance<IBookFactory>(), factory.GetInstance<ILogFactory>()), new PerContainerLifetime());
 			serviceRegistry.Register<IReadingBoardService>(factory => new ReadingBoardService(factory.GetInstance<IReadingListService>(), TrelloBoardConstans.BoardId), new PerContainerLifetime());
-            serviceRegistry.Decorate<IReadingListService, ReadingListServiceProfiler>();
-            serviceRegistry.Decorate<IReadingListService, ReadingListCache>();
+            serviceRegistry.Decorate<IReadingListService, CachedReadingListService>();
+			serviceRegistry.Decorate<IReadingListService, ReadingListServiceProfiler>();
 
         }
 	}
