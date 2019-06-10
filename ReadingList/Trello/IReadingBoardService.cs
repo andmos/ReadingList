@@ -7,6 +7,6 @@ namespace ReadingList
 		/// Gets all reading lists.
 		/// </summary>
 		/// <returns>All reading lists.</returns>
-		ReadingBoard GetAllReadingLists();
+		ReadingBoard GetAllReadingLists(string label);
 	}
 }
