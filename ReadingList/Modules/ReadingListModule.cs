@@ -46,7 +46,8 @@ namespace ReadingList
 
 			Get["/allLists"] = parameters =>
 			{
-				var allLists = m_readingBoardService.GetAllReadingLists();
+                string requestLabel = Request.Query["label"];
+                var allLists = m_readingBoardService.GetAllReadingLists(requestLabel);
 				return Response.AsJson(allLists);
 			};
 
