@@ -1,5 +1,6 @@
 FROM mono:latest
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
+ENV confd_version 0.14.0
 
 COPY docker-entrypoint.sh docker-entrypoint.sh
 COPY ReadingList.sln ReadingList.sln
@@ -8,13 +9,13 @@ COPY ReadingList ReadingList
 RUN nuget restore ReadingList.sln
 RUN msbuild /property:Configuration=Release ReadingList.sln
 
-ADD https://github.com/kelseyhightower/confd/releases/download/v0.14.0/confd-0.14.0-linux-amd64 /usr/local/bin/confd
-RUN chmod +x /usr/local/bin/confd
-COPY confd /etc/confd
+RUN curl -L https://github.com/kelseyhightower/confd/releases/download/v${confd_version}/confd-${confd_version}-linux-amd64 -o /usr/local/bin/confd \
+    && chmod +x /usr/local/bin/confd \
+    && apt-get remove \
+        -y curl nuget fsharp mono-vbnc \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get remove \
-    -y curl nuget fsharp mono-vbnc \
-     && rm -rf /var/lib/apt/lists/*
+COPY confd /etc/confd
 
 EXPOSE 1337
 
