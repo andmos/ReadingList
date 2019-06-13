@@ -1,6 +1,9 @@
 schemaVersion: "2.0.0"
 
 fileExistenceTests:
+- name: 'confd'
+  path: '/usr/local/bin/confd'
+  shouldExist: true
 - name: 'ReadingList.exe'
   path: '/ReadingList/bin/Release/ReadingList.exe'
   shouldExist: true
