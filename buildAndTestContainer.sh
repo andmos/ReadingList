@@ -6,3 +6,5 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gcr.io/
 docker run --name readinglist -dt -p 1337:1337 -e APIKey=$TrelloAPIKey -e UserToken=$TrelloUserToken andmos/readinglist:$(git rev-parse --short HEAD)
 sleep 5
 docker run --link readinglist:readinglist --rm -e APIKey=$TrelloAPIKey -e UserToken=$TrelloUserToken -v $(pwd):/app graze/bats /app/batsTests
+docker stop readinglist
+docker rm readinglist
