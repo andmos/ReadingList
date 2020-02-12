@@ -1,7 +1,5 @@
 ﻿using System;
 using Manatee.Trello;
-using Manatee.Trello.ManateeJson;
-using Manatee.Trello.WebApi;
 
 namespace ReadingList
 {
@@ -19,11 +17,6 @@ namespace ReadingList
 
 			_authModel = authModel;
 
-			var serializer = new ManateeSerializer();
-			TrelloConfiguration.Serializer = serializer;
-			TrelloConfiguration.Deserializer = serializer;
-			TrelloConfiguration.JsonFactory = new ManateeFactory();
-			TrelloConfiguration.RestClientProvider = new WebApiClientProvider();
 			TrelloAuthorization.Default.AppKey = _authModel.TrelloAPIKey;
 			TrelloAuthorization.Default.UserToken = _authModel.TrelloUserToken;
 		}

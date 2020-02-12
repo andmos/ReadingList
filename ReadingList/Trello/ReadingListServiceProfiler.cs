@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ReadingList
 {
@@ -24,10 +25,10 @@ namespace ReadingList
 			return addResult;
 		}
 
-		public IEnumerable<Book> GetReadingList(string listName, string label = null)
+		public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
 		{
 			var stopWatch = Stopwatch.StartNew();
-			var list = m_readingListService.GetReadingList(listName, label);
+			var list = await m_readingListService.GetReadingList(listName, label);
 			stopWatch.Stop();
 			m_logger.Info($"GetReadingList: Call for list {listName} took {stopWatch.ElapsedMilliseconds} Ms");
 			return list;

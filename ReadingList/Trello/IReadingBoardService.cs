@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace ReadingList
 {
 	public interface IReadingBoardService
@@ -7,6 +9,6 @@ namespace ReadingList
 		/// Gets all reading lists.
 		/// </summary>
 		/// <returns>All reading lists.</returns>
-		ReadingBoard GetAllReadingLists(string label);
+		Task<ReadingBoard> GetAllReadingLists(string label);
 	}
 }
