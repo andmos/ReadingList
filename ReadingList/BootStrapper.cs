@@ -1,4 +1,5 @@
 ﻿using LightInject.Nancy;
+using LightInject;
 using Nancy;
 using System.Configuration;
 using System;

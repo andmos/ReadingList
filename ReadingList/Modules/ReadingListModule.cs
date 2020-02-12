@@ -1,7 +1,5 @@
-﻿using System;
-using Nancy;
+﻿using Nancy;
 using System.Linq;
-using Nancy.Routing;
 using System.Collections.Generic;
 
 namespace ReadingList
@@ -23,31 +21,31 @@ namespace ReadingList
 			StaticConfiguration.EnableHeadRouting = true;
 			StaticConfiguration.DisableErrorTraces = false;
             
-			Get["/readingList"] = parameters =>
+			Get["/readingList", true] = async (x, ct) =>
 			{
 				string requestLabel = Request.Query["label"];
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
+				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
-			Get["/backlogList"] = parameters =>
+			Get["/backlogList", true] = async (x, ct) =>
 			{
 				string requestLabel = Request.Query["label"];
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
+				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
-			Get["/doneList"] = parameters =>
+			Get["/doneList", true] = async (x, ct) =>
 			{
 				string requestLabel = Request.Query["label"];
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
+				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
-			Get["/allLists"] = parameters =>
+			Get["/allLists", true] = async (x, ct) =>
 			{
                 string requestLabel = Request.Query["label"];
-                var allLists = m_readingBoardService.GetAllReadingLists(requestLabel);
+                var allLists = await m_readingBoardService.GetAllReadingLists(requestLabel);
 				return Response.AsJson(allLists);
 			};
 
