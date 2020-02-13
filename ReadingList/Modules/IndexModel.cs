@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Nancy.Routing;
-namespace ReadingList
+
+namespace ReadingList.Modules
 {
 	internal class IndexModel
 	{

@@ -1,4 +1,4 @@
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public static class TrelloBoardConstans
 	{

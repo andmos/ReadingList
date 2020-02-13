@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using Nancy.Routing;
 
-namespace ReadingList
+namespace ReadingList.Modules
 {
 	public class RouteModule : NancyModule
 	{

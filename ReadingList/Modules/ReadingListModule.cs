@@ -1,8 +1,10 @@
-﻿using Nancy;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using Nancy;
+using ReadingList.Logging;
+using ReadingList.Trello;
 
-namespace ReadingList
+namespace ReadingList.Modules
 {
 	public class ReadingListModule : NancyModule
 	{

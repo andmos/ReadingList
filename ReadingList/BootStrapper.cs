@@ -3,6 +3,8 @@ using LightInject;
 using Nancy;
 using System.Configuration;
 using System;
+using ReadingList.Logging;
+using ReadingList.Trello;
 
 namespace ReadingList
 {

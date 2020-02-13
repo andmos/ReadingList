@@ -2,7 +2,7 @@
 using log4net;
 using log4net.Config;
 
-namespace ReadingList
+namespace ReadingList.Logging
 {
 	public class Log4NetLogFactory : ILogFactory
 	{

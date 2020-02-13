@@ -1,7 +1,7 @@
 ﻿using System;
 using Manatee.Trello;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public class TrelloAuthorizationWrapper : ITrelloAuthorizationWrapper
 	{

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public interface IReadingBoardService
 	{

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq; 
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using ReadingList.Helpers;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using ReadingList.Helpers;
+using ReadingList.Logging;
+using ReadingList.Models;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public class CachedReadingListService : IReadingListService
 	{

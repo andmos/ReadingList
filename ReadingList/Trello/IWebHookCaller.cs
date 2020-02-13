@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	/// <summary>
 	/// Web hook caller.
@@ -14,7 +14,7 @@ namespace ReadingList
 		/// <param name="webHook">Web hook.</param>
 		Task SetUpWebHook(TrelloWebhook webHook);
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="T:ReadingList.IWebHookCaller"/> is configured.
+        /// Gets or sets a value indicating whether this <see cref="T:ReadingList.Trello.IWebHookCaller"/> is configured.
         /// </summary>
         /// <value><c>true</c> if configured; otherwise, <c>false</c>.</value>
         bool Configured { get; set; }

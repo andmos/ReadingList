@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Manatee.Trello;
+using ReadingList.Models;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public class ReadingBoardService : IReadingBoardService
 	{

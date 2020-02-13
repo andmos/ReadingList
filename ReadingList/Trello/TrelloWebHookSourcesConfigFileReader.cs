@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public class TrelloWebHookSourcesConfigFileReader : ITrelloWebHookSources
 	{

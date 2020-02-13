@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using ReadingList.Models;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public class BookFactory : IBookFactory
 	{

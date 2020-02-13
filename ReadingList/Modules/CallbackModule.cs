@@ -2,6 +2,8 @@
 using System.Linq;
 using Nancy;
 using ReadingList.Helpers;
+using ReadingList.Logging;
+using ReadingList.Trello;
 
 namespace ReadingList.Modules
 {

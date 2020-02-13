@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manatee.Trello;
+using ReadingList.Logging;
+using ReadingList.Models;
+using ILog = ReadingList.Logging.ILog;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
     public class ReadingListService : IReadingListService
     {

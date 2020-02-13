@@ -1,4 +1,4 @@
-﻿namespace ReadingList
+﻿namespace ReadingList.Models
 {
 	public interface IBookFactory
 	{

@@ -1,5 +1,6 @@
 ﻿using System;
-namespace ReadingList
+
+namespace ReadingList.Logging
 {
 	public class Log : ILog
 	{

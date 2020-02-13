@@ -1,7 +1,6 @@
-﻿using System;
-using Nancy;
+﻿using Nancy;
 
-namespace ReadingList
+namespace ReadingList.Modules
 {
 	public static class ModuleExtensions
 	{

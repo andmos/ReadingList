@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ReadingList.Models;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public interface IReadingListService
 	{

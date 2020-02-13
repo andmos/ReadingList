@@ -1,9 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ReadingList.Logging;
+using ReadingList.Models;
+using ReadingList.Trello;
 
-namespace ReadingList
+namespace ReadingList.Helpers
 {
 	public class ReadingListServiceProfiler : IReadingListService
 	{

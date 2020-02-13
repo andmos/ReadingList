@@ -1,7 +1,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using ReadingList.Logging;
 
-namespace ReadingList
+namespace ReadingList.Trello
 {
 	public class WebHookCaller : IWebHookCaller
 	{

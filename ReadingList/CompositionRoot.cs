@@ -3,6 +3,10 @@ using System.Configuration;
 using LightInject;
 using Manatee.Trello;
 using ReadingList.Helpers;
+using ReadingList.Logging;
+using ReadingList.Models;
+using ReadingList.Trello;
+using ILog = ReadingList.Logging.ILog;
 
 namespace ReadingList
 {
