@@ -9,10 +9,9 @@ namespace ReadingList
     public class ReadingListService : IReadingListService
     {
         private readonly IBoard m_board;
-        private IBookFactory m_bookFactory;
-        private ILog m_logger;
-
-
+        private readonly IBookFactory m_bookFactory;
+        private readonly ILog m_logger;
+        
         public ReadingListService(ITrelloFactory factory, string boardId, IBookFactory bookFactory, ILogFactory logFactory)
         {
             m_board = factory.Board(boardId);
@@ -23,36 +22,19 @@ namespace ReadingList
 
         public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
         {
-            IEnumerable<ICard> cardList;
-
             await m_board.Lists.Refresh();
 
-            if (string.IsNullOrEmpty(label))
-            {
-                cardList = m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards;
-            }
-            else
-            {
-                cardList = m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName)).Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
-            }
+            var cardList = string.IsNullOrEmpty(label) ?
+                m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards : 
+                m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 
-            var readingList = new List<Book>();
-
-            foreach (var card in cardList)
-            {
-                readingList.Add(
-                m_bookFactory.Create(
-                    card.Name,
-                    card.Labels.FirstOrDefault()?.Name.ToLower() ?? TrelloBoardConstans.UnspecifiedLabel));
-            }
-
-            return readingList;
+            return cardList?.Select(card => m_bookFactory.Create(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? TrelloBoardConstans.UnspecifiedLabel)).ToList();
         }
 
         public bool AddBookToBacklog(string book, string authors, string label)
         {
             bool addSuccessfull;
-            string backlogCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog)).Id;
+            var backlogCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog))?.Id;
             var backlogCardList = new List(backlogCardListId);
             try
             {
@@ -72,11 +54,11 @@ namespace ReadingList
         public bool UpdateDoneListFromReadingList(string book)
         {
             bool updateSuccessful;
-            string doneCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading)).Id;
+            string doneCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading))?.Id;
             var doneCardList = new List(doneCardListId);
             try
             {
-                var card = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.CurrentlyReading)).Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
+                var card = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.CurrentlyReading))?.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
                 if (card == null)
                 {
                     m_logger.Info($"Could not find {book} in {TrelloBoardConstans.CurrentlyReading}, so can't move to {TrelloBoardConstans.DoneReading}.");

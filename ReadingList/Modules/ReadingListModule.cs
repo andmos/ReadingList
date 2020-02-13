@@ -9,7 +9,6 @@ namespace ReadingList
 		private readonly IReadingListService m_readingListService;
 		private readonly IReadingBoardService m_readingBoardService;
 		private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper; 
-		private readonly ILog m_logger;
 
 		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService, ILogFactory logger) : base("/api/")
 		{
@@ -17,7 +16,6 @@ namespace ReadingList
 			m_trelloAuthWrapper = trelloAuthWrapper;
 			m_readingListService = readingListService;
 			m_readingBoardService = readingBoardService;
-			m_logger = logger.GetLogger(GetType());
 			StaticConfiguration.EnableHeadRouting = true;
 			StaticConfiguration.DisableErrorTraces = false;
             
@@ -80,14 +78,7 @@ namespace ReadingList
 				var addBookToBacklog = m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
 				response = Response.AsJson(addBookToBacklog);
 
-				if (addBookToBacklog)
-				{
-					response.StatusCode = HttpStatusCode.Created;
-				}
-				else
-				{
-					response.StatusCode = HttpStatusCode.InternalServerError;
-				}
+				response.StatusCode = addBookToBacklog ? HttpStatusCode.Created : HttpStatusCode.InternalServerError;
 
 				return response;
 			};
@@ -95,7 +86,7 @@ namespace ReadingList
 			Put["/doneList"] = parameters =>
 			{
 				string bookTitle = Request.Query["title"];
-				Response response = new Response();
+				Response response;
 				if (string.IsNullOrWhiteSpace(bookTitle))
 				{
 					response = Response.AsJson("title is needed to move card from reading to done");
@@ -129,10 +120,10 @@ namespace ReadingList
 
 		private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(Request request)
 		{
-			string providedAPIKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
+			string providedApiKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
 			string providedUserToken = request.Headers["TrelloUserToken"].FirstOrDefault();
 
-			return new KeyValuePair<ITrelloAuthModel, bool>(new TrelloAuthModel(providedAPIKey, providedUserToken), !string.IsNullOrWhiteSpace(providedAPIKey) && !string.IsNullOrWhiteSpace(providedUserToken));
+			return new KeyValuePair<ITrelloAuthModel, bool>(new TrelloAuthModel(providedApiKey, providedUserToken), !string.IsNullOrWhiteSpace(providedApiKey) && !string.IsNullOrWhiteSpace(providedUserToken));
 		}
 
 		private bool CheckTokens(ITrelloAuthModel authTokens, ITrelloAuthorizationWrapper authWrapper) => authWrapper.IsValidKeys(authTokens);

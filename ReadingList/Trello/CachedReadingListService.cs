@@ -34,11 +34,7 @@ namespace ReadingList
 			IEnumerable<Book> books;
 			if (m_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
 			{
-				if (!string.IsNullOrEmpty(label)) 
-				{
-					return books.Where(b => b.Label.ToLower().Equals(label.ToLower()));
-				}
-				return books;
+				return !string.IsNullOrEmpty(label) ? books.Where(b => b.Label.ToLower().Equals(label.ToLower())) : books;
 			}
 
 			m_logger.Info($"Cache miss for {listName}, {label}");
