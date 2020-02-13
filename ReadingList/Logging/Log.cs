@@ -1,6 +1,7 @@
 ﻿using System;
+using ReadingList.Trello.Logging;
 
-namespace ReadingList.Logging
+namespace ReadingList.Web.Logging
 {
 	public class Log : ILog
 	{

@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manatee.Trello;
-using ReadingList.Logging;
-using ReadingList.Models;
-using ILog = ReadingList.Logging.ILog;
+using ReadingList.Logic.Models;
+using ReadingList.Logic.Services;
+using ReadingList.Trello.Logging;
+using ReadingList.Trello.Models;
 
-namespace ReadingList.Trello
+namespace ReadingList.Trello.Services
 {
     public class ReadingListService : IReadingListService
     {
         private readonly IBoard m_board;
         private readonly IBookFactory m_bookFactory;
-        private readonly ILog m_logger;
+        private readonly Logging.ILog m_logger;
         
         public ReadingListService(ITrelloFactory factory, string boardId, IBookFactory bookFactory, ILogFactory logFactory)
         {

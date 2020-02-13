@@ -6,6 +6,8 @@ ENV PORT 1337
 COPY docker-entrypoint.sh docker-entrypoint.sh
 COPY ReadingList.sln ReadingList.sln
 COPY ReadingList ReadingList
+COPY ReadingList.Logic ReadingList.Logic
+COPY ReadingList.Trello ReadingList.Trello
 
 RUN nuget restore ReadingList.sln
 RUN msbuild /property:Configuration=Release ReadingList.sln

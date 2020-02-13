@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Nancy;
-using ReadingList.Helpers;
-using ReadingList.Logging;
-using ReadingList.Trello;
+using ReadingList.Trello.Helpers;
+using ReadingList.Trello.Models;
+using ReadingList.Trello.Logging;
+using ReadingList.Modules;
 
-namespace ReadingList.Modules
+namespace ReadingList.Web.Modules
 {
 	public class CallbackModule : NancyModule 
     {

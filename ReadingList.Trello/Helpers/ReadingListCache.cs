@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using ReadingList.Models;
+using ReadingList.Logic.Models;
 
-namespace ReadingList.Helpers
+namespace ReadingList.Trello.Helpers
 {
 	public class ReadingListCache : IReadingListCache
     {

@@ -1,4 +1,4 @@
-namespace ReadingList.Trello
+namespace ReadingList.Trello.Models
 {
 	/// <summary>
 	/// DTO for setting up Trello Webhook

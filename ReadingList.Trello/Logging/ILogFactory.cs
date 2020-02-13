@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReadingList.Logging
+namespace ReadingList.Trello.Logging
 {
 	/// <summary>
 	/// Log factory.

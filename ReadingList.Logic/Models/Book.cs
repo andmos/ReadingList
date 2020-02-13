@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReadingList.Models
+namespace ReadingList.Logic.Models
 {
 	public class Book
 	{

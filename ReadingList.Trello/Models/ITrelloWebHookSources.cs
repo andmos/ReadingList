@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ReadingList.Trello
+namespace ReadingList.Trello.Models
 {
 	/// <summary>
 	/// Trello web hook sources.

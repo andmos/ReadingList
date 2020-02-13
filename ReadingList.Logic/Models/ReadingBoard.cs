@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using ReadingList.Models;
 
-namespace ReadingList
+
+namespace ReadingList.Logic.Models
 {
 	public class ReadingBoard
 	{

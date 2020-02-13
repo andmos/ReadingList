@@ -1,6 +1,6 @@
 using ReadingList.Trello;
 
-namespace ReadingList
+namespace ReadingList.Trello.Services
 {
 	/// <summary>
 	/// Trello authorization wrapper - for setting up authorization against Trello.

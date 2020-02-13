@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using ReadingList.Logging;
-using ReadingList.Models;
-using ReadingList.Trello;
+using ReadingList.Logic.Models;
+using ReadingList.Logic.Services;
+using ReadingList.Trello.Logging;
 
-namespace ReadingList.Helpers
+namespace ReadingList.Trello.Helpers
 {
-	public class ReadingListServiceProfiler : IReadingListService
+    public class ReadingListServiceProfiler : IReadingListService
 	{
 		private IReadingListService m_readingListService;
 		private readonly ILog m_logger;
@@ -15,7 +15,6 @@ namespace ReadingList.Helpers
 		{
 			m_readingListService = readingListService;
 			m_logger = logFactory.GetLogger(GetType());
-
 		}
 
 		public bool AddBookToBacklog(string book, string authors, string label)

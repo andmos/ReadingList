@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using ReadingList.Logic.Models;
 
-namespace ReadingList.Trello
+namespace ReadingList.Logic.Services
 {
 	public interface IReadingBoardService
 	{

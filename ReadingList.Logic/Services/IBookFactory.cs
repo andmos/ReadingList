@@ -1,4 +1,6 @@
-﻿namespace ReadingList.Models
+﻿using ReadingList.Logic.Models;
+
+namespace ReadingList.Logic.Services
 {
 	public interface IBookFactory
 	{

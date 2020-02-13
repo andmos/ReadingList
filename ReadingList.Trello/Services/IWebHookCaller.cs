@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using ReadingList.Trello.Models;
 
-namespace ReadingList.Trello
+namespace ReadingList.Trello.Services
 {
 	/// <summary>
 	/// Web hook caller.
