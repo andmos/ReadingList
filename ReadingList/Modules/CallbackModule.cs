@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Nancy;
+using ReadingList.Logging;
 using ReadingList.Trello.Helpers;
 using ReadingList.Trello.Models;
-using ReadingList.Trello.Logging;
 using ReadingList.Modules;
 
 namespace ReadingList.Web.Modules

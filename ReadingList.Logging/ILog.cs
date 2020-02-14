@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReadingList.Trello.Logging
+namespace ReadingList.Logging
 {
 	/// <summary>
 	/// Logger interface

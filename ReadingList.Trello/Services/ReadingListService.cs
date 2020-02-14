@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manatee.Trello;
+using ReadingList.Logging;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
-using ReadingList.Trello.Logging;
 using ReadingList.Trello.Models;
+using ILog = ReadingList.Logging.ILog;
 
 namespace ReadingList.Trello.Services
 {
@@ -14,7 +15,7 @@ namespace ReadingList.Trello.Services
     {
         private readonly IBoard m_board;
         private readonly IBookFactory m_bookFactory;
-        private readonly Logging.ILog m_logger;
+        private readonly ILog m_logger;
         
         public ReadingListService(ITrelloFactory factory, string boardId, IBookFactory bookFactory, ILogFactory logFactory)
         {

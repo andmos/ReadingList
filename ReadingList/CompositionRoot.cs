@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using LightInject;
+using ReadingList.Logging;
 using ReadingList.Web.Logging;
 using ReadingList.Trello;
-using ReadingList.Trello.Logging;
 using ReadingList.Trello.Models;
 using ReadingList.Web.Trello;
 

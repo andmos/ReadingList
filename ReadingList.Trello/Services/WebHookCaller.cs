@@ -1,6 +1,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using ReadingList.Trello.Logging;
+using ReadingList.Logging;
 using ReadingList.Trello.Models;
 
 namespace ReadingList.Trello.Services

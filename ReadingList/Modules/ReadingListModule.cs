@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Nancy;
+using ReadingList.Logging;
 using ReadingList.Logic.Services;
 using ReadingList.Modules;
 using ReadingList.Trello;
-using ReadingList.Trello.Logging;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
 

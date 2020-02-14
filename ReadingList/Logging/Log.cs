@@ -1,5 +1,5 @@
 ﻿using System;
-using ReadingList.Trello.Logging;
+using ReadingList.Logging;
 
 namespace ReadingList.Web.Logging
 {

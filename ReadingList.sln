@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Logic", "Readin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Trello", "ReadingList.Trello\ReadingList.Trello.csproj", "{8849223E-AADA-46E3-A3E3-52340C134E18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Logging", "ReadingList.Logging\ReadingList.Logging.csproj", "{E94BAE21-D8FD-4D64-81DA-2F667C56F09E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -25,5 +27,9 @@ Global
 		{8849223E-AADA-46E3-A3E3-52340C134E18}.Debug|x86.Build.0 = Debug|Any CPU
 		{8849223E-AADA-46E3-A3E3-52340C134E18}.Release|x86.ActiveCfg = Release|Any CPU
 		{8849223E-AADA-46E3-A3E3-52340C134E18}.Release|x86.Build.0 = Release|Any CPU
+		{E94BAE21-D8FD-4D64-81DA-2F667C56F09E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E94BAE21-D8FD-4D64-81DA-2F667C56F09E}.Debug|x86.Build.0 = Debug|Any CPU
+		{E94BAE21-D8FD-4D64-81DA-2F667C56F09E}.Release|x86.ActiveCfg = Release|Any CPU
+		{E94BAE21-D8FD-4D64-81DA-2F667C56F09E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

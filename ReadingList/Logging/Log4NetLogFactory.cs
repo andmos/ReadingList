@@ -1,7 +1,8 @@
 ﻿using System;
 using log4net;
 using log4net.Config;
-using ReadingList.Trello.Logging;
+using ReadingList.Logging;
+using ILog = ReadingList.Logging.ILog;
 
 namespace ReadingList.Web.Logging
 {
@@ -12,7 +13,7 @@ namespace ReadingList.Web.Logging
 			XmlConfigurator.Configure();
 		}
 
-		public ReadingList.Trello.Logging.ILog GetLogger(Type type)
+		public ILog GetLogger(Type type)
 		{
 			var logger = LogManager.GetLogger(type);
 			return new Log(logger.Info, logger.Debug, logger.Error);

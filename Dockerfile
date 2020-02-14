@@ -8,6 +8,7 @@ COPY ReadingList.sln ReadingList.sln
 COPY ReadingList ReadingList
 COPY ReadingList.Logic ReadingList.Logic
 COPY ReadingList.Trello ReadingList.Trello
+COPY ReadingList.Logging ReadingList.Logging
 
 RUN nuget restore ReadingList.sln
 RUN msbuild /property:Configuration=Release ReadingList.sln

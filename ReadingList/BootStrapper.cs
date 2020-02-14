@@ -3,8 +3,8 @@ using LightInject;
 using Nancy;
 using System.Configuration;
 using System;
+using ReadingList.Logging;
 using ReadingList.Trello.Services;
-using ReadingList.Trello.Logging;
 using ReadingList.Trello.Models;
 
 namespace ReadingList.Web

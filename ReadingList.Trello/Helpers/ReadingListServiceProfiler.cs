@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ReadingList.Logging;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
-using ReadingList.Trello.Logging;
 
 namespace ReadingList.Trello.Helpers
 {

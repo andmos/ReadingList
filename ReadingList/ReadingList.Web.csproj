@@ -200,6 +200,10 @@
     <Folder Include="Logging\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ReadingList.Logging\ReadingList.Logging.csproj">
+      <Project>{e94bae21-d8fd-4d64-81da-2f667c56f09e}</Project>
+      <Name>ReadingList.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReadingList.Trello\ReadingList.Trello.csproj">
       <Project>{8849223E-AADA-46E3-A3E3-52340C134E18}</Project>
       <Name>ReadingList.Trello</Name>

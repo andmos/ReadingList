@@ -1,9 +1,9 @@
 ﻿using System;
 using LightInject;
 using Manatee.Trello;
+using ReadingList.Logging;
 using ReadingList.Logic.Services;
 using ReadingList.Trello.Helpers;
-using ReadingList.Trello.Logging;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
 
