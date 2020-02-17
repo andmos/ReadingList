@@ -4,6 +4,7 @@ services:
 script:
   - ./buildAndTestContainer.sh
 deploy:
+    provider: script
     skip_cleanup: true
     on:
         branch: master
