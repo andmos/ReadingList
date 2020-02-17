@@ -53,7 +53,7 @@ namespace ReadingList.Web.Modules
 				return Response.AsJson(allLists);
 			};
 
-			Put["/backlogList"] = parameters =>
+			Post["/backlogList", true] = async (x, ct) =>
 			{
 				Response response;
 				string author = Request.Query["author"];
@@ -81,7 +81,7 @@ namespace ReadingList.Web.Modules
 					return response;
 				}
 
-				var addBookToBacklog = m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
+				var addBookToBacklog = await m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
 				response = Response.AsJson(addBookToBacklog);
 
 				response.StatusCode = addBookToBacklog ? HttpStatusCode.Created : HttpStatusCode.InternalServerError;
@@ -89,7 +89,7 @@ namespace ReadingList.Web.Modules
 				return response;
 			};
 
-			Put["/doneList"] = parameters =>
+			Put["/doneList", true] = async (x, ct) =>
 			{
 				string bookTitle = Request.Query["title"];
 				Response response;
@@ -114,7 +114,7 @@ namespace ReadingList.Web.Modules
 				}
 
 
-				var updateStatus = m_readingListService.UpdateDoneListFromReadingList(bookTitle);
+				var updateStatus = await m_readingListService.UpdateDoneListFromReadingList(bookTitle);
 
 				response = Response.AsJson(updateStatus);
 				response.StatusCode = HttpStatusCode.OK;

@@ -20,14 +20,14 @@ namespace ReadingList.Logic.Services
 		/// <param name="book">Book.</param>
 		/// <param name="authors">Authors.</param>
 		/// <param name="label">Label.</param>
-		bool AddBookToBacklog(string book, string authors, string label);
+		Task<bool> AddBookToBacklog(string book, string authors, string label);
 
 		/// <summary>
 		/// Update the done list with a book that is read.
 		/// </summary>
 		/// <returns><c>true</c>, if done list was updated, <c>false</c> otherwise.</returns>
 		/// <param name="book">Book.</param>
-		bool UpdateDoneListFromReadingList(string book);
+		Task<bool> UpdateDoneListFromReadingList(string book);
 
 }
 }

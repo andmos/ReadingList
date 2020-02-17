@@ -24,10 +24,10 @@ namespace ReadingList.Trello.Services
 			m_readingListCache = readingListCache;
 		}
 
-		public bool AddBookToBacklog(string book, string authors, string label)
+		public async Task<bool> AddBookToBacklog(string book, string authors, string label)
 		{
 			InvalidateCache();
-			return m_readingListService.AddBookToBacklog(book, authors, label);
+			return await m_readingListService.AddBookToBacklog(book, authors, label);
 		}
 
 		public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
@@ -45,10 +45,10 @@ namespace ReadingList.Trello.Services
 
 		}
 
-		public bool UpdateDoneListFromReadingList(string book)
+		public async Task<bool> UpdateDoneListFromReadingList(string book)
 		{
             InvalidateCache();
-			return m_readingListService.UpdateDoneListFromReadingList(book); 
+			return await m_readingListService.UpdateDoneListFromReadingList(book); 
 
 		}
 

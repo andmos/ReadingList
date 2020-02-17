@@ -17,10 +17,10 @@ namespace ReadingList.Trello.Helpers
 			m_logger = logFactory.GetLogger(GetType());
 		}
 
-		public bool AddBookToBacklog(string book, string authors, string label)
+		public async Task<bool> AddBookToBacklog(string book, string authors, string label)
 		{
 			var stopWatch = Stopwatch.StartNew();
-			var addResult = m_readingListService.AddBookToBacklog(book, authors, label);
+			var addResult = await m_readingListService.AddBookToBacklog(book, authors, label);
 			stopWatch.Stop();
 			m_logger.Info($"AddBookToBacklig: Call took {stopWatch.ElapsedMilliseconds} Ms");
 			return addResult;
@@ -35,10 +35,10 @@ namespace ReadingList.Trello.Helpers
 			return list;
 		}
 
-		public bool UpdateDoneListFromReadingList(string book)
+		public async Task<bool> UpdateDoneListFromReadingList(string book)
 		{
 			var stopWatch = Stopwatch.StartNew();
-			var result = m_readingListService.UpdateDoneListFromReadingList(book);
+			var result = await m_readingListService.UpdateDoneListFromReadingList(book);
 			stopWatch.Stop();
 			m_logger.Info($"UpdateDoneList: Call took {stopWatch.ElapsedMilliseconds}");
 			return result;

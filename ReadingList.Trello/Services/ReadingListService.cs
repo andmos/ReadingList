@@ -36,15 +36,17 @@ namespace ReadingList.Trello.Services
             return cardList?.Select(card => m_bookFactory.Create(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? TrelloBoardConstans.UnspecifiedLabel)).ToList();
         }
 
-        public bool AddBookToBacklog(string book, string authors, string label)
+        public async Task<bool> AddBookToBacklog(string book, string authors, string label)
         {
+            await m_board.Lists.Refresh();
+
             bool addSuccessfull;
             var backlogCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog))?.Id;
             var backlogCardList = new List(backlogCardListId);
             try
             {
                 var bookLabel = m_board.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
-                backlogCardList.Cards.Add(name: FormatCardName(book, authors), labels: new[] { bookLabel });
+                await backlogCardList.Cards.Add(name: FormatCardName(book, authors), labels: new[] { bookLabel });
                 m_logger.Info($"Adding {book}, {authors}, {label} to {TrelloBoardConstans.Backlog}");
                 addSuccessfull = true;
             }
@@ -56,8 +58,10 @@ namespace ReadingList.Trello.Services
             return addSuccessfull;
         }
 
-        public bool UpdateDoneListFromReadingList(string book)
+        public async Task<bool> UpdateDoneListFromReadingList(string book)
         {
+            await m_board.Lists.Refresh();
+
             bool updateSuccessful;
             string doneCardListId = m_board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading))?.Id;
             var doneCardList = new List(doneCardListId);
@@ -80,7 +84,6 @@ namespace ReadingList.Trello.Services
                 updateSuccessful = false;
             }
             return updateSuccessful;
-
         }
 
         private string FormatCardName(string book, string author)
