@@ -1,10 +1,14 @@
 FROM mono:latest
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
 ENV confd_version 0.14.0
+ENV PORT 1337
 
 COPY docker-entrypoint.sh docker-entrypoint.sh
 COPY ReadingList.sln ReadingList.sln
 COPY ReadingList ReadingList
+COPY ReadingList.Logic ReadingList.Logic
+COPY ReadingList.Trello ReadingList.Trello
+COPY ReadingList.Logging ReadingList.Logging
 
 RUN nuget restore ReadingList.sln
 RUN msbuild /property:Configuration=Release ReadingList.sln
@@ -17,6 +21,6 @@ RUN curl -L https://github.com/kelseyhightower/confd/releases/download/v${confd_
 
 COPY confd /etc/confd
 
-EXPOSE 1337
+EXPOSE $PORT
 
 ENTRYPOINT ["./docker-entrypoint.sh"]

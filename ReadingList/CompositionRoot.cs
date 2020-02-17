@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Configuration;
 using LightInject;
-using ReadingList.Helpers;
+using ReadingList.Logging;
+using ReadingList.Web.Logging;
+using ReadingList.Trello;
+using ReadingList.Trello.Models;
+using ReadingList.Web.Trello;
 
-namespace ReadingList
+namespace ReadingList.Web
 {
 	public class CompositionRoot : ICompositionRoot
 	{
-
 		public void Compose(IServiceRegistry serviceRegistry)
 		{
 			serviceRegistry.Register<ILogFactory, Log4NetLogFactory>(new PerContainerLifetime());
@@ -16,15 +19,10 @@ namespace ReadingList
 			(factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
 
 			serviceRegistry.Register<ITrelloAuthModel>(factory => new TrelloAuthModel(ConfigurationManager.AppSettings["TrelloAPIKey"], ConfigurationManager.AppSettings["TrelloUserToken"]), new PerContainerLifetime());
-			serviceRegistry.Register<ITrelloAuthorizationWrapper, TrelloAuthorizationWrapper>(new PerContainerLifetime());
+
 			serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
-			serviceRegistry.Register<IBookFactory, BookFactory>();
-			serviceRegistry.Register<IWebHookCaller, WebHookCaller>();
-			serviceRegistry.Register<IReadingListCache, ReadingListCache>(new PerContainerLifetime());
-			serviceRegistry.Register<IReadingListService>(factory => new ReadingListService(TrelloBoardConstans.BoardId, factory.GetInstance<IBookFactory>(), factory.GetInstance<ILogFactory>()), new PerContainerLifetime());
-			serviceRegistry.Register<IReadingBoardService>(factory => new ReadingBoardService(factory.GetInstance<IReadingListService>(), TrelloBoardConstans.BoardId), new PerContainerLifetime());
-            serviceRegistry.Decorate<IReadingListService, CachedReadingListService>();
-			serviceRegistry.Decorate<IReadingListService, ReadingListServiceProfiler>();
+
+			serviceRegistry.RegisterFrom<ReadingList.Trello.CompostionRoot>();
 
         }
 	}

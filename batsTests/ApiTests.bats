@@ -62,8 +62,8 @@ readingListUrl="http://readinglist:1337"
     [ "$result" == '"fiction"' ]
 }
 
-@test "PUT: backlogList endpoint should return FORBIDDEN request is done without APIKey and UserToken in header" {
-    result="$(curl -s -o /dev/null -w '%{http_code}' -X PUT "$readingListUrl/api/backlogList?author=Test%20Author&title=Test%20Title&label=fact" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'postman-token: b523205c-4c2c-e317-c7ae-4c43745f8b00' -H 'trelloapikey: 77777777'   -H 'trellousertokennn: 7777777' -d '{ "data": "this is my new testdata from a PUT" }')"
+@test "POST: backlogList endpoint should return FORBIDDEN request is done without APIKey and UserToken in header" {
+    result="$(curl -s -o /dev/null -w '%{http_code}' -X POST "$readingListUrl/api/backlogList?author=Test%20Author&title=Test%20Title&label=fact" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'postman-token: b523205c-4c2c-e317-c7ae-4c43745f8b00' -H 'trelloapikey: 77777777'   -H 'trellousertokennn: 7777777' -d '{ "data": "this is my new testdata from a PUT" }')"
     [ "$result" -eq 403 ]
 }
 

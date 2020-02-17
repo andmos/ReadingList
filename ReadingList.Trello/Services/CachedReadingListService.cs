@@ -1,10 +1,12 @@
-﻿using System;
-using System.Linq; 
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using ReadingList.Helpers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ReadingList.Logging;
+using ReadingList.Logic.Models;
+using ReadingList.Logic.Services;
+using ReadingList.Trello.Helpers;
 
-namespace ReadingList
+namespace ReadingList.Trello.Services
 {
 	public class CachedReadingListService : IReadingListService
 	{
@@ -22,35 +24,31 @@ namespace ReadingList
 			m_readingListCache = readingListCache;
 		}
 
-		public bool AddBookToBacklog(string book, string authors, string label)
+		public async Task<bool> AddBookToBacklog(string book, string authors, string label)
 		{
 			InvalidateCache();
-			return m_readingListService.AddBookToBacklog(book, authors, label);
+			return await m_readingListService.AddBookToBacklog(book, authors, label);
 		}
 
-		public IEnumerable<Book> GetReadingList(string listName, string label = null)
+		public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
 		{
 			IEnumerable<Book> books;
 			if (m_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
 			{
-				if (!string.IsNullOrEmpty(label)) 
-				{
-					return books.Where(b => b.Label.ToLower().Equals(label.ToLower()));
-				}
-				return books;
+				return !string.IsNullOrEmpty(label) ? books.Where(b => b.Label.ToLower().Equals(label.ToLower())) : books;
 			}
 
 			m_logger.Info($"Cache miss for {listName}, {label}");
-			books = m_readingListService.GetReadingList(listName, label);
+			books = await m_readingListService.GetReadingList(listName, label);
 			m_readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), books);
 			return books; 
 
 		}
 
-		public bool UpdateDoneListFromReadingList(string book)
+		public async Task<bool> UpdateDoneListFromReadingList(string book)
 		{
             InvalidateCache();
-			return m_readingListService.UpdateDoneListFromReadingList(book); 
+			return await m_readingListService.UpdateDoneListFromReadingList(book); 
 
 		}
 

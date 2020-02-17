@@ -1,8 +1,10 @@
 ﻿using System;
 using log4net;
 using log4net.Config;
+using ReadingList.Logging;
+using ILog = ReadingList.Logging.ILog;
 
-namespace ReadingList
+namespace ReadingList.Web.Logging
 {
 	public class Log4NetLogFactory : ILogFactory
 	{

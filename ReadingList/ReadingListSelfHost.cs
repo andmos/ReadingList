@@ -1,5 +1,5 @@
 
-namespace ReadingList
+namespace ReadingList.Web
 {
 	public class ReadingListSelfHost
 	{

@@ -1,7 +1,7 @@
 ﻿using Topshelf;
 using Topshelf.Nancy;
 
-namespace ReadingList
+namespace ReadingList.Web
 {
 	public class MainClass
 	{

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using ReadingList.Logic.Models;
+using ReadingList.Logic.Services;
 
-namespace ReadingList
+namespace ReadingList.Trello.Helpers
 {
-	public class BookFactory : IBookFactory
+	public class BookMapper : IBookFactory
 	{
 		private char m_bookTitleDelimitor => '-';
 		private char m_authorsDelimitor => ',';

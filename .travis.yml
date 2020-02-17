@@ -3,9 +3,8 @@ services:
   - docker
 script:
   - ./buildAndTestContainer.sh
-after_success:
- - if [ "$TRAVIS_BRANCH" == "master" ]; then
-   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-   docker tag andmos/readinglist:$(git rev-parse --short HEAD) andmos/readinglist:latest;
-   docker push andmos/readinglist:latest;
-   fi
+deploy:
+    skip_cleanup: true
+    on:
+        branch: master
+    script: docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; docker tag andmos/readinglist:$(git rev-parse --short HEAD) andmos/readinglist:latest; docker push andmos/readinglist:latest;

@@ -1,15 +1,20 @@
 ﻿using LightInject.Nancy;
+using LightInject;
 using Nancy;
 using System.Configuration;
 using System;
+using ReadingList.Logging;
+using ReadingList.Trello.Services;
+using ReadingList.Trello.Models;
 
-namespace ReadingList
+namespace ReadingList.Web
 {
 	public class BootStrapper : LightInjectNancyBootstrapper 
 	{
 		protected override IRootPathProvider RootPathProvider => new Nancy.Hosting.Self.FileSystemRootPathProvider();
-		protected override void ApplicationStartup(LightInject.IServiceContainer container, Nancy.Bootstrapper.IPipelines pipelines)
+		protected override void ApplicationStartup(IServiceContainer container, Nancy.Bootstrapper.IPipelines pipelines)
 		{
+			container.RegisterFrom<CompositionRoot>();
 			SetupWebHook(container.GetInstance<Lazy<IWebHookCaller>>(), container.GetInstance<ILogFactory>().GetLogger(GetType()));
 			base.ApplicationStartup(container, pipelines);
 		}

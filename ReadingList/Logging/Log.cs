@@ -1,5 +1,7 @@
 ﻿using System;
-namespace ReadingList
+using ReadingList.Logging;
+
+namespace ReadingList.Web.Logging
 {
 	public class Log : ILog
 	{

@@ -1,6 +1,4 @@
-using System.Configuration;
-
-namespace ReadingList
+namespace ReadingList.Trello.Models
 {
 	public class TrelloAuthModel : ITrelloAuthModel
 	{

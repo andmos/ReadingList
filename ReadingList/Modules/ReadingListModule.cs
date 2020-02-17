@@ -1,17 +1,20 @@
-﻿using System;
-using Nancy;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Nancy.Routing;
-using System.Collections.Generic;
+using Nancy;
+using ReadingList.Logging;
+using ReadingList.Logic.Services;
+using ReadingList.Modules;
+using ReadingList.Trello;
+using ReadingList.Trello.Models;
+using ReadingList.Trello.Services;
 
-namespace ReadingList
+namespace ReadingList.Web.Modules
 {
 	public class ReadingListModule : NancyModule
 	{
 		private readonly IReadingListService m_readingListService;
 		private readonly IReadingBoardService m_readingBoardService;
 		private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper; 
-		private readonly ILog m_logger;
 
 		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService, ILogFactory logger) : base("/api/")
 		{
@@ -19,39 +22,38 @@ namespace ReadingList
 			m_trelloAuthWrapper = trelloAuthWrapper;
 			m_readingListService = readingListService;
 			m_readingBoardService = readingBoardService;
-			m_logger = logger.GetLogger(GetType());
 			StaticConfiguration.EnableHeadRouting = true;
 			StaticConfiguration.DisableErrorTraces = false;
             
-			Get["/readingList"] = parameters =>
+			Get["/readingList", true] = async (x, ct) =>
 			{
 				string requestLabel = Request.Query["label"];
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
+				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
-			Get["/backlogList"] = parameters =>
+			Get["/backlogList", true] = async (x, ct) =>
 			{
 				string requestLabel = Request.Query["label"];
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
+				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
-			Get["/doneList"] = parameters =>
+			Get["/doneList", true] = async (x, ct) =>
 			{
 				string requestLabel = Request.Query["label"];
-				var readingList = m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
+				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
 				return Response.AsJson(readingList);
 			};
 
-			Get["/allLists"] = parameters =>
+			Get["/allLists", true] = async (x, ct) =>
 			{
                 string requestLabel = Request.Query["label"];
-                var allLists = m_readingBoardService.GetAllReadingLists(requestLabel);
+                var allLists = await m_readingBoardService.GetAllReadingLists(requestLabel);
 				return Response.AsJson(allLists);
 			};
 
-			Put["/backlogList"] = parameters =>
+			Post["/backlogList", true] = async (x, ct) =>
 			{
 				Response response;
 				string author = Request.Query["author"];
@@ -79,25 +81,18 @@ namespace ReadingList
 					return response;
 				}
 
-				var addBookToBacklog = m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
+				var addBookToBacklog = await m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
 				response = Response.AsJson(addBookToBacklog);
 
-				if (addBookToBacklog)
-				{
-					response.StatusCode = HttpStatusCode.Created;
-				}
-				else
-				{
-					response.StatusCode = HttpStatusCode.InternalServerError;
-				}
+				response.StatusCode = addBookToBacklog ? HttpStatusCode.Created : HttpStatusCode.InternalServerError;
 
 				return response;
 			};
 
-			Put["/doneList"] = parameters =>
+			Put["/doneList", true] = async (x, ct) =>
 			{
 				string bookTitle = Request.Query["title"];
-				Response response = new Response();
+				Response response;
 				if (string.IsNullOrWhiteSpace(bookTitle))
 				{
 					response = Response.AsJson("title is needed to move card from reading to done");
@@ -119,7 +114,7 @@ namespace ReadingList
 				}
 
 
-				var updateStatus = m_readingListService.UpdateDoneListFromReadingList(bookTitle);
+				var updateStatus = await m_readingListService.UpdateDoneListFromReadingList(bookTitle);
 
 				response = Response.AsJson(updateStatus);
 				response.StatusCode = HttpStatusCode.OK;
@@ -131,10 +126,10 @@ namespace ReadingList
 
 		private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(Request request)
 		{
-			string providedAPIKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
+			string providedApiKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
 			string providedUserToken = request.Headers["TrelloUserToken"].FirstOrDefault();
 
-			return new KeyValuePair<ITrelloAuthModel, bool>(new TrelloAuthModel(providedAPIKey, providedUserToken), !string.IsNullOrWhiteSpace(providedAPIKey) && !string.IsNullOrWhiteSpace(providedUserToken));
+			return new KeyValuePair<ITrelloAuthModel, bool>(new TrelloAuthModel(providedApiKey, providedUserToken), !string.IsNullOrWhiteSpace(providedApiKey) && !string.IsNullOrWhiteSpace(providedUserToken));
 		}
 
 		private bool CheckTokens(ITrelloAuthModel authTokens, ITrelloAuthorizationWrapper authWrapper) => authWrapper.IsValidKeys(authTokens);
