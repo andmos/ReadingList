@@ -1,5 +1,6 @@
 #! /bin/bash
 
+set -e
 
 docker build -t andmos/readinglist:$(git rev-parse --short HEAD) .
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gcr.io/gcp-runtimes/container-structure-test:v1.2.2 test --image andmos/readinglist:$(git rev-parse --short HEAD) --config /tests/imageTests/readinglist_container_tests_config.yaml
