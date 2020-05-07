@@ -13,9 +13,12 @@ namespace ReadingList.Trello.Helpers
 
 		public Book Create(string bookString, string listLabel)
 		{
+			
 			var bookArray = bookString.Split(m_bookTitleDelimitor);
 
-			return new Book(bookArray[0].Trim(), ExtractAuthors(bookArray[1]), listLabel);
+			return new Book(
+				string.Join(m_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length -1)).Trim(), 
+				ExtractAuthors(bookArray.Last()), listLabel);
 		}
 
 		public Book Create(string jsonString)
