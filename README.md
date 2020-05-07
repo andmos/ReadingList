@@ -1,5 +1,5 @@
 # ReadingList
-Simple service abstraction for my Trello-powered readinglist.
+ Simple service abstraction for my Trello-powered readinglist.
 
 Simple build with Docker: `docker run -v $(pwd):/workspace -w "/workspace" -it mono ./build.sh`
 
