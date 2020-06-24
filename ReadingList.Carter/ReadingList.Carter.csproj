@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>ReadingList.Carter</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Carter" Version="5.1.0" />
+    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.2.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReadingList.Logging\ReadingList.Logging.csproj" />
+    <ProjectReference Include="..\ReadingList.Logic\ReadingList.Logic.csproj" />
+    <ProjectReference Include="..\ReadingList.Trello\ReadingList.Trello.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logging\" />
+    <Folder Include="Trello\" />
+  </ItemGroup>
+</Project>
