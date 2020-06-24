@@ -46,6 +46,10 @@ readingListUrl="http://readinglist:1337"
     result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .label')"
     [ "$result" == '"fiction"' ]
 }
+@test "GET: doneList endpoint should return JSON containing the title 'Promise of the Witch-King' with label 'fiction' and '-' character in name" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Promise of the Witch-King: Forgotten Realms: The Sellswords, Book 2") | .label')"
+    [ "$result" == '"fiction"' ]
+}
 
 @test "GET: allLists endpoint should return JSON with 'done' element containing book entry" {
     result="$(curl -s $readingListUrl/api/allLists | jq '.readingLists.done | .[1]')"
