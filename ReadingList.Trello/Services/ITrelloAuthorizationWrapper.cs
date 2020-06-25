@@ -1,4 +1,4 @@
-using ReadingList.Trello;
+using ReadingList.Trello.Models;
 
 namespace ReadingList.Trello.Services
 {

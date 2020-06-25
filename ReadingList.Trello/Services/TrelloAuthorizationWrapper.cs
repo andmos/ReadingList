@@ -1,5 +1,6 @@
 ﻿using System;
 using Manatee.Trello;
+using ReadingList.Trello.Models;
 
 namespace ReadingList.Trello.Services
 {
@@ -25,5 +26,5 @@ namespace ReadingList.Trello.Services
 		{
 			return (authModel.TrelloAPIKey.Equals(_authModel.TrelloAPIKey) && authModel.TrelloUserToken.Equals(_authModel.TrelloUserToken));
 		}
-	}
+    }
 }

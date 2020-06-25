@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Http;
 using ReadingList.Logging;
 using ReadingList.Logic.Services;
-using ReadingList.Trello;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
 
@@ -18,7 +16,7 @@ namespace ReadingList.Carter.Modules
 		private readonly IReadingBoardService m_readingBoardService;
 		private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper; 
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService, ILogFactory logger) : base("/api/")
+		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService) : base("/api")
 		{
 			m_trelloAuthWrapper = trelloAuthWrapper;
 			m_readingListService = readingListService;
@@ -116,7 +114,9 @@ namespace ReadingList.Carter.Modules
 			string providedApiKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
 			string providedUserToken = request.Headers["TrelloUserToken"].FirstOrDefault();
 
-			return new KeyValuePair<ITrelloAuthModel, bool>(new TrelloAuthModel(providedApiKey, providedUserToken), !string.IsNullOrWhiteSpace(providedApiKey) && !string.IsNullOrWhiteSpace(providedUserToken));
+			return new KeyValuePair<ITrelloAuthModel, bool>(
+				new TrelloAuthSettings { TrelloAPIKey = providedApiKey, TrelloUserToken = providedUserToken },
+				!string.IsNullOrWhiteSpace(providedApiKey) && !string.IsNullOrWhiteSpace(providedUserToken));
 		}
 		private bool CheckTokens(ITrelloAuthModel authTokens, ITrelloAuthorizationWrapper authWrapper) => authWrapper.IsValidKeys(authTokens);
     }

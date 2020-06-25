@@ -3,7 +3,6 @@ using System.Configuration;
 using LightInject;
 using ReadingList.Logging;
 using ReadingList.Web.Logging;
-using ReadingList.Trello;
 using ReadingList.Trello.Models;
 using ReadingList.Web.Trello;
 
@@ -18,7 +17,7 @@ namespace ReadingList.Web
 			serviceRegistry.RegisterConstructorDependency(
 			(factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
 
-			serviceRegistry.Register<ITrelloAuthModel>(factory => new TrelloAuthModel(ConfigurationManager.AppSettings["TrelloAPIKey"], ConfigurationManager.AppSettings["TrelloUserToken"]), new PerContainerLifetime());
+			serviceRegistry.Register<ITrelloAuthModel>(factory => new TrelloAuthSettings { TrelloAPIKey = ConfigurationManager.AppSettings["TrelloAPIKey"], TrelloUserToken = ConfigurationManager.AppSettings["TrelloUserToken"] }, new PerContainerLifetime());
 
 			serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 

@@ -6,6 +6,7 @@ using ReadingList.Carter.Logging;
 using ReadingList.Trello;
 using ReadingList.Trello.Models;
 using ReadingList.Carter.Trello;
+using Microsoft.Extensions.Configuration;
 
 namespace ReadingList.Carter
 {
@@ -13,12 +14,11 @@ namespace ReadingList.Carter
 	{
 		public void Compose(IServiceRegistry serviceRegistry)
 		{
-		//	serviceRegistry.Register<ILogFactory, Log4NetLogFactory>(new PerContainerLifetime());
+			
+			serviceRegistry.Register<ILogFactory, ConsoleLoggerFactory>(new PerContainerLifetime());
 			serviceRegistry.Register<Type, ILog>((factory, type) => factory.GetInstance<ILogFactory>().GetLogger(type));
 			serviceRegistry.RegisterConstructorDependency(
 			(factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
-
-			serviceRegistry.Register<ITrelloAuthModel>(factory => new TrelloAuthModel(ConfigurationManager.AppSettings["TrelloAPIKey"], ConfigurationManager.AppSettings["TrelloUserToken"]), new PerContainerLifetime());
 
 			serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 

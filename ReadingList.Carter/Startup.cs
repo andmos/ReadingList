@@ -3,6 +3,9 @@ using LightInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using ReadingList.Trello.Models;
+
 namespace ReadingList.Carter
 {
     public class Startup
@@ -18,6 +21,8 @@ namespace ReadingList.Carter
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
+            services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
             services.AddCarter();
             
         }
