@@ -1,35 +1,21 @@
 schemaVersion: "2.0.0"
 
 fileExistenceTests:
-- name: 'confd'
-  path: '/usr/local/bin/confd'
+- name: 'ReadingList.Carter.exe'
+  path: '/app/ReadingList.Carter.dll'
   shouldExist: true
-- name: 'ReadingList.exe'
-  path: '/ReadingList/bin/Release/ReadingList.exe'
-  shouldExist: true
-- name: 'ReadingList.exe.config'
-  path: '/ReadingList/bin/Release/ReadingList.exe.config'
-  shouldExist: true
-- name: 'ReadingList.exe.config.template'
-  path: '/etc/confd/templates/ReadingList.exe.config.template'
-  shouldExist: true
-- name: 'ReadingList.exe.config.toml'
-  path: '/etc/confd/conf.d/ReadingList.exe.config.toml'
+- name: 'appsettings.json'
+  path: '/app/appsettings.json'
   shouldExist: true
 
 fileContentTests:
-- name: 'ReadingList.exe.config.template, APIKey'
-  path: '/etc/confd/templates/ReadingList.exe.config.template'
-  expectedContents: ['getenv "APIKey"']
+- name: 'appsettings.json, TrelloAPIKey'
+  path: '/app/appsettings.json'
+  expectedContents: ['"TrelloAPIKey"']
 
-- name: 'ReadingList.exe.config.template, UserToken'
-  path: '/etc/confd/templates/ReadingList.exe.config.template'
-  expectedContents: ['getenv "UserToken"']
-
-- name: 'ReadingList.exe.config.template, HostURL'
-  path: '/etc/confd/templates/ReadingList.exe.config.template'
-  expectedContents: ['getenv "HostURL"']
+- name: 'ReadingList.Carter.csproj, TrelloUserToken'
+  path: '/app/appsettings.json'
+  expectedContents: ['"TrelloUserToken"']
 
 metadataTest:
-    entrypoint: ["./docker-entrypoint.sh"]
     exposedPorts: ["1337"]

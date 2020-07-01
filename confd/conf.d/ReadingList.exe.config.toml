@@ -1,3 +1,0 @@
-[template]
-src = "ReadingList.exe.config.template"
-dest = "/ReadingList/bin/Release/ReadingList.exe.config"
