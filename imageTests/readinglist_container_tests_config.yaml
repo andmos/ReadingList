@@ -17,5 +17,11 @@ fileContentTests:
   path: '/app/appsettings.json'
   expectedContents: ['"TrelloUserToken"']
 
+commandTests: 
+- name: 'dotnet runtime version'
+  command: 'dotnet'
+  args: ['--list-runtimes']
+  expectedOutput: ['3.1.*']
+
 metadataTest:
     exposedPorts: ["1337"]
