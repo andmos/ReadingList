@@ -16,6 +16,7 @@ RUN dotnet publish ReadingList.Carter.csproj -c Release -o ../publish
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine3.11 AS runtime
 ENV PORT 1337
+ENV ASPNETCORE_URLS=http://+:$PORT
 
 WORKDIR /app
 
