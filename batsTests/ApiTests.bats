@@ -9,7 +9,7 @@ readingListUrl="http://readinglist:1337"
 
 @test "GET: ping endpoint should return pong" {
     result="$(curl -s $readingListUrl/api/ping)"
-    [ "$result" = "pong" ]
+    [ "$result" = '"pong"' ]
 }
 
 @test "GET: backlogList endpoint should return JSON element with title attribute" {
@@ -52,17 +52,17 @@ readingListUrl="http://readinglist:1337"
 }
 
 @test "GET: allLists endpoint should return JSON with 'done' element containing book entry" {
-    result="$(curl -s $readingListUrl/api/allLists | jq '.readingLists.done | .[1]')"
+    result="$(curl -s $readingListUrl/api/allLists | jq '.readingLists.Done | .[1]')"
     [ "$result" != "null" ]
 }
 
 @test "GET: allList endpoint should only return JSON with 'fact' books when 'fact' label is passed" {
-    result="$(curl -s $readingListUrl/api/allLists?label=fact | jq '.readingLists.done[1].label')"
+    result="$(curl -s $readingListUrl/api/allLists?label=fact | jq '.readingLists.Done[1].label')"
     [ "$result" == '"fact"' ]
 }
 
 @test "GET: allList endpoint should only return JSON with 'fiction' books when 'fiction' label is passed" {
-    result="$(curl -s $readingListUrl/api/allLists?label=fiction | jq '.readingLists.done[1].label')"
+    result="$(curl -s $readingListUrl/api/allLists?label=fiction | jq '.readingLists.Done[1].label')"
     [ "$result" == '"fiction"' ]
 }
 

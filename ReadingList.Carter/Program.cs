@@ -22,6 +22,7 @@ namespace ReadingList.Carter
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
+                webBuilder.UseKestrel();
                 webBuilder.UseStartup<Startup>();
             });
     }

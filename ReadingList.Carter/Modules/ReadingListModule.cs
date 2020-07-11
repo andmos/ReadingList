@@ -3,7 +3,6 @@ using System.Linq;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Http;
-using ReadingList.Logging;
 using ReadingList.Logic.Services;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
