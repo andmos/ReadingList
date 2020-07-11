@@ -10,7 +10,7 @@ namespace ReadingList.Carter
 {
     public class Startup
     {
-
+        readonly string AllowSpecificOrigins = "_allowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,7 +24,17 @@ namespace ReadingList.Carter
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
             services.AddCarter();
-            
+
+            services.AddCors(options =>
+            {
+            options.AddPolicy(AllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("*")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
         
         public void ConfigureContainer(IServiceContainer container)
@@ -35,7 +45,7 @@ namespace ReadingList.Carter
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
-
+            app.UseCors(AllowSpecificOrigins);
             app.UseEndpoints(builder => builder.MapCarter());
         }
     }
