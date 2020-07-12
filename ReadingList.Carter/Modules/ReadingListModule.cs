@@ -22,28 +22,28 @@ namespace ReadingList.Carter.Modules
 			m_readingBoardService = readingBoardService;
 
             
-			Get("/readingList", async (req, res) =>
+			Get<GetReadingList>("/readingList", async (req, res) =>
 			{
 				string requestLabel = req.Query["label"];
 				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
 				await res.AsJson(readingList);
 			});
 
-			Get("/backlogList",async (req, res) =>
+			Get<GetBacklogList>("/backlogList",async (req, res) =>
 			{
 				string requestLabel = req.Query["label"];
 				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
 				await res.AsJson(readingList);
 			});
 
-			Get("/doneList", async (req, res) =>
+			Get<GetDoneList>("/doneList", async (req, res) =>
 			{
 				string requestLabel = req.Query["label"];
 				var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
 				await res.AsJson(readingList);
 			});
 
-			Get("/allLists", async (req, res) =>
+			Get<GetReadingList>("/allLists", async (req, res) =>
 			{
                 string requestLabel = req.Query["label"];
                 var allLists = await m_readingBoardService.GetAllReadingLists(requestLabel);
