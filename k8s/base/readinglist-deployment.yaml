@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readinglist
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: readinglist
+  template:
+    metadata:
+      labels:
+        app: readinglist
+    spec:
+      containers:
+      - image: andmos/readinglist:carter
+        name: readinglist
+        ports:
+        - containerPort: 1337

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readinglist
+spec:
+  template:
+    spec:
+      containers:
+      - name: app # (1)
+        env:
+        - name: "TrelloAuthSettings__TrelloAPIKey"
+          valueFrom:
+            secretKeyRef:
+              name: readinglistSecrets
+              key: TrelloAPIKey
+        - name: "TrelloAuthSettings__TrelloUserToken"
+          valueFrom:
+            secretKeyRef:
+              name: readinglistSecrets
+              key: TrelloUserToken

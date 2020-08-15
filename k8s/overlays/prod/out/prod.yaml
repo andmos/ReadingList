@@ -1,0 +1,58 @@
+apiVersion: v1
+data:
+  TrelloAPIKey: N2E5NmQ4MjZkYWU0NTI0Y2M5NTgwYTA0MDM2OGQ0YzI=
+  TrelloUserToken: ZGY4ZDAxZTRhZGRlODdiNDYwYzc0YTNmYzQ3ZjlhZTUxY2EzNDE1NTgwZmRhZmI2YzNjY2Y2NDEyZjlkZWIxMQ==
+kind: Secret
+metadata:
+  name: readinglistSecrets-6dg2chcdg4
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: readinglist
+spec:
+  ports:
+  - port: 80
+    targetPort: 1337
+  selector:
+    app: readinglist
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readinglist
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: readinglist
+  template:
+    metadata:
+      labels:
+        app: readinglist
+    spec:
+      containers:
+      - image: andmos/readinglist:carter
+        name: readinglist
+        ports:
+        - containerPort: 1337
+      - env:
+        - name: TrelloAuthSettings__TrelloAPIKey
+          valueFrom:
+            secretKeyRef:
+              key: TrelloAPIKey
+              name: readinglistSecrets-6dg2chcdg4
+        - name: TrelloAuthSettings__TrelloUserToken
+          valueFrom:
+            secretKeyRef:
+              key: TrelloUserToken
+              name: readinglistSecrets-6dg2chcdg4
+        name: app
