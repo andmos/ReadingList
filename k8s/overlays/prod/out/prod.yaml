@@ -23,7 +23,7 @@ kind: Deployment
 metadata:
   name: readinglist
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: readinglist
