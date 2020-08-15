@@ -4,7 +4,7 @@ data:
   TrelloUserToken: ZGY4ZDAxZTRhZGRlODdiNDYwYzc0YTNmYzQ3ZjlhZTUxY2EzNDE1NTgwZmRhZmI2YzNjY2Y2NDEyZjlkZWIxMQ==
 kind: Secret
 metadata:
-  name: readinglistSecrets-6dg2chcdg4
+  name: readinglistsecrets-m7d28tg2hh
 type: Opaque
 ---
 apiVersion: v1
@@ -47,10 +47,10 @@ spec:
           valueFrom:
             secretKeyRef:
               key: TrelloAPIKey
-              name: readinglistSecrets-6dg2chcdg4
+              name: readinglistsecrets-m7d28tg2hh
         - name: TrelloAuthSettings__TrelloUserToken
           valueFrom:
             secretKeyRef:
               key: TrelloUserToken
-              name: readinglistSecrets-6dg2chcdg4
+              name: readinglistsecrets-m7d28tg2hh
         name: app
