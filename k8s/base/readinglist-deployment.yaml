@@ -12,7 +12,9 @@ spec:
         app: readinglist
     spec:
       containers:
-      - name: readinglist
+      - name: app
         image: andmos/readinglist:carter
         ports:
         - containerPort: 1337
+          name: http
+          protocol: TCP

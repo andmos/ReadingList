@@ -8,13 +8,13 @@ spec:
       containers:
       - name: app # (1)
         env:
-        - name: "TrelloAuthSettings__TrelloAPIKey"
-          valueFrom:
-            secretKeyRef:
-              name: readinglistsecrets
-              key: TrelloAPIKey
-        - name: "TrelloAuthSettings__TrelloUserToken"
-          valueFrom:
-            secretKeyRef:
-              name: readinglistsecrets
-              key: TrelloUserToken
+          - name: "TrelloAuthSettings__TrelloAPIKey"
+            valueFrom:
+              secretKeyRef:
+                name: readinglistsecrets
+                key: TrelloAPIKey
+          - name: "TrelloAuthSettings__TrelloUserToken"
+            valueFrom:
+              secretKeyRef:
+                name: readinglistsecrets
+                key: TrelloUserToken

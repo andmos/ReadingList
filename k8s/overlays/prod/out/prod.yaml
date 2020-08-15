@@ -38,10 +38,6 @@ spec:
         app: readinglist
     spec:
       containers:
-      - name: readinglist
-        image: andmos/readinglist:carter
-        ports:
-        - containerPort: 1337
       - env:
         - name: TrelloAuthSettings__TrelloAPIKey
           valueFrom:
@@ -53,4 +49,9 @@ spec:
             secretKeyRef:
               key: TrelloUserToken
               name: readinglistsecrets-m7d28tg2hh
+        image: andmos/readinglist:carter
         name: app
+        ports:
+        - containerPort: 1337
+          name: http
+          protocol: TCP
