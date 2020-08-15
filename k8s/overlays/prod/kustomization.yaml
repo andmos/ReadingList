@@ -8,5 +8,5 @@ resources:
 secretGenerator:
 - envs:
   - secrets.env
-  name: readinglistSecrets
+  name: readinglistsecrets
   type: Opaque

@@ -11,10 +11,10 @@ spec:
         - name: "TrelloAuthSettings__TrelloAPIKey"
           valueFrom:
             secretKeyRef:
-              name: readinglistSecrets
+              name: readinglistsecrets
               key: TrelloAPIKey
         - name: "TrelloAuthSettings__TrelloUserToken"
           valueFrom:
             secretKeyRef:
-              name: readinglistSecrets
+              name: readinglistsecrets
               key: TrelloUserToken
