@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: readinglist
+  labels:
+    app: readinglist
+spec:
+  host: readinglist.apps.datest.no
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: readinglist
