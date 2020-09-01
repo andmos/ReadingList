@@ -59,7 +59,8 @@ namespace ReadingList.Carter.Modules
 				if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle) || string.IsNullOrWhiteSpace(bookLabel))
 				{
 					res.StatusCode = 422;
-					await res.AsJson("author, title and label is required."); 
+					await res.AsJson("author, title and label is required.");
+					return;
 				}
 
 				var authTokens = CheckHeaderForMandatoryTokens(req);
@@ -67,11 +68,13 @@ namespace ReadingList.Carter.Modules
 				{
 					res.StatusCode = 403;
 					await res.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
+					return;
 				}
 				if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
 				{
 					res.StatusCode = 403;
 					await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
+					return;
 				}
 
 				var addBookToBacklog = await m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
