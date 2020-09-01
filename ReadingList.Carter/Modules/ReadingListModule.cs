@@ -89,6 +89,7 @@ namespace ReadingList.Carter.Modules
 				{
 					res.StatusCode = 422;
 					await res.AsJson("title is needed to move card from reading to done");
+					return;
 				}
 
 				var authTokens = CheckHeaderForMandatoryTokens(req);
@@ -96,11 +97,13 @@ namespace ReadingList.Carter.Modules
 				{
 					res.StatusCode = 403;
 					await res.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
+					return;
 				}
 				if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
 				{
 					res.StatusCode = 403;
 					await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
+					return;
 				}
 
 
