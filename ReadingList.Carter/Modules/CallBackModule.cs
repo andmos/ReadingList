@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using ReadingList.Logging;
 using ReadingList.Trello.Helpers;

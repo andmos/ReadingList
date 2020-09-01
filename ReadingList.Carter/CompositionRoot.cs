@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using LightInject;
 using ReadingList.Logging;
 using ReadingList.Carter.Logging;
-using ReadingList.Trello;
 using ReadingList.Trello.Models;
 using ReadingList.Carter.Trello;
-using Microsoft.Extensions.Configuration;
 
 namespace ReadingList.Carter
 {

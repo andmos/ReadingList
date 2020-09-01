@@ -1,5 +1,4 @@
-﻿using System;
-using Carter.OpenApi;
+﻿using Carter.OpenApi;
 using ReadingList.Logic.Models;
 
 namespace ReadingList.Carter.Modules
