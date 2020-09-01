@@ -23,8 +23,9 @@ namespace ReadingList.Web.Modules
 
             Head("/callBack", async (req, res) =>
             {
-                await res.AsJson("Head received");
                 res.StatusCode = 200;
+                await res.AsJson("Head received");
+                
             });
 
             Post("/callBack", async (req, res) =>
@@ -40,9 +41,9 @@ namespace ReadingList.Web.Modules
                 m_readingListCache.InvalidateCache();
                 m_logger.Info("Invalidating cache");
 
-
-                await res.AsJson("Callback received");
                 res.StatusCode = 200;
+                await res.AsJson("Callback received");
+                
             });
         }
 

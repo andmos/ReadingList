@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Logic", "ReadingList.Logic\ReadingList.Logic.csproj", "{9C031A59-1902-4BB5-A5E4-992D9836D791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Carter", "ReadingList.Carter\ReadingList.Carter.csproj", "{375569FA-19F8-4330-A34E-AF738B291C64}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Trello", "ReadingList.Trello\ReadingList.Trello.csproj", "{E342584D-F19D-4DCA-8303-F2FB1B08CBEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Logging", "ReadingList.Logging\ReadingList.Logging.csproj", "{CDF7D64A-09E2-4493-9AC6-7E41D80AFD1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Web", "ReadingList\ReadingList.Web.csproj", "{5ACD0CAB-79C9-4424-8C95-877CE833CCAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Carter", "ReadingList.Carter\ReadingList.Carter.csproj", "{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		{9C031A59-1902-4BB5-A5E4-992D9836D791}.Debug|x86.Build.0 = Debug|Any CPU
 		{9C031A59-1902-4BB5-A5E4-992D9836D791}.Release|x86.ActiveCfg = Release|Any CPU
 		{9C031A59-1902-4BB5-A5E4-992D9836D791}.Release|x86.Build.0 = Release|Any CPU
-		{375569FA-19F8-4330-A34E-AF738B291C64}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{375569FA-19F8-4330-A34E-AF738B291C64}.Debug|x86.Build.0 = Debug|Any CPU
-		{375569FA-19F8-4330-A34E-AF738B291C64}.Release|x86.ActiveCfg = Release|Any CPU
-		{375569FA-19F8-4330-A34E-AF738B291C64}.Release|x86.Build.0 = Release|Any CPU
 		{E342584D-F19D-4DCA-8303-F2FB1B08CBEE}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{E342584D-F19D-4DCA-8303-F2FB1B08CBEE}.Debug|x86.Build.0 = Debug|Any CPU
 		{E342584D-F19D-4DCA-8303-F2FB1B08CBEE}.Release|x86.ActiveCfg = Release|Any CPU
@@ -33,9 +27,9 @@ Global
 		{CDF7D64A-09E2-4493-9AC6-7E41D80AFD1D}.Debug|x86.Build.0 = Debug|Any CPU
 		{CDF7D64A-09E2-4493-9AC6-7E41D80AFD1D}.Release|x86.ActiveCfg = Release|Any CPU
 		{CDF7D64A-09E2-4493-9AC6-7E41D80AFD1D}.Release|x86.Build.0 = Release|Any CPU
-		{5ACD0CAB-79C9-4424-8C95-877CE833CCAB}.Debug|x86.ActiveCfg = Debug|x86
-		{5ACD0CAB-79C9-4424-8C95-877CE833CCAB}.Debug|x86.Build.0 = Debug|x86
-		{5ACD0CAB-79C9-4424-8C95-877CE833CCAB}.Release|x86.ActiveCfg = Release|x86
-		{5ACD0CAB-79C9-4424-8C95-877CE833CCAB}.Release|x86.Build.0 = Release|x86
+		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
