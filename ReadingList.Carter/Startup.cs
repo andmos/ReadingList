@@ -1,6 +1,7 @@
 using Carter;
 using LightInject;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -24,17 +25,17 @@ namespace ReadingList.Carter
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
             services.AddCarter();
-
+                
             services.AddCors(options =>
             {
-            options.AddPolicy(AllowSpecificOrigins,
-                builder =>
-                {
-                    builder.WithOrigins("*")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
+                options.AddPolicy(AllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("*")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
                 });
-            });
         }
         
         public void ConfigureContainer(IServiceContainer container)
@@ -46,6 +47,10 @@ namespace ReadingList.Carter
         {
             app.UseRouting();
             app.UseCors(AllowSpecificOrigins);
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             app.UseEndpoints(builder => builder.MapCarter());
         }
     }
