@@ -11,3 +11,4 @@ docker run --link readinglist:readlinglist --rm -e APIKey=$TrelloAPIKey -e UserT
 
 [![Build Status](https://travis-ci.com/andmos/ReadingList.svg?branch=master)](https://travis-ci.com/andmos/ReadingList)
 [![Docker Project](https://img.shields.io/docker/pulls/andmos/readinglist.svg)](https://hub.docker.com/r/andmos/readinglist/)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=andmos/ReadingList)](https://dependabot.com)
