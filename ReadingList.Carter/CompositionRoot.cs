@@ -12,7 +12,7 @@ namespace ReadingList.Carter
 		public void Compose(IServiceRegistry serviceRegistry)
 		{
 			
-			serviceRegistry.Register<ILogFactory, ConsoleLoggerFactory>(new PerContainerLifetime());
+			serviceRegistry.Register<ILogFactory, SerilogFactory>(new PerContainerLifetime());
 			serviceRegistry.Register<Type, ILog>((factory, type) => factory.GetInstance<ILogFactory>().GetLogger(type));
 			serviceRegistry.RegisterConstructorDependency(
 			(factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
