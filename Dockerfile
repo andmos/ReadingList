@@ -1,26 +1,27 @@
-FROM mono:latest
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS builder
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
-ENV confd_version 0.14.0
-ENV PORT 1337
 
-COPY docker-entrypoint.sh docker-entrypoint.sh
+WORKDIR /app
+
 COPY ReadingList.sln ReadingList.sln
-COPY ReadingList ReadingList
 COPY ReadingList.Logic ReadingList.Logic
 COPY ReadingList.Trello ReadingList.Trello
 COPY ReadingList.Logging ReadingList.Logging
+COPY ReadingList.Carter ReadingList.Carter
 
-RUN nuget restore ReadingList.sln
-RUN msbuild /property:Configuration=Release ReadingList.sln
+WORKDIR /app/ReadingList.Carter
 
-RUN curl -L https://github.com/kelseyhightower/confd/releases/download/v${confd_version}/confd-${confd_version}-linux-amd64 -o /usr/local/bin/confd \
-    && chmod +x /usr/local/bin/confd \
-    && apt-get remove \
-        -y curl nuget fsharp mono-vbnc \
-    && rm -rf /var/lib/apt/lists/*
+RUN dotnet restore
+RUN dotnet publish ReadingList.Carter.csproj -c Release -o ../publish
 
-COPY confd /etc/confd
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine3.11 AS runtime
+ENV PORT 1337
+ENV ASPNETCORE_URLS=http://+:$PORT
+
+WORKDIR /app
+
+COPY --from=builder /app/publish .
 
 EXPOSE $PORT
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["dotnet", "ReadingList.Carter.dll"]

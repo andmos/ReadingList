@@ -1,4 +1,4 @@
 #!/bin/bash
 
-nuget restore ReadingList.sln
-msbuild /property:Configuration=Release ReadingList.sln
+dotnet restore ReadingList.sln
+dotnet build --configuration Release ReadingList.sln
