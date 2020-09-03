@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: andmos/readinglist:carter
+        image: andmos/readinglist
         ports:
         - containerPort: 1337
           name: http
