@@ -21,7 +21,7 @@ commandTests:
 - name: 'dotnet runtime version'
   command: 'dotnet'
   args: ['--list-runtimes']
-  expectedOutput: ['3.1.*']
+  expectedOutput: ['5.0.*']
 
 metadataTest:
     exposedPorts: ["1337"]
