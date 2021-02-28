@@ -14,7 +14,10 @@ namespace ReadingList.Web.Modules
         private readonly ITrelloWebHookSources m_webHookSource;
         private readonly ILog m_logger;
 
-        public CallbackModule(IReadingListCache readingListCache, ILogFactory logger, ITrelloWebHookSources webHookSource) : base("/api")
+        public CallbackModule(
+            IReadingListCache readingListCache, 
+            ILogFactory logger, 
+            ITrelloWebHookSources webHookSource) : base("/api")
         {
             m_logger = logger.GetLogger(GetType());
             m_readingListCache = readingListCache;

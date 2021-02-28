@@ -12,7 +12,10 @@ namespace ReadingList.Trello.Services
 		private readonly IReadingListService m_readingListService;
 		private readonly IBoard m_readingListBoard; 
 
-		public ReadingBoardService(ITrelloFactory factory, IReadingListService readingListService, string boardId)
+		public ReadingBoardService(
+			ITrelloFactory factory, 
+			IReadingListService readingListService, 
+			string boardId)
 		{
 			m_readingListService = readingListService;
 			m_readingListBoard = factory.Board(boardId);

@@ -15,7 +15,10 @@ namespace ReadingList.Carter.Modules
 		private readonly IReadingBoardService m_readingBoardService;
 		private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper; 
 
-		public ReadingListModule(ITrelloAuthorizationWrapper trelloAuthWrapper, IReadingListService readingListService, IReadingBoardService readingBoardService) : base("/api")
+		public ReadingListModule(
+			ITrelloAuthorizationWrapper trelloAuthWrapper, 
+			IReadingListService readingListService, 
+			IReadingBoardService readingBoardService) : base("/api")
 		{
 			m_trelloAuthWrapper = trelloAuthWrapper;
 			m_readingListService = readingListService;
@@ -110,8 +113,7 @@ namespace ReadingList.Carter.Modules
 				var updateStatus = await m_readingListService.UpdateDoneListFromReadingList(bookTitle);
 				
 				await res.AsJson(updateStatus);
-			});
-            
+			});      
 		}
 
 		private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(HttpRequest request)
