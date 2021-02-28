@@ -17,7 +17,11 @@ namespace ReadingList.Trello.Services
         private readonly IBookFactory m_bookFactory;
         private readonly ILog m_logger;
         
-        public ReadingListService(ITrelloFactory factory, string boardId, IBookFactory bookFactory, ILogFactory logFactory)
+        public ReadingListService(
+            ITrelloFactory factory, 
+            string boardId, 
+            IBookFactory bookFactory, 
+            ILogFactory logFactory)
         {
             m_board = factory.Board(boardId);
 

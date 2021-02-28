@@ -1,5 +1,4 @@
-﻿using System;
-using LightInject;
+﻿using LightInject;
 using Manatee.Trello;
 using ReadingList.Logging;
 using ReadingList.Logic.Services;

@@ -17,7 +17,10 @@ namespace ReadingList.Trello.Services
 		private readonly ILog m_logger;
 		private readonly IReadingListCache m_readingListCache;
 
-		public CachedReadingListService(IReadingListService readingListService, IReadingListCache readingListCache, ILogFactory logFactory)
+		public CachedReadingListService(
+			IReadingListService readingListService, 
+			IReadingListCache readingListCache, 
+			ILogFactory logFactory)
 		{
 			m_readingListService = readingListService;
 			m_logger = logFactory.GetLogger(this.GetType());
