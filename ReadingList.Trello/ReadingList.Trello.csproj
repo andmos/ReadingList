@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Manatee.Trello" Version="4.4.0" />
     <PackageReference Include="Manatee.Trello.WebApi" Version="2.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="LightInject" Version="6.4.0" />
   </ItemGroup>
