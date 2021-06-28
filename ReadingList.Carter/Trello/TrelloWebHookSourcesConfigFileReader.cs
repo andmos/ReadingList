@@ -7,14 +7,14 @@ namespace ReadingList.Carter.Trello
     public class TrelloWebHookSourcesConfigFileReader : ITrelloWebHookSources
     {
         private readonly char SourcesDelimitorCharacter = ',';
-        private readonly IConfiguration m_configuration;
+        private readonly IConfiguration _configuration;
 
         public TrelloWebHookSourcesConfigFileReader(IConfiguration configuration)
         {
-            m_configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IEnumerable<string> ValidWebhookSources() => m_configuration["WebhookSources"].Split(SourcesDelimitorCharacter);
+        public IEnumerable<string> ValidWebhookSources() => _configuration["WebhookSources"].Split(SourcesDelimitorCharacter);
 
     }
 }

@@ -13,37 +13,37 @@ namespace ReadingList.Trello.Services
 
         // abstraher ut selve cache, med ICacheSomething -> GetOrAdd og Invalidate
 
-        private readonly IReadingListService m_readingListService;
-        private readonly ILog m_logger;
-        private readonly IReadingListCache m_readingListCache;
+        private readonly IReadingListService _readingListService;
+        private readonly ILog _logger;
+        private readonly IReadingListCache _readingListCache;
 
         public CachedReadingListService(
             IReadingListService readingListService,
             IReadingListCache readingListCache,
             ILogFactory logFactory)
         {
-            m_readingListService = readingListService;
-            m_logger = logFactory.GetLogger(this.GetType());
-            m_readingListCache = readingListCache;
+            _readingListService = readingListService;
+            _logger = logFactory.GetLogger(this.GetType());
+            _readingListCache = readingListCache;
         }
 
         public async Task<bool> AddBookToBacklog(string book, string authors, string label)
         {
             InvalidateCache();
-            return await m_readingListService.AddBookToBacklog(book, authors, label);
+            return await _readingListService.AddBookToBacklog(book, authors, label);
         }
 
         public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
         {
             IEnumerable<Book> books;
-            if (m_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
+            if (_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
             {
                 return !string.IsNullOrEmpty(label) ? books.Where(b => b.Label.ToLower().Equals(label.ToLower())) : books;
             }
 
-            m_logger.Info($"Cache miss for {listName}, {label}");
-            books = await m_readingListService.GetReadingList(listName, label);
-            m_readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), books);
+            _logger.Info($"Cache miss for {listName}, {label}");
+            books = await _readingListService.GetReadingList(listName, label);
+            _readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), books);
             return books;
 
         }
@@ -51,14 +51,14 @@ namespace ReadingList.Trello.Services
         public async Task<bool> UpdateDoneListFromReadingList(string book)
         {
             InvalidateCache();
-            return await m_readingListService.UpdateDoneListFromReadingList(book);
+            return await _readingListService.UpdateDoneListFromReadingList(book);
 
         }
 
         public void InvalidateCache()
         {
-            m_logger.Info("Invalidating cache");
-            m_readingListCache.InvalidateCache();
+            _logger.Info("Invalidating cache");
+            _readingListCache.InvalidateCache();
         }
     }
 }

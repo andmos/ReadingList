@@ -10,18 +10,18 @@ namespace ReadingList.Web.Modules
 {
     public class CallbackModule : CarterModule
     {
-        private readonly IReadingListCache m_readingListCache;
-        private readonly ITrelloWebHookSources m_webHookSource;
-        private readonly ILog m_logger;
+        private readonly IReadingListCache _readingListCache;
+        private readonly ITrelloWebHookSources _webHookSource;
+        private readonly ILog _logger;
 
         public CallbackModule(
             IReadingListCache readingListCache,
             ILogFactory logger,
             ITrelloWebHookSources webHookSource) : base("/api")
         {
-            m_logger = logger.GetLogger(GetType());
-            m_readingListCache = readingListCache;
-            m_webHookSource = webHookSource;
+            _logger = logger.GetLogger(GetType());
+            _readingListCache = readingListCache;
+            _webHookSource = webHookSource;
 
             Head("/callBack", async (req, res) =>
             {
@@ -34,14 +34,14 @@ namespace ReadingList.Web.Modules
             {
 
                 var callerIp = req.HttpContext.Connection.RemoteIpAddress;
-                if (m_webHookSource.ValidWebhookSources().ToList().Any(source => source.Equals(callerIp)))
+                if (_webHookSource.ValidWebhookSources().ToList().Any(source => source.Equals(callerIp)))
                 {
-                    m_logger.Info($"Got Callback from valid source: {callerIp}");
+                    _logger.Info($"Got Callback from valid source: {callerIp}");
                 }
 
 
-                m_readingListCache.InvalidateCache();
-                m_logger.Info("Invalidating cache");
+                _readingListCache.InvalidateCache();
+                _logger.Info("Invalidating cache");
 
                 res.StatusCode = 200;
                 await res.AsJson("Callback received");
