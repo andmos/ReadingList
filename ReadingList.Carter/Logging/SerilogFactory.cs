@@ -14,7 +14,7 @@ namespace ReadingList.Carter.Logging
                 .Enrich.FromLogContext()
                 .MinimumLevel.Information()
                 .WriteTo.Console(
-                    outputTemplate : "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Properties} {Message:lj}{NewLine}{Exception}{NewLine}")
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Properties} {Message:lj}{NewLine}{Exception}{NewLine}")
                 .CreateLogger();
         }
 

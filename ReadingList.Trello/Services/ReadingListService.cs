@@ -16,11 +16,11 @@ namespace ReadingList.Trello.Services
         private readonly IBoard m_board;
         private readonly IBookFactory m_bookFactory;
         private readonly ILog m_logger;
-        
+
         public ReadingListService(
-            ITrelloFactory factory, 
-            string boardId, 
-            IBookFactory bookFactory, 
+            ITrelloFactory factory,
+            string boardId,
+            IBookFactory bookFactory,
             ILogFactory logFactory)
         {
             m_board = factory.Board(boardId);
@@ -34,7 +34,7 @@ namespace ReadingList.Trello.Services
             await m_board.Lists.Refresh();
 
             var cardList = string.IsNullOrEmpty(label) ?
-                m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards : 
+                m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards :
                 m_board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 
             return cardList?.Select(card => m_bookFactory.Create(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? TrelloBoardConstans.UnspecifiedLabel)).ToList();

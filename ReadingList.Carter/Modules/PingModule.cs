@@ -8,9 +8,9 @@ namespace ReadingList.Web.Modules
         public PingModule() : base("/api")
         {
             Get("/ping", async (req, res) =>
-			{
-				await res.AsJson("pong");
-			});
+            {
+                await res.AsJson("pong");
+            });
         }
     }
 }
