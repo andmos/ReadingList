@@ -8,16 +8,16 @@ namespace ReadingList.Trello.Helpers
 {
     public class BookMapper : IBookFactory
     {
-        private char m_bookTitleDelimitor => '-';
-        private char m_authorsDelimitor => ',';
+        private char _bookTitleDelimitor => '-';
+        private char _authorsDelimitor => ',';
 
         public Book Create(string bookString, string listLabel)
         {
 
-            var bookArray = bookString.Split(m_bookTitleDelimitor);
+            var bookArray = bookString.Split(_bookTitleDelimitor);
 
             return new Book(
-                string.Join(m_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim(),
+                string.Join(_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim(),
                 ExtractAuthors(bookArray.Last()), listLabel);
         }
 
@@ -35,7 +35,7 @@ namespace ReadingList.Trello.Helpers
 
         private IEnumerable<string> ExtractAuthors(string authors)
         {
-            return authors.Split(m_authorsDelimitor).Select(author => author.Trim()).ToList();
+            return authors.Split(_authorsDelimitor).Select(author => author.Trim()).ToList();
 
         }
     }

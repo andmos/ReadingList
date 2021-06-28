@@ -11,45 +11,45 @@ namespace ReadingList.Carter.Modules
 {
     public class ReadingListModule : CarterModule
     {
-        private readonly IReadingListService m_readingListService;
-        private readonly IReadingBoardService m_readingBoardService;
-        private readonly ITrelloAuthorizationWrapper m_trelloAuthWrapper;
+        private readonly IReadingListService _readingListService;
+        private readonly IReadingBoardService _readingBoardService;
+        private readonly ITrelloAuthorizationWrapper _trelloAuthWrapper;
 
         public ReadingListModule(
             ITrelloAuthorizationWrapper trelloAuthWrapper,
             IReadingListService readingListService,
             IReadingBoardService readingBoardService) : base("/api")
         {
-            m_trelloAuthWrapper = trelloAuthWrapper;
-            m_readingListService = readingListService;
-            m_readingBoardService = readingBoardService;
+            _trelloAuthWrapper = trelloAuthWrapper;
+            _readingListService = readingListService;
+            _readingBoardService = readingBoardService;
 
 
             Get<GetReadingList>("/readingList", async (req, res) =>
             {
                 string requestLabel = req.Query["label"];
-                var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
+                var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
             Get<GetBacklogList>("/backlogList", async (req, res) =>
              {
                  string requestLabel = req.Query["label"];
-                 var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
+                 var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
                  await res.AsJson(readingList);
              });
 
             Get<GetDoneList>("/doneList", async (req, res) =>
             {
                 string requestLabel = req.Query["label"];
-                var readingList = await m_readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
+                var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
             Get<GetReadingList>("/allLists", async (req, res) =>
             {
                 string requestLabel = req.Query["label"];
-                var allLists = await m_readingBoardService.GetAllReadingLists(requestLabel);
+                var allLists = await _readingBoardService.GetAllReadingLists(requestLabel);
                 await res.AsJson(allLists);
             });
 
@@ -73,14 +73,14 @@ namespace ReadingList.Carter.Modules
                     await res.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
                     return;
                 }
-                if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
+                if (!CheckTokens(authTokens.Key, _trelloAuthWrapper))
                 {
                     res.StatusCode = 403;
                     await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
                     return;
                 }
 
-                var addBookToBacklog = await m_readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
+                var addBookToBacklog = await _readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
                 res.StatusCode = addBookToBacklog ? 201 : 500;
                 await res.AsJson(addBookToBacklog);
             });
@@ -102,7 +102,7 @@ namespace ReadingList.Carter.Modules
                     await res.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
                     return;
                 }
-                if (!CheckTokens(authTokens.Key, m_trelloAuthWrapper))
+                if (!CheckTokens(authTokens.Key, _trelloAuthWrapper))
                 {
                     res.StatusCode = 403;
                     await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
@@ -110,7 +110,7 @@ namespace ReadingList.Carter.Modules
                 }
 
 
-                var updateStatus = await m_readingListService.UpdateDoneListFromReadingList(bookTitle);
+                var updateStatus = await _readingListService.UpdateDoneListFromReadingList(bookTitle);
 
                 await res.AsJson(updateStatus);
             });
