@@ -15,8 +15,8 @@ namespace ReadingList.Web.Modules
         private readonly ILog m_logger;
 
         public CallbackModule(
-            IReadingListCache readingListCache, 
-            ILogFactory logger, 
+            IReadingListCache readingListCache,
+            ILogFactory logger,
             ITrelloWebHookSources webHookSource) : base("/api")
         {
             m_logger = logger.GetLogger(GetType());
@@ -27,7 +27,7 @@ namespace ReadingList.Web.Modules
             {
                 res.StatusCode = 200;
                 await res.AsJson("Head received");
-                
+
             });
 
             Post("/callBack", async (req, res) =>
@@ -45,7 +45,7 @@ namespace ReadingList.Web.Modules
 
                 res.StatusCode = 200;
                 await res.AsJson("Callback received");
-                
+
             });
         }
 

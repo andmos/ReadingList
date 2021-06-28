@@ -18,14 +18,14 @@ namespace ReadingList.Carter
         }
 
         public IConfiguration Configuration { get; }
-        
-        
+
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
             services.AddCarter();
-                
+
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowSpecificOrigins,
@@ -35,9 +35,9 @@ namespace ReadingList.Carter
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
-                });
+            });
         }
-        
+
         public void ConfigureContainer(IServiceContainer container)
         {
             container.RegisterFrom<CompositionRoot>();
