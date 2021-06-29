@@ -45,14 +45,14 @@ namespace ReadingList.Carter.Modules
                 await res.AsJson(readingList);
             });
 
-            Get<GetReadingList>("/allLists", async (req, res) =>
+            Get<GetAllList>("/allLists", async (req, res) =>
             {
                 string requestLabel = req.Query["label"];
                 var allLists = await _readingBoardService.GetAllReadingLists(requestLabel);
                 await res.AsJson(allLists);
             });
 
-            Post("/backlogList", async (req, res) =>
+            Post<PostBacklogList>("/backlogList", async (req, res) =>
             {
                 string author = req.Query["author"];
                 string bookTitle = req.Query["title"];

@@ -113,4 +113,35 @@ namespace ReadingList.Carter.Modules
 
         public override string Tag { get; } = "ReadingList";
     }
+
+    public class PostBacklogList : RouteMetaData
+    {
+        public override string Description { get; } = "Add book to backlog with POST";
+
+        public override QueryStringParameter[] QueryStringParameter { get; } =
+        {
+            new QueryStringParameter
+            {
+                Name = "author",
+                Required = true,
+                Description = "The author(s) of the book. For multiple authors, use colon",
+                Type = typeof(string),
+            },
+            new QueryStringParameter
+            {
+                Name = "label",
+                Required = true,
+                Description = "Filter query by fiction and non-fiction. fact for non-fiction, fiction for fiction",
+                Type = typeof(string),
+            },
+            new QueryStringParameter
+            {
+                Name = "title",
+                Required = true,
+                Description = "The title of the book to be added to backlog",
+                Type = typeof(string),
+            }
+        };
+        public override string Tag { get; } = "ReadingList";
+    }
 }

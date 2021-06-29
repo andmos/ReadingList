@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Carter;
 using LightInject;
 using Microsoft.AspNetCore.Builder;
@@ -23,7 +24,15 @@ namespace ReadingList.Carter
         {
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
-            services.AddCarter();
+            services.AddCarter(options =>
+            {
+                options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
+                {
+                    { "TrelloAPIKey", new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = "TrelloAPIKey", In = OpenApiIn.header } },
+                    { "TrelloUserToken", new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = "TrelloUserToken", In = OpenApiIn.header } },
+                };
+                options.OpenApi.GlobalSecurityDefinitions = new[] { "TrelloAPIKey", "TrelloUserToken" };
+            });
             
             services.AddCors(options =>
             {
