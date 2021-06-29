@@ -28,10 +28,10 @@ namespace ReadingList.Carter
             {
                 options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
                 {
-                    { "TrelloAPIKey", new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = "TrelloAPIKey", In = OpenApiIn.header } },
-                    { "TrelloUserToken", new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = "TrelloUserToken", In = OpenApiIn.header } },
+                    { nameof(TrelloAuthSettings.TrelloAPIKey), new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloAPIKey), In = OpenApiIn.header } },
+                    { nameof(TrelloAuthSettings.TrelloUserToken), new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloUserToken), In = OpenApiIn.header } },
                 };
-                options.OpenApi.GlobalSecurityDefinitions = new[] { "TrelloAPIKey", "TrelloUserToken" };
+                options.OpenApi.GlobalSecurityDefinitions = new[] { nameof(TrelloAuthSettings.TrelloAPIKey), nameof(TrelloAuthSettings.TrelloUserToken) };
             });
             
             services.AddCors(options =>
