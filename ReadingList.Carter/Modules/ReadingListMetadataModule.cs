@@ -5,7 +5,7 @@ namespace ReadingList.Carter.Modules
 {
     public class GetReadingList : RouteMetaData
     {
-        public override string Description { get; } = "Returns a list of books from a readinglist";
+        public override string Description { get; } = "Returns a list of books from the currently read readinglist";
 
         public override RouteMetaDataResponse[] Responses { get; } =
         {
@@ -15,7 +15,7 @@ namespace ReadingList.Carter.Modules
                 Description = $"A list of books currently read",
                 Response = typeof(Book),
             }
-        };
+        };  
         public override QueryStringParameter[] QueryStringParameter { get; } =
         {
             new QueryStringParameter
@@ -32,7 +32,7 @@ namespace ReadingList.Carter.Modules
 
     public class GetBacklogList : RouteMetaData
     {
-        public override string Description { get; } = "Returns a list of books from a readinglist";
+        public override string Description { get; } = "Returns a list of books from the backlog list";
 
         public override RouteMetaDataResponse[] Responses { get; } =
         {
@@ -60,7 +60,7 @@ namespace ReadingList.Carter.Modules
 
     public class GetDoneList : RouteMetaData
     {
-        public override string Description { get; } = "Returns a list of books from a readinglist";
+        public override string Description { get; } = "Returns a list of books from the completed done list";
 
         public override RouteMetaDataResponse[] Responses { get; } =
         {

@@ -11,7 +11,6 @@ namespace ReadingList.Carter
     {
         public void Compose(IServiceRegistry serviceRegistry)
         {
-
             serviceRegistry.Register<ILogFactory, SerilogFactory>(new PerContainerLifetime());
             serviceRegistry.Register<Type, ILog>((factory, type) => factory.GetInstance<ILogFactory>().GetLogger(type));
             serviceRegistry.RegisterConstructorDependency(
@@ -20,7 +19,6 @@ namespace ReadingList.Carter
             serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 
             serviceRegistry.RegisterFrom<ReadingList.Trello.CompostionRoot>();
-
         }
     }
 }

@@ -18,14 +18,13 @@ namespace ReadingList.Carter
         }
 
         public IConfiguration Configuration { get; }
-
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
             services.AddCarter();
-
+            
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowSpecificOrigins,
@@ -50,6 +49,12 @@ namespace ReadingList.Carter
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            app.UseSwaggerUI(opt =>
+            {
+                opt.RoutePrefix = "openapi/ui";
+                opt.SwaggerEndpoint("/openapi", "ReadingList");
+                opt.DocumentTitle = "ReadingList";
             });
             app.UseEndpoints(builder => builder.MapCarter());
         }
