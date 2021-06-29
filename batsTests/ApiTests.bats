@@ -7,6 +7,17 @@ readingListUrl="http://readinglist:1337"
     [ "$result" -eq 200 ]
 }
 
+@test "GET: Swagger UI endpoint should be HTTP Statuscode 200 after redirect" {
+    result="$(curl -L -s -o /dev/null -w '%{http_code}' $readingListUrl/openapi/ui)"
+    [ "$result" -eq 200 ]
+}
+
+@test "GET: Swagger UI endpoint should contain ReadingList as title element" {
+    title="<title>ReadingList</title>"
+    result="$(curl -L -s $readingListUrl/openapi/ui | grep $title | xargs)"
+    [ "$result" = "$title" ]
+}
+
 @test "GET: ping endpoint should return pong" {
     result="$(curl -s $readingListUrl/api/ping)"
     [ "$result" = '"pong"' ]
@@ -41,7 +52,6 @@ readingListUrl="http://readinglist:1337"
     result="$(curl -s $readingListUrl/api/doneList?label=fact | jq '.[0].authors')"
     [ "$result" != "null" ]
 }
-
 
 @test "GET: doneList endpoint should return JSON containing the title 'Inferno' with label 'fiction'" {
     result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .label')"
