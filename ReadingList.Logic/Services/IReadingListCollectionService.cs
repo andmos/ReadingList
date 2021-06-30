@@ -3,12 +3,12 @@ using ReadingList.Logic.Models;
 
 namespace ReadingList.Logic.Services
 {
-    public interface IReadingBoardService
+    public interface IReadingListCollectionService
     {
         /// <summary>
         /// Gets all reading lists.
         /// </summary>
         /// <returns>All reading lists.</returns>
-        Task<ReadingBoard> GetAllReadingLists(string label);
+        Task<ReadingListCollection> GetAllReadingLists(string label);
     }
 }

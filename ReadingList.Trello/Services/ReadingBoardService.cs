@@ -7,7 +7,7 @@ using ReadingList.Logic.Services;
 
 namespace ReadingList.Trello.Services
 {
-    public class ReadingBoardService : IReadingBoardService
+    public class ReadingBoardService : IReadingListCollectionService
     {
         private readonly IReadingListService _readingListService;
         private readonly IBoard _readingListBoard;
@@ -21,11 +21,11 @@ namespace ReadingList.Trello.Services
             _readingListBoard = factory.Board(boardId);
         }
 
-        public async Task<ReadingBoard> GetAllReadingLists(string label)
+        public async Task<ReadingListCollection> GetAllReadingLists(string label)
         {
             await _readingListBoard.Lists.Refresh();
             IEnumerable<string> listNames = new List<string>(_readingListBoard.Lists.Select(l => l.Name).ToList());
-            var readingBoard = new ReadingBoard { ReadingLists = new Dictionary<string, IEnumerable<Book>>() };
+            var readingBoard = new ReadingListCollection { ReadingLists = new Dictionary<string, IEnumerable<Book>>() };
 
             foreach (var listName in listNames)
             {
