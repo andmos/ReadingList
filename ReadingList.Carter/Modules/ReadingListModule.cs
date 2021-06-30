@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Http;
+using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
@@ -57,14 +59,7 @@ namespace ReadingList.Carter.Modules
                 string author = req.Query["author"];
                 string bookTitle = req.Query["title"];
                 string bookLabel = req.Query["label"];
-
-                if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle) || string.IsNullOrWhiteSpace(bookLabel))
-                {
-                    res.StatusCode = 422;
-                    await res.AsJson("author, title and label is required.");
-                    return;
-                }
-
+                
                 var authTokens = CheckHeaderForMandatoryTokens(req);
                 if (!authTokens.Value)
                 {
@@ -78,7 +73,14 @@ namespace ReadingList.Carter.Modules
                     await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
                     return;
                 }
-
+                
+                if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle) || string.IsNullOrWhiteSpace(bookLabel))
+                {
+                    res.StatusCode = 422;
+                    await res.AsJson("author, title and label is required.");
+                    return;
+                }
+                
                 var addBookToBacklog = await _readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
                 res.StatusCode = addBookToBacklog ? 201 : 500;
                 await res.AsJson(addBookToBacklog);

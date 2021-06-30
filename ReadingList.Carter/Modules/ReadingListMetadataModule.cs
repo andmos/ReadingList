@@ -1,4 +1,5 @@
-﻿using Carter.OpenApi;
+﻿using System;
+using Carter.OpenApi;
 using ReadingList.Logic.Models;
 
 namespace ReadingList.Carter.Modules
@@ -23,7 +24,7 @@ namespace ReadingList.Carter.Modules
                 Name = "label",
                 Required = false,
                 Description = "Filter query by fiction and non-fiction. fact for non-fiction, fiction for fiction",
-                Type = typeof(string),
+                Type = typeof(Enum),
             },
         };
 
@@ -50,8 +51,8 @@ namespace ReadingList.Carter.Modules
             {
                 Name = "label",
                 Required = false,
-                Description = "Filter query by fiction and non-fiction. fact for non-fiction, fiction for fiction",
-                Type = typeof(string),
+                Description = "Filter query by 'fiction and non-fiction. 'fact' for non-fiction, 'fiction' for fiction",
+                Type = typeof(Enum),
             }
         };
 
@@ -79,7 +80,7 @@ namespace ReadingList.Carter.Modules
                 Name = "label",
                 Required = false,
                 Description = "Filter query by fiction and non-fiction. fact for non-fiction, fiction for fiction",
-                Type = typeof(string),
+                Type = typeof(Enum),
             }
         };
 
@@ -107,7 +108,7 @@ namespace ReadingList.Carter.Modules
                 Name = "label",
                 Required = false,
                 Description = "Filter query by fiction and non-fiction. fact for non-fiction, fiction for fiction",
-                Type = typeof(string),
+                Type = typeof(Enum),
             },
         };
 
@@ -132,7 +133,7 @@ namespace ReadingList.Carter.Modules
                 Name = "label",
                 Required = true,
                 Description = "Filter query by fiction and non-fiction. fact for non-fiction, fiction for fiction",
-                Type = typeof(string),
+                Type = typeof(Enum),
             },
             new QueryStringParameter
             {
