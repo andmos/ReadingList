@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Carter;
+using Carter.ModelBinding;
+using Carter.Response;
 using LightInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -24,16 +26,36 @@ namespace ReadingList.Carter
         {
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
-            services.AddCarter(options =>
-            {
-                options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
+            services.AddCarter(
+                options: options =>
                 {
-                    { nameof(TrelloAuthSettings.TrelloAPIKey), new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloAPIKey), In = OpenApiIn.header } },
-                    { nameof(TrelloAuthSettings.TrelloUserToken), new OpenApiSecurity { Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloUserToken), In = OpenApiIn.header } },
-                };
-                options.OpenApi.GlobalSecurityDefinitions = new[] { nameof(TrelloAuthSettings.TrelloAPIKey), nameof(TrelloAuthSettings.TrelloUserToken) };
-            });
-            
+                    options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
+                    {
+                        {
+                            nameof(TrelloAuthSettings.TrelloAPIKey),
+                            new OpenApiSecurity
+                            {
+                                Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloAPIKey),
+                                In = OpenApiIn.header
+                            }
+                        },
+                        {
+                            nameof(TrelloAuthSettings.TrelloUserToken),
+                            new OpenApiSecurity
+                            {
+                                Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloUserToken),
+                                In = OpenApiIn.header
+                            }
+                        },
+                    };
+                    options.OpenApi.GlobalSecurityDefinitions = new[]
+                        {nameof(TrelloAuthSettings.TrelloAPIKey), nameof(TrelloAuthSettings.TrelloUserToken)};
+                },
+                configurator: configurator =>
+                {
+                    configurator.WithModelBinder<NewtonsoftJsonModelBinder>();
+                    configurator.WithResponseNegotiator<NewtonsoftJsonResponseNegotiatorWithEnumConverter>();
+                });
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowSpecificOrigins,

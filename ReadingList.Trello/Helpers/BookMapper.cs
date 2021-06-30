@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ namespace ReadingList.Trello.Helpers
 
             return new Book(
                 string.Join(_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim(),
-                ExtractAuthors(bookArray.Last()), listLabel);
+                ExtractAuthors(bookArray.Last()), MapBookTypeLabel(listLabel));
         }
 
         public Book Create(string jsonString)
@@ -37,6 +38,19 @@ namespace ReadingList.Trello.Helpers
         {
             return authors.Split(_authorsDelimitor).Select(author => author.Trim()).ToList();
 
+        }
+
+        private Label MapBookTypeLabel(string label)
+        {
+            if (string.IsNullOrEmpty(label)) return Label.None;
+            try
+            {
+                return (Label)Enum.Parse(typeof(Label), label, true);
+            }
+            catch(ArgumentException ex)
+            {
+                return Label.None;
+            }
         }
     }
 }

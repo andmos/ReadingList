@@ -38,7 +38,7 @@ namespace ReadingList.Trello.Services
             IEnumerable<Book> books;
             if (_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
             {
-                return !string.IsNullOrEmpty(label) ? books.Where(b => b.Label.ToLower().Equals(label.ToLower())) : books;
+                return !string.IsNullOrEmpty(label) ? books.Where(b => b.Label.ToString().ToLower().Equals(label.ToLower())) : books;
             }
 
             _logger.Info($"Cache miss for {listName}, {label}");

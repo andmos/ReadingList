@@ -55,11 +55,11 @@ readingListUrl="http://readinglist:1337"
 
 @test "GET: doneList endpoint should return JSON containing the title 'Inferno' with label 'fiction'" {
     result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .label')"
-    [ "$result" == '"fiction"' ]
+    [ "$result" == '"Fiction"' ]
 }
 @test "GET: doneList endpoint should return JSON containing the title 'Promise of the Witch-King' with label 'fiction' and '-' character in name" {
     result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Promise of the Witch-King: Forgotten Realms: The Sellswords, Book 2") | .label')"
-    [ "$result" == '"fiction"' ]
+    [ "$result" == '"Fiction"' ]
 }
 
 @test "GET: allLists endpoint should return JSON with 'done' element containing book entry" {
@@ -67,14 +67,14 @@ readingListUrl="http://readinglist:1337"
     [ "$result" != "null" ]
 }
 
-@test "GET: allList endpoint should only return JSON with 'fact' books when 'fact' label is passed" {
+@test "GET: allList endpoint should only return JSON with 'Fact' books when 'fact' label is passed" {
     result="$(curl -s $readingListUrl/api/allLists?label=fact | jq '.readingLists.Done[1].label')"
-    [ "$result" == '"fact"' ]
+    [ "$result" == '"Fact"' ]
 }
 
-@test "GET: allList endpoint should only return JSON with 'fiction' books when 'fiction' label is passed" {
+@test "GET: allList endpoint should only return JSON with 'Fiction' books when 'fiction' label is passed" {
     result="$(curl -s $readingListUrl/api/allLists?label=fiction | jq '.readingLists.Done[1].label')"
-    [ "$result" == '"fiction"' ]
+    [ "$result" == '"Fiction"' ]
 }
 
 @test "POST: backlogList endpoint should return FORBIDDEN request is done without correct APIKey and UserToken in header" {
