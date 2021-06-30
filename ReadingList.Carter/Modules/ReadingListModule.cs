@@ -14,17 +14,17 @@ namespace ReadingList.Carter.Modules
     public class ReadingListModule : CarterModule
     {
         private readonly IReadingListService _readingListService;
-        private readonly IReadingBoardService _readingBoardService;
+        private readonly IReadingListCollectionService _readingListCollectionService;
         private readonly ITrelloAuthorizationWrapper _trelloAuthWrapper;
 
         public ReadingListModule(
             ITrelloAuthorizationWrapper trelloAuthWrapper,
             IReadingListService readingListService,
-            IReadingBoardService readingBoardService) : base("/api")
+            IReadingListCollectionService readingListCollectionService) : base("/api")
         {
             _trelloAuthWrapper = trelloAuthWrapper;
             _readingListService = readingListService;
-            _readingBoardService = readingBoardService;
+            _readingListCollectionService = readingListCollectionService;
             
             Get<GetReadingList>("/readingList", async (req, res) =>
             {
@@ -50,7 +50,7 @@ namespace ReadingList.Carter.Modules
             Get<GetAllList>("/allLists", async (req, res) =>
             {
                 string requestLabel = req.Query["label"];
-                var allLists = await _readingBoardService.GetAllReadingLists(requestLabel);
+                var allLists = await _readingListCollectionService.GetAllReadingLists(requestLabel);
                 await res.AsJson(allLists);
             });
 
