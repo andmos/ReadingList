@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Carter;
 using Carter.ModelBinding;
 using Carter.Response;
@@ -29,6 +30,10 @@ namespace ReadingList.Carter
             services.AddCarter(
                 options: options =>
                 {
+                    options.OpenApi.ServerUrls = new[]
+                    {
+                        Configuration.GetValue<string>("HostUrl")
+                    };
                     options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
                     {
                         {
