@@ -16,6 +16,7 @@ namespace ReadingList.Carter
     public class Startup
     {
         readonly string AllowSpecificOrigins = "_allowSpecificOrigins";
+        private string HostName => Configuration.GetValue<string>("HostUrl");
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +33,7 @@ namespace ReadingList.Carter
                 {
                     options.OpenApi.ServerUrls = new[]
                     {
-                        Configuration.GetValue<string>("HostUrl")
+                        HostName
                     };
                     options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
                     {
@@ -89,7 +90,7 @@ namespace ReadingList.Carter
             app.UseSwaggerUI(opt =>
             {
                 opt.RoutePrefix = "openapi/ui";
-                opt.SwaggerEndpoint("/openapi", "ReadingList");
+                opt.SwaggerEndpoint($"{HostName}/openapi", "ReadingList");
                 opt.DocumentTitle = "ReadingList";
             });
             app.UseEndpoints(builder => builder.MapCarter());
