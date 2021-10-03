@@ -77,6 +77,11 @@ readingListUrl="http://readinglist:1337"
     [ "$result" == '"Fiction"' ]
 }
 
+@test "GET: health endpoint should return TrelloHelthCheck" {
+    result="$(curl -s $readingListUrl/health | jq '.checks[0].service')"
+    [ "$result" == '"TrelloHealthCheck"' ]
+}
+
 @test "POST: backlogList endpoint should return FORBIDDEN request is done without correct APIKey and UserToken in header" {
     result="$(curl -s -o /dev/null -w '%{http_code}' -X POST "$readingListUrl/api/backlogList?author=Test%20Author&title=Test%20Title&label=fact" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'TrelloAPIKey: 77777777' -H 'TrelloUserToken: 7777777' -d '{ "data": "this is my new testdata from a POST" }')"
     [ "$result" -eq 403 ]
