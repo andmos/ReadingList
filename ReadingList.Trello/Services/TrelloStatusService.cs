@@ -25,6 +25,7 @@ namespace ReadingList.Trello.Services
             return new TrelloIncident
             {
                 Title = syndicationItem.Title.Text,
+                Id = syndicationItem.Id,
                 Content = content.Text,
                 Published = syndicationItem.PublishDate,
                 Updated = syndicationItem.LastUpdatedTime
