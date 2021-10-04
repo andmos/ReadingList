@@ -22,11 +22,10 @@ namespace ReadingList.Carter.Trello
 
             incidents = incidents.Where(i => i.Updated.Date == DateTime.Today && !i.Resolved);
 
-            if (incidents.Any())
-            {
-                return Task.FromResult(HealthCheckResult.Unhealthy(data: incidents.ToDictionary(k => k.Id, v => (object)v)));
-            }
-            return Task.FromResult(HealthCheckResult.Healthy());
-         }
+            var trelloIncidents = incidents.ToList();
+            return Task.FromResult(trelloIncidents.Any() 
+                ? HealthCheckResult.Unhealthy(data: trelloIncidents.ToDictionary(k => k.Id, v => (object)v))
+                : HealthCheckResult.Healthy());
+        }
     }
 }
