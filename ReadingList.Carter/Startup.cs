@@ -1,14 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net.Mime;
 using Carter;
 using Carter.ModelBinding;
 using Carter.Response;
 using LightInject;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using ReadingList.Carter.Trello;
 using ReadingList.Trello.Models;
 
 namespace ReadingList.Carter
@@ -72,6 +80,7 @@ namespace ReadingList.Carter
                             .AllowAnyMethod();
                     });
             });
+            services.AddHealthChecks().AddCheck<TrelloHealthCheck>(nameof(TrelloHealthCheck));
         }
 
         public void ConfigureContainer(IServiceContainer container)
@@ -93,7 +102,41 @@ namespace ReadingList.Carter
                 opt.SwaggerEndpoint($"{HostName}/openapi", "ReadingList");
                 opt.DocumentTitle = "ReadingList";
             });
-            app.UseEndpoints(builder => builder.MapCarter());
+            app.UseEndpoints(builder =>
+            {
+                builder.MapCarter();
+                builder.MapHealthChecks("/health", CreateHealthCheckOptions());
+            });
+        }
+
+        private HealthCheckOptions CreateHealthCheckOptions()
+        {
+            var options = new HealthCheckOptions
+            {
+                ResponseWriter = async (ctx, rpt) =>
+                {
+                    var result = JsonConvert.SerializeObject(new
+                    {
+                        status = rpt.Status.ToString(),
+                        checks = rpt.Entries.Select(e => new
+                        {
+                            service = e.Key,
+                            status = Enum.GetName(typeof(HealthStatus),
+                            e.Value.Status),
+                            error = e.Value.Exception?.Message,
+                            incidents = e.Value.Data
+                        }),
+                    },
+                    Formatting.None, new JsonSerializerSettings()
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
+
+                    ctx.Response.ContentType = MediaTypeNames.Application.Json;
+                    await ctx.Response.WriteAsync(result);
+                }
+            };
+            return options;
         }
     }
 }
