@@ -14,7 +14,7 @@ WORKDIR /app/ReadingList.Carter
 RUN dotnet restore
 RUN dotnet publish ReadingList.Carter.csproj -c Release -o ../publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0.10-alpine3.13 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:5.0.11-alpine3.13 AS runtime
 ENV PORT 1337
 ENV ASPNETCORE_URLS=http://+:$PORT
 
