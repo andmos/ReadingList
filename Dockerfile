@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.402-alpine3.13 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.13 AS builder
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
 
 WORKDIR /app
