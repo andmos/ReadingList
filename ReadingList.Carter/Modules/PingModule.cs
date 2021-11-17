@@ -1,15 +1,17 @@
 using Carter;
-using Carter.Response;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace ReadingList.Web.Modules
 {
-    public class PingModule : CarterModule
+    public class PingModule : ICarterModule
     {
-        public PingModule() : base("/api")
+        public void AddRoutes(IEndpointRouteBuilder app)
         {
-            Get("/ping", async (req, res) =>
+            app.MapGet("/api/ping", (HttpResponse res) =>
             {
-                await res.AsJson("pong");
+                return Results.Json("pong");
             });
         }
     }

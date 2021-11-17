@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.402-alpine3.13 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.100-alpine3.14 AS builder
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
 
 WORKDIR /app
@@ -14,7 +14,7 @@ WORKDIR /app/ReadingList.Carter
 RUN dotnet restore
 RUN dotnet publish ReadingList.Carter.csproj -c Release -o ../publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0.11-alpine3.13 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.0-alpine3.14 AS runtime
 ENV PORT 1337
 ENV ASPNETCORE_URLS=http://+:$PORT
 
