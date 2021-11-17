@@ -4,11 +4,13 @@ using ReadingList.Trello.Helpers;
 using ReadingList.Trello.Models;
 using Carter;
 using Carter.Response;
-
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace ReadingList.Web.Modules
 {
-    public class CallbackModule : CarterModule
+    public class CallbackModule : ICarterModule
     {
         private readonly IReadingListCache _readingListCache;
         private readonly ITrelloWebHookSources _webHookSource;
@@ -17,20 +19,22 @@ namespace ReadingList.Web.Modules
         public CallbackModule(
             IReadingListCache readingListCache,
             ILogFactory logger,
-            ITrelloWebHookSources webHookSource) : base("/api")
+            ITrelloWebHookSources webHookSource)
         {
             _logger = logger.GetLogger(GetType());
             _readingListCache = readingListCache;
             _webHookSource = webHookSource;
+        }
 
-            Head("/callBack", async (req, res) =>
+        public void AddRoutes(IEndpointRouteBuilder app)
+        {
+            app.MapMethods("/api/callBack", new[] {"HEAD"}, async (HttpRequest req, HttpResponse res) =>
             {
                 res.StatusCode = 200;
                 await res.AsJson("Head received");
-
             });
 
-            Post("/callBack", async (req, res) =>
+            app.MapPost("/api/callBack", async (HttpRequest req, HttpResponse res) =>
             {
 
                 var callerIp = req.HttpContext.Connection.RemoteIpAddress;
@@ -39,16 +43,12 @@ namespace ReadingList.Web.Modules
                     _logger.Info($"Got Callback from valid source: {callerIp}");
                 }
 
-
                 _readingListCache.InvalidateCache();
                 _logger.Info("Invalidating cache");
 
                 res.StatusCode = 200;
                 await res.AsJson("Callback received");
-
             });
         }
-
-
     }
 }

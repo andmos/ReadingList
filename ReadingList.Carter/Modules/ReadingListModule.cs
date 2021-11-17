@@ -1,17 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carter;
 using Carter.Response;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using ReadingList.Logic.Models;
+using Microsoft.AspNetCore.Routing;
 using ReadingList.Logic.Services;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
 
 namespace ReadingList.Carter.Modules
 {
-    public class ReadingListModule : CarterModule
+    public class ReadingListModule : ICarterModule
     {
         private readonly IReadingListService _readingListService;
         private readonly IReadingListCollectionService _readingListCollectionService;
@@ -20,41 +20,44 @@ namespace ReadingList.Carter.Modules
         public ReadingListModule(
             ITrelloAuthorizationWrapper trelloAuthWrapper,
             IReadingListService readingListService,
-            IReadingListCollectionService readingListCollectionService) : base("/api")
+            IReadingListCollectionService readingListCollectionService)
         {
             _trelloAuthWrapper = trelloAuthWrapper;
             _readingListService = readingListService;
             _readingListCollectionService = readingListCollectionService;
-            
-            Get<GetReadingList>("/readingList", async (req, res) =>
+        }
+
+        public void AddRoutes(IEndpointRouteBuilder app)
+        {
+            app.MapGet("/api/readingList", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
                 var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
-            Get<GetBacklogList>("/backlogList", async (req, res) =>
-             {
+            app.MapGet("/api/backlogList", async (HttpRequest req, HttpResponse res) =>
+            {
                  string requestLabel = req.Query["label"];
                  var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
                  await res.AsJson(readingList);
-             });
+            });
 
-            Get<GetDoneList>("/doneList", async (req, res) =>
+            app.MapGet("/api/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
                 var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
-            Get<GetAllList>("/allLists", async (req, res) =>
+            app.MapGet("/api/allLists", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
                 var allLists = await _readingListCollectionService.GetAllReadingLists(requestLabel);
                 await res.AsJson(allLists);
             });
 
-            Post<PostBacklogList>("/backlogList", async (req, res) =>
+            app.MapPost("/api/backlogList", async (HttpRequest req, HttpResponse res) =>
             {
                 string author = req.Query["author"];
                 string bookTitle = req.Query["title"];
@@ -86,7 +89,9 @@ namespace ReadingList.Carter.Modules
                 await res.AsJson(addBookToBacklog);
             });
 
-            Put("/doneList", async (req, res) =>
+
+
+            app.MapPut("/api/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string bookTitle = req.Query["title"];
                 if (string.IsNullOrWhiteSpace(bookTitle))
@@ -113,7 +118,7 @@ namespace ReadingList.Carter.Modules
                 var updateStatus = await _readingListService.UpdateDoneListFromReadingList(bookTitle);
 
                 await res.AsJson(updateStatus);
-            });
+            });            
         }
 
         private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(HttpRequest request)

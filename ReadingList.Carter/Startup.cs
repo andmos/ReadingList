@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using Carter;
-using Carter.ModelBinding;
 using Carter.Response;
 using LightInject;
 using Microsoft.AspNetCore.Builder;
@@ -37,37 +35,8 @@ namespace ReadingList.Carter
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
             services.AddCarter(
-                options: options =>
-                {
-                    options.OpenApi.ServerUrls = new[]
-                    {
-                        HostName
-                    };
-                    options.OpenApi.Securities = new Dictionary<string, OpenApiSecurity>
-                    {
-                        {
-                            nameof(TrelloAuthSettings.TrelloAPIKey),
-                            new OpenApiSecurity
-                            {
-                                Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloAPIKey),
-                                In = OpenApiIn.header
-                            }
-                        },
-                        {
-                            nameof(TrelloAuthSettings.TrelloUserToken),
-                            new OpenApiSecurity
-                            {
-                                Type = OpenApiSecurityType.apiKey, Name = nameof(TrelloAuthSettings.TrelloUserToken),
-                                In = OpenApiIn.header
-                            }
-                        },
-                    };
-                    options.OpenApi.GlobalSecurityDefinitions = new[]
-                        {nameof(TrelloAuthSettings.TrelloAPIKey), nameof(TrelloAuthSettings.TrelloUserToken)};
-                },
                 configurator: configurator =>
                 {
-                    configurator.WithModelBinder<NewtonsoftJsonModelBinder>();
                     configurator.WithResponseNegotiator<NewtonsoftJsonResponseNegotiatorWithEnumConverter>();
                 });
             services.AddCors(options =>
@@ -96,6 +65,7 @@ namespace ReadingList.Carter
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
             app.UseSwaggerUI(opt =>
             {
                 opt.RoutePrefix = "openapi/ui";
