@@ -17,6 +17,8 @@ namespace ReadingList.Carter.Modules
         private readonly IReadingListCollectionService _readingListCollectionService;
         private readonly ITrelloAuthorizationWrapper _trelloAuthWrapper;
 
+        private const string BaseUri = "/api";
+
         public ReadingListModule(
             ITrelloAuthorizationWrapper trelloAuthWrapper,
             IReadingListService readingListService,
@@ -29,35 +31,35 @@ namespace ReadingList.Carter.Modules
 
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/readingList", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/readingList", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
                 var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
-            app.MapGet("/api/backlogList", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/backlogList", async (HttpRequest req, HttpResponse res) =>
             {
                  string requestLabel = req.Query["label"];
                  var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
                  await res.AsJson(readingList);
             });
 
-            app.MapGet("/api/doneList", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
                 var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
-            app.MapGet("/api/allLists", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/allLists", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
                 var allLists = await _readingListCollectionService.GetAllReadingLists(requestLabel);
                 await res.AsJson(allLists);
             });
 
-            app.MapPost("/api/backlogList", async (HttpRequest req, HttpResponse res) =>
+            app.MapPost($"{BaseUri}/backlogList", async (HttpRequest req, HttpResponse res) =>
             {
                 string author = req.Query["author"];
                 string bookTitle = req.Query["title"];
@@ -91,7 +93,7 @@ namespace ReadingList.Carter.Modules
 
 
 
-            app.MapPut("/api/doneList", async (HttpRequest req, HttpResponse res) =>
+            app.MapPut($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string bookTitle = req.Query["title"];
                 if (string.IsNullOrWhiteSpace(bookTitle))

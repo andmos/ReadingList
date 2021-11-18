@@ -7,9 +7,10 @@ namespace ReadingList.Web.Modules
 {
     public class PingModule : ICarterModule
     {
+        private const string BaseUri = "/api";
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/ping", (HttpResponse res) =>
+            app.MapGet($"{BaseUri}/ping", (HttpResponse res) =>
             {
                 return Results.Json("pong");
             });
