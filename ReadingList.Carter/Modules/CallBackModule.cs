@@ -16,6 +16,8 @@ namespace ReadingList.Web.Modules
         private readonly ITrelloWebHookSources _webHookSource;
         private readonly ILog _logger;
 
+        private const string BaseUri = "/api";
+
         public CallbackModule(
             IReadingListCache readingListCache,
             ILogFactory logger,
@@ -28,13 +30,13 @@ namespace ReadingList.Web.Modules
 
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapMethods("/api/callBack", new[] {"HEAD"}, async (HttpRequest req, HttpResponse res) =>
+            app.MapMethods($"{BaseUri}/callBack", new[] {"HEAD"}, async (HttpRequest req, HttpResponse res) =>
             {
                 res.StatusCode = 200;
                 await res.AsJson("Head received");
             });
 
-            app.MapPost("/api/callBack", async (HttpRequest req, HttpResponse res) =>
+            app.MapPost($"{BaseUri}/callBack", async (HttpRequest req, HttpResponse res) =>
             {
 
                 var callerIp = req.HttpContext.Connection.RemoteIpAddress;
