@@ -50,7 +50,6 @@ namespace ReadingList.Trello.Helpers
 
         private Label MapBookTypeLabel(string label)
         {
-            if (string.IsNullOrWhiteSpace(label)) return Label.Unspecified;
             try
             {
                 return (Label)Enum.Parse(typeof(Label), label, true);
