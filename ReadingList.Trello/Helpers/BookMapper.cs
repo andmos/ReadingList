@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
+using ReadingList.Logging;
 
 namespace ReadingList.Trello.Helpers
 {
@@ -11,6 +12,13 @@ namespace ReadingList.Trello.Helpers
     {
         private char _bookTitleDelimitor => '-';
         private char _authorsDelimitor => ',';
+
+        private ILog _logger; 
+
+        public BookMapper(ILogFactory logFactory)
+        {
+            _logger = logFactory.GetLogger(this.GetType());
+        }
 
         public Book Create(string bookString, string listLabel)
         {
@@ -30,6 +38,7 @@ namespace ReadingList.Trello.Helpers
             }
             catch (JsonSerializationException serializationExeption)
             {
+                _logger.Error("Could not create Book from JSON string", serializationExeption);
                 throw serializationExeption;
             }
         }
@@ -37,19 +46,19 @@ namespace ReadingList.Trello.Helpers
         private IEnumerable<string> ExtractAuthors(string authors)
         {
             return authors.Split(_authorsDelimitor).Select(author => author.Trim()).ToList();
-
         }
 
         private Label MapBookTypeLabel(string label)
         {
-            if (string.IsNullOrEmpty(label)) return Label.None;
+            if (string.IsNullOrEmpty(label)) return Label.Unspecified;
             try
             {
                 return (Label)Enum.Parse(typeof(Label), label, true);
             }
             catch(ArgumentException ex)
             {
-                return Label.None;
+                _logger.Error($"Could not parse the label to any known labels: {label}", ex);
+                return Label.Unspecified;
             }
         }
     }
