@@ -18,6 +18,6 @@ namespace ReadingList.Logic.Models
     {
         Fact,
         Fiction,
-        None
+        Unspecified
     }
 }

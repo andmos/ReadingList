@@ -4,21 +4,29 @@ using System.Linq;
 using Newtonsoft.Json;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
+using ReadingList.Logging;
 
 namespace ReadingList.Trello.Helpers
 {
     public class BookMapper : IBookFactory
     {
-        private char _bookTitleDelimitor => '-';
-        private char _authorsDelimitor => ',';
+        private char _bookTitleDelimiter => '-';
+        private char _authorsDelimiter => ',';
+
+        private ILog _logger; 
+
+        public BookMapper(ILogFactory logFactory)
+        {
+            _logger = logFactory.GetLogger(this.GetType());
+        }
 
         public Book Create(string bookString, string listLabel)
         {
 
-            var bookArray = bookString.Split(_bookTitleDelimitor);
+            var bookArray = bookString.Split(_bookTitleDelimiter);
 
             return new Book(
-                string.Join(_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim(),
+                ExtractTitle(bookArray),
                 ExtractAuthors(bookArray.Last()), MapBookTypeLabel(listLabel));
         }
 
@@ -28,28 +36,35 @@ namespace ReadingList.Trello.Helpers
             {
                 return JsonConvert.DeserializeObject<Book>(jsonString);
             }
-            catch (JsonSerializationException serializationExeption)
+            catch (JsonSerializationException serializationException)
             {
-                throw serializationExeption;
+                _logger.Error("Could not create Book from JSON string", serializationException);
+                throw serializationException;
             }
+        }
+
+        private string ExtractTitle(string[] bookArray)
+        {
+            // To support titles with the title-author delimiter in it, the string needs to be joined on it and last element (after the actual delimiter)
+            // containing authors taken out of the array.
+            return string.Join(_bookTitleDelimiter.ToString(), bookArray.Take(bookArray.Length - 1)).Trim();
         }
 
         private IEnumerable<string> ExtractAuthors(string authors)
         {
-            return authors.Split(_authorsDelimitor).Select(author => author.Trim()).ToList();
-
+            return authors.Split(_authorsDelimiter).Select(author => author.Trim()).ToList();
         }
 
         private Label MapBookTypeLabel(string label)
         {
-            if (string.IsNullOrEmpty(label)) return Label.None;
             try
             {
                 return (Label)Enum.Parse(typeof(Label), label, true);
             }
             catch(ArgumentException ex)
             {
-                return Label.None;
+                _logger.Error($"Could not parse the label to any known labels: {label}", ex);
+                return Label.Unspecified;
             }
         }
     }
