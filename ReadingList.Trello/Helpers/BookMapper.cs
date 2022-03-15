@@ -26,7 +26,7 @@ namespace ReadingList.Trello.Helpers
             var bookArray = bookString.Split(_bookTitleDelimitor);
 
             return new Book(
-                string.Join(_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim(),
+                ExtractTitle(bookArray),
                 ExtractAuthors(bookArray.Last()), MapBookTypeLabel(listLabel));
         }
 
@@ -41,6 +41,13 @@ namespace ReadingList.Trello.Helpers
                 _logger.Error("Could not create Book from JSON string", serializationExeption);
                 throw serializationExeption;
             }
+        }
+
+        private string ExtractTitle(string[] bookArray)
+        {
+            // To support titles with the title-author delimiter in it, the string needs to be joined on it and last element (after the actual delimiter)
+            // taken out of the array.
+            return string.Join(_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim();
         }
 
         private IEnumerable<string> ExtractAuthors(string authors)
