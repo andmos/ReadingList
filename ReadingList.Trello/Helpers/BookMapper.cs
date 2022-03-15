@@ -10,8 +10,8 @@ namespace ReadingList.Trello.Helpers
 {
     public class BookMapper : IBookFactory
     {
-        private char _bookTitleDelimitor => '-';
-        private char _authorsDelimitor => ',';
+        private char _bookTitleDelimiter => '-';
+        private char _authorsDelimiter => ',';
 
         private ILog _logger; 
 
@@ -23,7 +23,7 @@ namespace ReadingList.Trello.Helpers
         public Book Create(string bookString, string listLabel)
         {
 
-            var bookArray = bookString.Split(_bookTitleDelimitor);
+            var bookArray = bookString.Split(_bookTitleDelimiter);
 
             return new Book(
                 ExtractTitle(bookArray),
@@ -36,23 +36,23 @@ namespace ReadingList.Trello.Helpers
             {
                 return JsonConvert.DeserializeObject<Book>(jsonString);
             }
-            catch (JsonSerializationException serializationExeption)
+            catch (JsonSerializationException serializationException)
             {
-                _logger.Error("Could not create Book from JSON string", serializationExeption);
-                throw serializationExeption;
+                _logger.Error("Could not create Book from JSON string", serializationException);
+                throw serializationException;
             }
         }
 
         private string ExtractTitle(string[] bookArray)
         {
             // To support titles with the title-author delimiter in it, the string needs to be joined on it and last element (after the actual delimiter)
-            // taken out of the array.
-            return string.Join(_bookTitleDelimitor.ToString(), bookArray.Take(bookArray.Length - 1)).Trim();
+            // containing authors taken out of the array.
+            return string.Join(_bookTitleDelimiter.ToString(), bookArray.Take(bookArray.Length - 1)).Trim();
         }
 
         private IEnumerable<string> ExtractAuthors(string authors)
         {
-            return authors.Split(_authorsDelimitor).Select(author => author.Trim()).ToList();
+            return authors.Split(_authorsDelimiter).Select(author => author.Trim()).ToList();
         }
 
         private Label MapBookTypeLabel(string label)
