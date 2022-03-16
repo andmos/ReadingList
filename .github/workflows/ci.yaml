@@ -17,12 +17,6 @@ jobs:
         run: |
           ./buildAndTestContainer.sh
       
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ghcr.io/andmos/readinglist
-
       - name: Log in to the Container registry
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/login-action@v1
@@ -32,9 +26,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: |
+          docker tag andmos/readinglist:$(git rev-parse --short HEAD) ghcr.io/andmos/readinglist:latest; 
+          docker tag ghcr.io/andmos/readinglist:latest ghcr.io/andmos/readinglist:$(git rev-parse --short HEAD); 
+          docker push ghcr.io/andmos/readinglist:$(git rev-parse --short HEAD); 
+          docker push ghcr.io/andmos/readinglist:latest; 
