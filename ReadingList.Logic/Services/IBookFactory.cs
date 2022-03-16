@@ -17,6 +17,6 @@ namespace ReadingList.Logic.Services
         /// </summary>
 		/// <returns>The Book Object</returns>
         /// <param name="jsonString">Valid Json string.</param>
-		Book Create(string jsonString);
+        Book Create(string jsonString);
     }
 }
