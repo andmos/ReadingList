@@ -16,7 +16,7 @@ echo "Building readinglist image with git rev $GIT_REV"
 docker build -t andmos/readinglist:$(git rev-parse --short HEAD) .
 
 echo "Running container structure tests on readinglist image"
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gcr.io/gcp-runtimes/container-structure-test:v1.10.0 test --image andmos/readinglist:$GIT_REV --config /tests/imageTests/readinglist_container_tests_config.yaml
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gcr.io/gcp-runtimes/container-structure-test:v1.11.0 test --image andmos/readinglist:$GIT_REV --config /tests/imageTests/readinglist_container_tests_config.yaml
 
 echo "Starting readinglist image and running bats tests"
 docker run --rm --name readinglist -dt -p 1337:1337 -e TrelloAuthSettings__TrelloAPIKey=$TrelloAPIKey -e TrelloAuthSettings__TrelloUserToken=$TrelloUserToken andmos/readinglist:$GIT_REV
