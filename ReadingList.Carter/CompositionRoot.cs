@@ -4,6 +4,7 @@ using ReadingList.Logging;
 using ReadingList.Carter.Logging;
 using ReadingList.Trello.Models;
 using ReadingList.Carter.Trello;
+using Readinglist.Notes.Logic.Services;
 
 namespace ReadingList.Carter
 {
@@ -19,6 +20,9 @@ namespace ReadingList.Carter
             serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 
             serviceRegistry.RegisterFrom<ReadingList.Trello.CompostionRoot>();
+
+            serviceRegistry.Register<IBookRecordRepository, DummyBookRecordRepository>();
+            serviceRegistry.Register<IBookNotesService, BookNotesService>();
         }
     }
 }

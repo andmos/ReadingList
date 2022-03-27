@@ -7,6 +7,7 @@ COPY ReadingList.sln ReadingList.sln
 COPY ReadingList.Logic ReadingList.Logic
 COPY ReadingList.Trello ReadingList.Trello
 COPY ReadingList.Logging ReadingList.Logging
+COPY ReadingList.Notes.Logic ReadingList.Notes.Logic
 COPY ReadingList.Carter ReadingList.Carter
 
 WORKDIR /app/ReadingList.Carter

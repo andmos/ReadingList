@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Logging", "Read
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Carter", "ReadingList.Carter\ReadingList.Carter.csproj", "{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Notes.Logic", "ReadingList.Notes.Logic\ReadingList.Notes.Logic.csproj", "{347E737A-AE70-4432-B968-E7F7C94FB9BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -31,5 +33,9 @@ Global
 		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Debug|x86.Build.0 = Debug|Any CPU
 		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{B085B76E-9C24-4A89-97DB-BE9FA7E601DB}.Release|x86.Build.0 = Release|Any CPU
+		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Debug|x86.Build.0 = Debug|Any CPU
+		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Release|x86.ActiveCfg = Release|Any CPU
+		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
