@@ -28,12 +28,10 @@ namespace Readinglist.Notes.Logic.Services
                         "If Knowledge is power, knowing what we don't know is wisdom.",
                         "When we lack the knowledge and skills to archive excellence, we sometimes lack the knowledge and skills to judge excellence.",
                         "Who you are should be a question about what you value, not what you believe.",
-                        "It's a sign of wisdom to avoid beliving every thought that enters your mind."
+                        "It's a sign of wisdom to avoid believing every thought that enters your mind."
                     }) };
         }
-
         public IEnumerable<BookRecord> GetAllBookRecords() => _dummyBookRecords;
-        
     }
 }
 
