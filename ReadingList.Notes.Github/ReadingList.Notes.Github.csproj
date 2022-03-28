@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReadingList.Notes.Logic\ReadingList.Notes.Logic.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Octokit" />
+    <None Remove="Repositories\" />
+    <None Remove="LightInject" />
+    <None Remove="Markdig" />
+    <None Remove="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Octokit" Version="0.50.0" />
+    <PackageReference Include="LightInject" Version="6.4.1" />
+    <PackageReference Include="Markdig" Version="0.28.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+</Project>

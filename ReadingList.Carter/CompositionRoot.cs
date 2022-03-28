@@ -20,9 +20,7 @@ namespace ReadingList.Carter
             serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
 
             serviceRegistry.RegisterFrom<ReadingList.Trello.CompostionRoot>();
-
-            serviceRegistry.Register<IBookRecordRepository, DummyBookRecordRepository>();
-            serviceRegistry.Register<IBookNotesService, BookNotesService>();
+            serviceRegistry.RegisterFrom<ReadingList.Notes.Github.CompositionRoot>();
         }
     }
 }

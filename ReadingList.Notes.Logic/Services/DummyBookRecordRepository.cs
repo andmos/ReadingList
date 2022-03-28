@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Readinglist.Notes.Logic.Models;
 
 namespace Readinglist.Notes.Logic.Services
@@ -31,7 +32,7 @@ namespace Readinglist.Notes.Logic.Services
                         "It's a sign of wisdom to avoid believing every thought that enters your mind."
                     }) };
         }
-        public IEnumerable<BookRecord> GetAllBookRecords() => _dummyBookRecords;
+        public async Task<IEnumerable<BookRecord>> GetAllBookRecords() => await Task.FromResult(_dummyBookRecords);
     }
 }
 

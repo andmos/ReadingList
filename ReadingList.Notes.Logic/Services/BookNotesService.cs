@@ -8,21 +8,21 @@ namespace Readinglist.Notes.Logic.Services
     public class BookNotesService : IBookNotesService
     {
         private readonly IBookRecordRepository _bookRecordRepository;
+        private readonly Random _randomizer;
 
         public BookNotesService(IBookRecordRepository bookRecordRepository)
         {
+            _randomizer = new Random();
             _bookRecordRepository = bookRecordRepository;
         }
 
-        public Task<BookNote> GetRandomBookNote()
+        public async Task<BookNote> GetRandomBookNote()
         {
-            var randomizer = new Random();
-            var records = _bookRecordRepository.GetAllBookRecords();
-            var randomRecord = records.ElementAt(randomizer.Next(0, records.Count()));
-            var randomNoteFromBook = randomRecord.Notes.ElementAt(randomizer.Next(0, randomRecord.Notes.Count()));
+            var records = await _bookRecordRepository.GetAllBookRecords();
+            var randomRecord = records.ElementAt(_randomizer.Next(0, records.Count()));
+            var randomNoteFromBook = randomRecord.Notes.ElementAt(_randomizer.Next(0, randomRecord.Notes.Count()));
 
-            return Task.FromResult(new BookNote(randomRecord.BookTitle, randomRecord.Authors, randomNoteFromBook));
-
+            return new BookNote(randomRecord.BookTitle, randomRecord.Authors, randomNoteFromBook);
         }
     }
 }

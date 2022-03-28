@@ -21,6 +21,7 @@
     <ProjectReference Include="..\ReadingList.Logic\ReadingList.Logic.csproj" />
     <ProjectReference Include="..\ReadingList.Trello\ReadingList.Trello.csproj" />
     <ProjectReference Include="..\ReadingList.Notes.Logic\ReadingList.Notes.Logic.csproj" />
+    <ProjectReference Include="..\ReadingList.Notes.Github\ReadingList.Notes.Github.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logging\" />

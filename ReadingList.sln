@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Carter", "Readi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Notes.Logic", "ReadingList.Notes.Logic\ReadingList.Notes.Logic.csproj", "{347E737A-AE70-4432-B968-E7F7C94FB9BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingList.Notes.Github", "ReadingList.Notes.Github\ReadingList.Notes.Github.csproj", "{5E8BDC74-FC8A-4F0B-B0B3-5A3B9508DA9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -37,5 +39,9 @@ Global
 		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Debug|x86.Build.0 = Debug|Any CPU
 		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Release|x86.ActiveCfg = Release|Any CPU
 		{347E737A-AE70-4432-B968-E7F7C94FB9BF}.Release|x86.Build.0 = Release|Any CPU
+		{5E8BDC74-FC8A-4F0B-B0B3-5A3B9508DA9B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5E8BDC74-FC8A-4F0B-B0B3-5A3B9508DA9B}.Debug|x86.Build.0 = Debug|Any CPU
+		{5E8BDC74-FC8A-4F0B-B0B3-5A3B9508DA9B}.Release|x86.ActiveCfg = Release|Any CPU
+		{5E8BDC74-FC8A-4F0B-B0B3-5A3B9508DA9B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
