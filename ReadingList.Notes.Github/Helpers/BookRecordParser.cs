@@ -6,8 +6,24 @@ using Readinglist.Notes.Logic.Models;
 
 namespace ReadingList.Notes.Github.Helpers
 {
-    public static class BookRecordMapper
+    public static class BookRecordParser
     {
+        /// Markdown format: 
+        ///  # Title
+        ///          
+        /// ![](picture)
+        ///         
+        /// ### Metadata
+        /// 
+        /// - Author: Author 1, Author 2
+        /// - Full Title: Title
+        /// - Category: #book
+        /// 
+        /// ### Highlights
+        /// - Some Note or quote
+        /// - Some Note or quote
+        /// - Some Note or quote
+        /// - Some Note or quote
         public static BookRecord CreateBookRecordFromMarkdown(string markdown)
         {
             var plainText = Markdown.ToPlainText(markdown);
@@ -28,9 +44,9 @@ namespace ReadingList.Notes.Github.Helpers
             return new List<string>();
         }
 
-        private static List<string> MapNotes(string plainText)
+        private static IEnumerable<string> MapNotes(string plainText)
         {
-            var notes = plainText.Substring(plainText.IndexOf("Highlights")).Split(Environment.NewLine).ToList();
+            var notes = plainText[plainText.IndexOf("Highlights", StringComparison.Ordinal)..].Split(Environment.NewLine).ToList();
             notes.Remove(string.Empty);
             notes.Remove("Highlights");
 
