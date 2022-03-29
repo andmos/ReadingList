@@ -14,29 +14,30 @@ namespace ReadingList.Notes.Github.Repositories
         private const string UserName = "andmos";
         private const string Repo = "ReadingList-Data";
         private const string NotesFolder = "BookNotes";
+        private const string ApplicationName = "ReadingList.Notes";
 
-        private readonly HttpClient httpClient; 
-
+        private readonly IGitHubClient _gitHubClient;
+        private readonly HttpClient _httpClient;
         public GithubReadingListDataRepository()
         {
-            httpClient = new HttpClient();
+            _httpClient = new HttpClient();
+            _gitHubClient = new GitHubClient(new ProductHeaderValue(ApplicationName));
         }
 
         public async Task<IEnumerable<BookRecord>> GetAllBookRecords()
         {
             var rawBookRecords = await GetRawBookRecords();
-            return rawBookRecords.Select(BookRecordMapper.CreateBookRecordFromMarkdown);
+            return rawBookRecords.Select(BookRecordParser.CreateBookRecordFromMarkdown);
         }
 
         private async Task<List<string>> GetRawBookRecords()
         {
-            var github = new GitHubClient(new ProductHeaderValue("ReadingList.Notes"));
-            var repo = await github.Repository.Content.GetAllContents(UserName, Repo, NotesFolder);
+            var repo = await _gitHubClient.Repository.Content.GetAllContents(UserName, Repo, NotesFolder);
 
             var bookFiles = new List<string>();
             foreach (var file in repo)
             {
-                bookFiles.Add(await httpClient.GetStringAsync(file.DownloadUrl));
+                bookFiles.Add(await _httpClient.GetStringAsync(file.DownloadUrl));
             }
 
             return bookFiles;
