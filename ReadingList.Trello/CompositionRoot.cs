@@ -8,9 +8,8 @@ using ReadingList.Trello.Services;
 
 namespace ReadingList.Trello
 {
-    public class CompostionRoot : ICompositionRoot
+    public class CompositionRoot : ICompositionRoot
     {
-
         public void Compose(IServiceRegistry serviceRegistry)
         {
             serviceRegistry.Register<ITrelloFactory, TrelloFactory>();
@@ -24,7 +23,6 @@ namespace ReadingList.Trello
 
             serviceRegistry.Decorate<IReadingListService, CachedReadingListService>();
             serviceRegistry.Decorate<IReadingListService, ReadingListServiceProfiler>();
-
         }
     }
 }
