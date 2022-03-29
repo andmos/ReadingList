@@ -5,6 +5,7 @@ using Carter.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
 using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
@@ -34,21 +35,21 @@ namespace ReadingList.Carter.Modules
             app.MapGet($"{BaseUri}/readingList", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
-                var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.CurrentlyReading, requestLabel);
+                var readingList = await _readingListService.GetReadingList(ReadingListConstants.CurrentlyReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
             app.MapGet($"{BaseUri}/backlogList", async (HttpRequest req, HttpResponse res) =>
             {
                  string requestLabel = req.Query["label"];
-                 var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.Backlog, requestLabel);
+                 var readingList = await _readingListService.GetReadingList(ReadingListConstants.Backlog, requestLabel);
                  await res.AsJson(readingList);
             });
 
             app.MapGet($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string requestLabel = req.Query["label"];
-                var readingList = await _readingListService.GetReadingList(TrelloBoardConstans.DoneReading, requestLabel);
+                var readingList = await _readingListService.GetReadingList(ReadingListConstants.DoneReading, requestLabel);
                 await res.AsJson(readingList);
             });
 
@@ -90,9 +91,7 @@ namespace ReadingList.Carter.Modules
                 res.StatusCode = addBookToBacklog ? 201 : 500;
                 await res.AsJson(addBookToBacklog);
             });
-
-
-
+            
             app.MapPut($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string bookTitle = req.Query["title"];

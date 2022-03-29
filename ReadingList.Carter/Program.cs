@@ -6,10 +6,10 @@ namespace ReadingList.Carter
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).UseLightInject()
+            CreateHostBuilder(args).UseLightInject(registry => registry.RegisterFrom<CompositionRoot>())
             .Build()
             .Run();
-        }
+        }   
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>

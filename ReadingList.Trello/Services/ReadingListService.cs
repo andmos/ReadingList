@@ -6,7 +6,6 @@ using Manatee.Trello;
 using ReadingList.Logging;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
-using ReadingList.Trello.Models;
 using ILog = ReadingList.Logging.ILog;
 
 namespace ReadingList.Trello.Services
@@ -37,7 +36,7 @@ namespace ReadingList.Trello.Services
                 _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards :
                 _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 
-            return cardList?.Select(card => _bookFactory.Create(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? TrelloBoardConstans.UnspecifiedLabel)).ToList();
+            return cardList?.Select(card => _bookFactory.Create(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel)).ToList();
         }
 
         public async Task<bool> AddBookToBacklog(string book, string authors, string label)
@@ -45,18 +44,18 @@ namespace ReadingList.Trello.Services
             await _board.Lists.Refresh();
 
             bool addSuccessfull;
-            var backlogCardListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.Backlog))?.Id;
+            var backlogCardListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.Backlog))?.Id;
             var backlogCardList = new List(backlogCardListId);
             try
             {
                 var bookLabel = _board.Labels.FirstOrDefault(l => l.Name.ToLower().Equals(label.ToLower()));
                 await backlogCardList.Cards.Add(name: FormatCardName(book, authors), labels: new[] { bookLabel });
-                _logger.Info($"Adding {book}, {authors}, {label} to {TrelloBoardConstans.Backlog}");
+                _logger.Info($"Adding {book}, {authors}, {label} to {ReadingListConstants.Backlog}");
                 addSuccessfull = true;
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error when trying to add {book}, {authors}, {label} to {TrelloBoardConstans.Backlog}: ", ex);
+                _logger.Error($"Error when trying to add {book}, {authors}, {label} to {ReadingListConstants.Backlog}: ", ex);
                 addSuccessfull = false;
             }
             return addSuccessfull;
@@ -67,33 +66,29 @@ namespace ReadingList.Trello.Services
             await _board.Lists.Refresh();
 
             bool updateSuccessful;
-            string doneCardListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.DoneReading))?.Id;
+            string doneCardListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.DoneReading))?.Id;
             var doneCardList = new List(doneCardListId);
             try
             {
-                var card = _board.Lists.FirstOrDefault(l => l.Name.Equals(TrelloBoardConstans.CurrentlyReading))?.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
+                var card = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.CurrentlyReading))?.Cards.SingleOrDefault(c => c.Name.ToLower().Contains(book.ToLower()));
                 if (card == null)
                 {
-                    _logger.Info($"Could not find {book} in {TrelloBoardConstans.CurrentlyReading}, so can't move to {TrelloBoardConstans.DoneReading}.");
+                    _logger.Info($"Could not find {book} in {ReadingListConstants.CurrentlyReading}, so can't move to {ReadingListConstants.DoneReading}.");
                     return updateSuccessful = false;
                 }
                 card.List = doneCardList;
                 card.Position = new Position(1);
                 updateSuccessful = true;
-                _logger.Info($"Moving {book} to {TrelloBoardConstans.DoneReading} from {TrelloBoardConstans.CurrentlyReading}");
+                _logger.Info($"Moving {book} to {ReadingListConstants.DoneReading} from {ReadingListConstants.CurrentlyReading}");
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error when trying to move {book} to {TrelloBoardConstans.DoneReading}: ", ex);
+                _logger.Error($"Error when trying to move {book} to {ReadingListConstants.DoneReading}: ", ex);
                 updateSuccessful = false;
             }
             return updateSuccessful;
         }
-
-        private string FormatCardName(string book, string author)
-        {
-            return $"{book} - {author}";
-        }
-
+        
+        private string FormatCardName(string book, string author) => $"{book} - {author}";
     }
 }
