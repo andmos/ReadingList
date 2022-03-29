@@ -51,12 +51,7 @@ namespace ReadingList.Carter
             });
             services.AddHealthChecks().AddCheck<TrelloHealthCheck>(nameof(TrelloHealthCheck));
         }
-
-        public void ConfigureContainer(IServiceContainer container)
-        {
-            container.RegisterFrom<CompositionRoot>();
-        }
-
+        
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
