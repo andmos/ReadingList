@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using ReadingList.Trello.Models;
 
-namespace ReadingList.Carter.Trello
+namespace ReadingList.Trello.Services
 {
     public class TrelloWebHookSourcesConfigFileReader : ITrelloWebHookSources
     {
