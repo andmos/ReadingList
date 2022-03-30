@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReadingList.Notes.Logic\ReadingList.Notes.Logic.csproj" />
+    <ProjectReference Include="..\ReadingList.Logging\ReadingList.Logging.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Octokit" />

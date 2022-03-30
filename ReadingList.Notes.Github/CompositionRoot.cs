@@ -8,9 +8,8 @@ namespace ReadingList.Notes.Github
     {
         public void Compose(IServiceRegistry serviceRegistry)
         {
-            serviceRegistry.RegisterSingleton<IGithubTextFileService, GithubTextFileService>();
-            serviceRegistry.Decorate<IGithubTextFileService, CachedGithubTextFileServiceDecorator>();
-            serviceRegistry.RegisterSingleton<IBookRecordRepository, GithubReadingListDataService>();
+            serviceRegistry.RegisterSingleton<IGithubBookRecordService, GithubBookRecordService>();
+            serviceRegistry.Register<IBookRecordRepository, ReadingListDataRepository>();
             serviceRegistry.Register<IBookNotesService, BookNotesService>();
         }
     }
