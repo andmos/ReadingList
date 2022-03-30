@@ -17,7 +17,7 @@ namespace ReadingList.Notes.Github.Repositories
             _githubTextFileService = githubTextFileService;
         }
 
-        public async Task<BookRecord> GetBookRecordFrom(RepositoryContent content)
+        public async Task<BookRecord> GetBookRecord(RepositoryContent content)
         {
             if (_cache.TryGetValue(content.Sha, out BookRecord bookRecord))
             {
@@ -25,7 +25,7 @@ namespace ReadingList.Notes.Github.Repositories
             }
             else
             {
-                bookRecord = await _githubTextFileService.GetBookRecordFrom(content);
+                bookRecord = await _githubTextFileService.GetBookRecord(content);
                 _cache.TryAdd(content.Sha, bookRecord);
                 return bookRecord;
             }

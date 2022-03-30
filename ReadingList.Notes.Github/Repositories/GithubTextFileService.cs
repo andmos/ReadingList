@@ -15,7 +15,7 @@ namespace ReadingList.Notes.Github.Repositories
             _httpClient = new HttpClient();
         }
 
-        public async Task<BookRecord> GetBookRecordFrom(RepositoryContent content)
+        public async Task<BookRecord> GetBookRecord(RepositoryContent content)
         {
             var rawBookRecord = await _httpClient.GetStringAsync(content.DownloadUrl);
 
