@@ -43,7 +43,10 @@ namespace ReadingList.Notes.Github.Helpers
 
         private static IEnumerable<string> MapAuthors(string plainText)
         {
-            return new List<string>();
+            var authorsMatchingRegex = @"(?<=Author:\s)(\w+).*";
+            var authorsDelimiter = ',';
+            var authorsMatch = Regex.Match(plainText, authorsMatchingRegex).Groups[0].Value;
+            return authorsMatch.Split(authorsDelimiter).Select(author => author.Trim()).ToList();
         }
 
         private static IEnumerable<string> MapNotes(string plainText)
