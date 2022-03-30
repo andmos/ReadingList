@@ -74,7 +74,7 @@ namespace ReadingList.Carter
             });
         }
 
-        private HealthCheckOptions CreateHealthCheckOptions()
+        private static HealthCheckOptions CreateHealthCheckOptions()
         {
             var options = new HealthCheckOptions
             {
