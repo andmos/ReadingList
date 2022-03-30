@@ -4,12 +4,11 @@ using Readinglist.Notes.Logic.Services;
 using Octokit;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
 using ReadingList.Notes.Github.Helpers;
 
 namespace ReadingList.Notes.Github.Repositories
 {
-    public class GithubReadingListDataRepository : IBookRecordRepository
+    public class GithubReadingListDataService : IBookRecordRepository
     {
         private const string UserName = "andmos";
         private const string Repo = "ReadingList-Data";
@@ -17,11 +16,12 @@ namespace ReadingList.Notes.Github.Repositories
         private const string ApplicationName = "ReadingList.Notes";
 
         private readonly IGitHubClient _gitHubClient;
-        private readonly HttpClient _httpClient;
-        public GithubReadingListDataRepository()
+        private readonly IGithubTextFileService _githubTextFileService;
+
+        public GithubReadingListDataService(IGithubTextFileService readingListDataRawDataService)
         {
-            _httpClient = new HttpClient();
             _gitHubClient = new GitHubClient(new ProductHeaderValue(ApplicationName));
+            _githubTextFileService = readingListDataRawDataService;
         }
 
         public async Task<IEnumerable<BookRecord>> GetAllBookRecords()
@@ -35,9 +35,9 @@ namespace ReadingList.Notes.Github.Repositories
             var repo = await _gitHubClient.Repository.Content.GetAllContents(UserName, Repo, NotesFolder);
 
             var bookFiles = new List<string>();
-            foreach (var file in repo)
+            foreach (var content in repo)
             {
-                bookFiles.Add(await _httpClient.GetStringAsync(file.DownloadUrl));
+                bookFiles.Add(await _githubTextFileService.GetRawBookRecord(content));
             }
 
             return bookFiles;
