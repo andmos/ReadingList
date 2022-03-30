@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Markdig;
 using Readinglist.Notes.Logic.Models;
 
@@ -36,7 +37,8 @@ namespace ReadingList.Notes.Github.Helpers
 
         private static string MapTitle(string plainText)
         {
-            return string.Empty;
+            var titleMatchingRegex = @"(?<=Full Title:\s)(\w+).*";
+            return Regex.Match(plainText, titleMatchingRegex).Groups[0].Value;
         }
 
         private static IEnumerable<string> MapAuthors(string plainText)

@@ -1,5 +1,4 @@
-﻿using System;
-using LightInject;
+﻿using LightInject;
 using Readinglist.Notes.Logic.Services;
 using ReadingList.Notes.Github.Repositories;
 
