@@ -18,26 +18,20 @@ namespace ReadingList.Notes.Github.Repositories
         private readonly IGitHubClient _gitHubClient;
         private readonly IGithubTextFileService _githubTextFileService;
 
-        public GithubReadingListDataService(IGithubTextFileService readingListDataRawDataService)
+        public GithubReadingListDataService(IGithubTextFileService githubTextFileService)
         {
             _gitHubClient = new GitHubClient(new ProductHeaderValue(ApplicationName));
-            _githubTextFileService = readingListDataRawDataService;
+            _githubTextFileService = githubTextFileService;
         }
 
         public async Task<IEnumerable<BookRecord>> GetAllBookRecords()
         {
-            var rawBookRecords = await GetRawBookRecords();
-            return rawBookRecords.Select(BookRecordParser.CreateBookRecordFromMarkdown);
-        }
-
-        private async Task<List<string>> GetRawBookRecords()
-        {
             var repo = await _gitHubClient.Repository.Content.GetAllContents(UserName, Repo, NotesFolder);
 
-            var bookFiles = new List<string>();
+            var bookFiles = new List<BookRecord>();
             foreach (var content in repo)
             {
-                bookFiles.Add(await _githubTextFileService.GetRawBookRecord(content));
+                bookFiles.Add(await _githubTextFileService.GetBookRecord(content));
             }
 
             return bookFiles;

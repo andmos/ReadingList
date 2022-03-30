@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Octokit;
+using Readinglist.Notes.Logic.Models;
+using ReadingList.Notes.Github.Helpers;
 
 namespace ReadingList.Notes.Github.Repositories
 {
@@ -13,7 +15,12 @@ namespace ReadingList.Notes.Github.Repositories
             _httpClient = new HttpClient();
         }
 
-        public async Task<string> GetRawBookRecord(RepositoryContent content) => await _httpClient.GetStringAsync(content.DownloadUrl);
+        public async Task<BookRecord> GetBookRecordFrom(RepositoryContent content)
+        {
+            var rawBookRecord = await _httpClient.GetStringAsync(content.DownloadUrl);
+
+            return BookRecordParser.CreateBookRecordFromMarkdown(rawBookRecord);
+        }
     }
 }
 
