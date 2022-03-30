@@ -37,14 +37,14 @@ namespace ReadingList.Notes.Github.Helpers
 
         private static string MapTitle(string plainText)
         {
-            var titleMatchingRegex = @"(?<=Full Title:\s)(\w+).*";
+            const string titleMatchingRegex = @"(?<=Full Title:\s)(\w+).*";
             return Regex.Match(plainText, titleMatchingRegex).Groups[0].Value;
         }
 
         private static IEnumerable<string> MapAuthors(string plainText)
         {
-            var authorsMatchingRegex = @"(?<=Author:\s)(\w+).*";
-            var authorsDelimiter = ',';
+            const string authorsMatchingRegex = @"(?<=Author:\s)(\w+).*";
+            const char authorsDelimiter = ',';
             var authorsMatch = Regex.Match(plainText, authorsMatchingRegex).Groups[0].Value;
             return authorsMatch.Split(authorsDelimiter).Select(author => author.Trim()).ToList();
         }
