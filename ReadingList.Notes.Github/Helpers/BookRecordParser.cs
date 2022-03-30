@@ -46,7 +46,7 @@ namespace ReadingList.Notes.Github.Helpers
             const string authorsMatchingRegex = @"(?<=Author:\s)(\w+).*";
             const char authorsDelimiter = ',';
             var authorsMatch = Regex.Match(plainText, authorsMatchingRegex).Groups[0].Value;
-            return authorsMatch.Split(authorsDelimiter).Select(author => author.Trim()).ToList();
+            return authorsMatch.Split(authorsDelimiter).Select(author => author.Trim());
         }
 
         private static IEnumerable<string> MapNotes(string plainText)
