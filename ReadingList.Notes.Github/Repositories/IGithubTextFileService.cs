@@ -9,7 +9,6 @@ namespace ReadingList.Notes.Github.Repositories
     public interface IGithubBookRecordService
     {
         Task<IEnumerable<BookRecord>> GetAllBookRecords();
-        Task<BookRecord> GetBookRecord(RepositoryContent content);
     }
 }
 
