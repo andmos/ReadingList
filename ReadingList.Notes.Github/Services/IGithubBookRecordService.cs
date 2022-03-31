@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Readinglist.Notes.Logic.Models;
 
-namespace Readinglist.Notes.Logic.Services
+namespace ReadingList.Notes.Github.Services
 {
-    public interface IBookRecordRepository
+    public interface IGithubBookRecordService
     {
         Task<IEnumerable<BookRecord>> GetAllBookRecords();
     }

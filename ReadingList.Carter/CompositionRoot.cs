@@ -22,8 +22,7 @@ namespace ReadingList.Carter
 
             serviceRegistry.RegisterFrom<ReadingList.Trello.CompositionRoot>();
 
-            serviceRegistry.Register<IBookRecordRepository, DummyBookRecordRepository>();
-            serviceRegistry.Register<IBookNotesService, BookNotesService>();
+            serviceRegistry.RegisterFrom<ReadingList.Notes.Github.CompositionRoot>();
         }
     }
 }
