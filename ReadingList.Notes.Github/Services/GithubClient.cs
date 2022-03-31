@@ -22,10 +22,8 @@ namespace ReadingList.Notes.Github.Services
 
         public async Task<string> GetRepositoryTextFile(string url) => await Client.GetStringAsync(url);
 
-        public async Task<IReadOnlyList<RepositoryContent>> GetRepositoryContent(string username, string repo, string repoPath)
-        {
-            return await _gitHubClient.Repository.Content.GetAllContents(username, repo, repoPath);
-        }
+        public async Task<IReadOnlyList<RepositoryContent>> GetRepositoryContent(string username, string repo, string repoPath) =>await _gitHubClient.Repository.Content.GetAllContents(username, repo, repoPath);
+        
     }
 }
 
