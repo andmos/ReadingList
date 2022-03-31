@@ -11,21 +11,19 @@ namespace ReadingList.Notes.Github.Services
     public class GithubBookRecordService : IGithubBookRecordService
     {
         private readonly IBookRecordCache _bookRecordCache;
-        private readonly HttpClient _httpClient;
 
         private const string UserName = "andmos";
         private const string Repo = "ReadingList-Data";
         private const string NotesFolder = "BookNotes";
-        private const string ApplicationName = "ReadingList.Notes";
 
-        private readonly IGitHubClient _gitHubClient;
         private readonly ILog _logger;
 
-        public GithubBookRecordService(IBookRecordCache bookRecordCache, ILogFactory logFactory)
+        private readonly GithubClient _githubFileClient;
+
+        public GithubBookRecordService(IBookRecordCache bookRecordCache, ILogFactory logFactory, GithubClient githubFileClient)
         {
             _bookRecordCache = bookRecordCache;
-            _httpClient = new HttpClient();
-            _gitHubClient = new GitHubClient(new ProductHeaderValue(ApplicationName));
+            _githubFileClient = githubFileClient;
             _logger = logFactory.GetLogger(GetType());
         }
 
@@ -33,7 +31,7 @@ namespace ReadingList.Notes.Github.Services
         {
             try
             {
-                var repo = await _gitHubClient.Repository.Content.GetAllContents(UserName, Repo, NotesFolder);
+                var repo = await _githubFileClient.GetRepositoryContent(UserName, Repo, NotesFolder);
 
                 var bookFiles = new List<BookRecord>();
                 foreach (var content in repo)
@@ -63,7 +61,7 @@ namespace ReadingList.Notes.Github.Services
 
         private async Task<BookRecord> GetBookRecordFromApi(RepositoryContentInfo content)
         {
-            var rawBookRecord = await _httpClient.GetStringAsync(content.DownloadUrl);
+            var rawBookRecord = await _githubFileClient.GetRepositoryTextFile(content.DownloadUrl);
 
             return BookRecordParser.CreateBookRecordFromMarkdown(rawBookRecord);
         }

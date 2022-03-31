@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using Carter;
-using Carter.Response;
-using LightInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +13,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ReadingList.Carter.Trello;
+using ReadingList.Notes.Github.Services;
 using ReadingList.Trello.Models;
 
 namespace ReadingList.Carter
@@ -49,6 +48,7 @@ namespace ReadingList.Carter
                             .AllowAnyMethod();
                     });
             });
+            services.AddHttpClient<GithubClient>();
             services.AddHealthChecks().AddCheck<TrelloHealthCheck>(nameof(TrelloHealthCheck));
         }
         
