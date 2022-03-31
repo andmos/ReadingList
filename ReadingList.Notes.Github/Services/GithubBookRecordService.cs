@@ -50,7 +50,7 @@ namespace ReadingList.Notes.Github.Services
             }
         }
 
-        private async Task<BookRecord> GetBookRecord(RepositoryContent content)
+        private async Task<BookRecord> GetBookRecord(RepositoryContentInfo content)
         {
             if (_bookRecordCache.TryGetValue(content.Sha, out var bookRecord))
             {
@@ -61,7 +61,7 @@ namespace ReadingList.Notes.Github.Services
             return bookRecord;
         }
 
-        private async Task<BookRecord> GetBookRecordFromApi(RepositoryContent content)
+        private async Task<BookRecord> GetBookRecordFromApi(RepositoryContentInfo content)
         {
             var rawBookRecord = await _httpClient.GetStringAsync(content.DownloadUrl);
 
