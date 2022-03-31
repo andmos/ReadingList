@@ -13,9 +13,9 @@ namespace ReadingList.Trello.Helpers
             _cache = new ConcurrentDictionary<KeyValuePair<string, string>, IEnumerable<Book>>();
         }
 
-        public bool TryGetValue(KeyValuePair<string, string> listLabelPair, out IEnumerable<Book> listOut)
+        public bool TryGetValue(KeyValuePair<string, string> listLabelPair, out IEnumerable<Book> bookListOut)
         {
-            return _cache.TryGetValue(listLabelPair, out listOut);
+            return _cache.TryGetValue(listLabelPair, out bookListOut);
         }
 
         public bool TryAdd(KeyValuePair<string, string> listLabelPair, IEnumerable<Book> listOut)

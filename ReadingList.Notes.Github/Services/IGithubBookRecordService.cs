@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Octokit;
 using Readinglist.Notes.Logic.Models;
 
-namespace ReadingList.Notes.Github.Repositories
+namespace ReadingList.Notes.Github.Services
 {
     public interface IGithubBookRecordService
     {

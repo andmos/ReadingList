@@ -6,7 +6,7 @@ namespace ReadingList.Trello.Helpers
 	public interface IReadingListCache
     {
 		void InvalidateCache();
-		bool TryGetValue(KeyValuePair<string, string> listLabelPair, out IEnumerable<Book> listOut);
-		bool TryAdd(KeyValuePair<string, string> listLabelPair, IEnumerable<Book> listOut);
+		bool TryGetValue(KeyValuePair<string, string> listLabelPair, out IEnumerable<Book> bookListOut);
+		bool TryAdd(KeyValuePair<string, string> listLabelPair, IEnumerable<Book> books);
     }
 }

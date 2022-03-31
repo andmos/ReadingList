@@ -1,16 +1,16 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Octokit;
-using Readinglist.Notes.Logic.Models;
 using ReadingList.Logging;
 using ReadingList.Notes.Github.Helpers;
+using Readinglist.Notes.Logic.Models;
 
-namespace ReadingList.Notes.Github.Repositories
+namespace ReadingList.Notes.Github.Services
 {
     public class GithubBookRecordService : IGithubBookRecordService
     {
+        private readonly IBookRecordCache _bookRecordCache;
         private readonly HttpClient _httpClient;
 
         private const string UserName = "andmos";
@@ -20,13 +20,12 @@ namespace ReadingList.Notes.Github.Repositories
 
         private readonly IGitHubClient _gitHubClient;
         private readonly ILog _logger;
-        private readonly ConcurrentDictionary<string, BookRecord> _cache;
 
-        public GithubBookRecordService(ILogFactory logFactory)
+        public GithubBookRecordService(IBookRecordCache bookRecordCache, ILogFactory logFactory)
         {
+            _bookRecordCache = bookRecordCache;
             _httpClient = new HttpClient();
             _gitHubClient = new GitHubClient(new ProductHeaderValue(ApplicationName));
-            _cache = new ConcurrentDictionary<string, BookRecord>();
             _logger = logFactory.GetLogger(GetType());
         }
 
@@ -47,22 +46,19 @@ namespace ReadingList.Notes.Github.Repositories
             catch (RateLimitExceededException rateLimitException)
             {
                 _logger.Error("Rate limit exceeded against Github, falling back to cache: ", rateLimitException);
-                return _cache.Values;
+                return _bookRecordCache.GetAll();
             }
         }
 
         private async Task<BookRecord> GetBookRecord(RepositoryContent content)
         {
-            if (_cache.TryGetValue(content.Sha, out BookRecord bookRecord))
+            if (_bookRecordCache.TryGetValue(content.Sha, out var bookRecord))
             {
                 return bookRecord;
             }
-            else
-            {
-                bookRecord = await GetBookRecordFromApi(content);
-                _cache.TryAdd(content.Sha, bookRecord);
-                return bookRecord;
-            }
+            bookRecord = await GetBookRecordFromApi(content);
+            _bookRecordCache.TryAdd(content.Sha, bookRecord);
+            return bookRecord;
         }
 
         private async Task<BookRecord> GetBookRecordFromApi(RepositoryContent content)

@@ -2,6 +2,7 @@
 using Readinglist.Notes.Logic.Models;
 using Readinglist.Notes.Logic.Services;
 using System.Threading.Tasks;
+using ReadingList.Notes.Github.Services;
 
 namespace ReadingList.Notes.Github.Repositories
 {
