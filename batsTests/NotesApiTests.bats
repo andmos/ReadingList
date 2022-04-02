@@ -21,7 +21,7 @@ readingListUrl="http://readinglist:1337/api/notes"
 }
 
 @test "GET: All endpoint should return array of book notes with non-empty title in first element" {
-    result="$(curl -s $readingListUrl/random | jq '.[0].title' --raw-output)"
+    result="$(curl -s $readingListUrl/all | jq '.[0].title' --raw-output)"
     echo $result
     [ ! -z "$result" ]
 }
