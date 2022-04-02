@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Readinglist.Notes.Logic.Models;
 
 namespace Readinglist.Notes.Logic.Services
@@ -6,6 +7,7 @@ namespace Readinglist.Notes.Logic.Services
 	public interface IBookNotesService
 	{
 		Task<BookNote> GetRandomBookNote();
+		Task<IEnumerable<BookRecord>> GetAllBookNotes();
 	}
 }
 
