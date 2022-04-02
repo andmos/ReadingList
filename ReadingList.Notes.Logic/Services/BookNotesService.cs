@@ -28,7 +28,7 @@ namespace Readinglist.Notes.Logic.Services
             var randomRecord = records.ElementAt(_randomizer.Next(0, records.Count));
             var randomNoteFromBook = randomRecord.Notes.ElementAt(_randomizer.Next(0, randomRecord.Notes.Count()));
 
-            return new BookNote(randomRecord.BookTitle, randomRecord.Authors, randomNoteFromBook);
+            return new BookNote(randomRecord.Title, randomRecord.Authors, randomNoteFromBook);
         }
     }
 }
