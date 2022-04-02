@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Octokit;
 using ReadingList.Logging;
@@ -54,6 +53,7 @@ namespace ReadingList.Notes.Github.Services
             {
                 return bookRecord;
             }
+            _logger.Info($"Cache miss for {content.Name} with sha {content.Sha}");
             bookRecord = await GetBookRecordFromApi(content);
             _bookRecordCache.TryAdd(content.Sha, bookRecord);
             return bookRecord;
