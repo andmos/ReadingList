@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Readinglist.Notes.Logic.Models;
@@ -14,6 +15,11 @@ namespace Readinglist.Notes.Logic.Services
         {
             _randomizer = new Random();
             _bookRecordRepository = bookRecordRepository;
+        }
+
+        public async Task<IEnumerable<BookRecord>> GetAllBookNotes()
+        {
+            return await _bookRecordRepository.GetAllBookRecords();
         }
 
         public async Task<BookNote> GetRandomBookNote()

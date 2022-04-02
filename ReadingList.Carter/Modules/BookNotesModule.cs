@@ -22,10 +22,15 @@ namespace ReadingList.Carter.Modules
         {
             app.MapGet($"{BaseUri}/random", async (HttpRequest req, HttpResponse res) =>
             {
-                var randomNote = await _bookNotesService.GetRandomBookNote();
-                await res.AsJson(randomNote);
+                await res.AsJson(await _bookNotesService.GetRandomBookNote());
+            });
+
+            app.MapGet($"{BaseUri}/all", async (HttpRequest req, HttpResponse res) =>
+            {
+                await res.AsJson(await _bookNotesService.GetAllBookNotes());
             });
         }
+
     }
 }
 
