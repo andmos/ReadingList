@@ -11,6 +11,7 @@ namespace ReadingList.Notes.Github
         {
             serviceRegistry.RegisterSingleton<IBookRecordCache, BookRecordCache>();
             serviceRegistry.RegisterSingleton<IGithubBookRecordService, GithubBookRecordService>();
+            serviceRegistry.Decorate<IGithubBookRecordService, GithubBookRecordServiceProfiler>();
             serviceRegistry.Register<IBookRecordRepository, ReadingListDataRepository>();
             serviceRegistry.Register<IBookNotesService, BookNotesService>();
         }
