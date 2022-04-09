@@ -47,7 +47,7 @@ namespace ReadingList.Notes.Github.Services
             }
         }
 
-        private async Task<BookRecord> GetBookRecord(RepositoryContentInfo content)
+        private async ValueTask<BookRecord> GetBookRecord(RepositoryContentInfo content)
         {
             if (_bookRecordCache.TryGetValue(content.Sha, out var bookRecord))
             {
