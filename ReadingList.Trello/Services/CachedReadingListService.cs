@@ -10,9 +10,6 @@ namespace ReadingList.Trello.Services
 {
     public class CachedReadingListService : IReadingListService
     {
-
-        // abstraher ut selve cache, med ICacheSomething -> GetOrAdd og Invalidate
-
         private readonly IReadingListService _readingListService;
         private readonly ILog _logger;
         private readonly IReadingListCache _readingListCache;
