@@ -51,7 +51,11 @@ namespace ReadingList.Notes.Github.Helpers
 
         private static IEnumerable<string> MapNotes(string plainText)
         {
-            var notes = plainText[plainText.IndexOf("Highlights", StringComparison.Ordinal)..].Split(Environment.NewLine).ToList();
+            var regexLocationTag = @"\(Location.*?\)";
+            var notes = plainText[plainText.IndexOf("Highlights", StringComparison.Ordinal)..]
+                .Split(Environment.NewLine)
+                .Select(l => Regex.Replace(l, regexLocationTag, string.Empty).TrimEnd()).ToList();
+
             notes.Remove(string.Empty);
             notes.Remove("Highlights");
 
