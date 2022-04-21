@@ -25,10 +25,14 @@ namespace Readinglist.Notes.Logic.Services
         public async Task<BookNote> GetRandomBookNote()
         {
             var records = (await _bookRecordRepository.GetAllBookRecords()).ToList();
-            var randomRecord = records.ElementAt(_randomizer.Next(0, records.Count));
-            var randomNoteFromBook = randomRecord.Notes.ElementAt(_randomizer.Next(0, randomRecord.Notes.Count()));
+            var notes = new List<KeyValuePair<string, BookRecord>>();
+            foreach (var bookRecord in records)
+            {
+                notes.AddRange(bookRecord.Notes.Select(bookNote => new KeyValuePair<string, BookRecord>(bookNote, bookRecord)));
+            }
+            var (note, record) = notes.ElementAt(_randomizer.Next(0, notes.Count));
 
-            return new BookNote(randomRecord.Title, randomRecord.Authors, randomNoteFromBook);
+            return new BookNote(record.Title, record.Authors, note);
         }
     }
 }
