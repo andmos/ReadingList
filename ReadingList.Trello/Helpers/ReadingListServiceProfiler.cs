@@ -22,7 +22,7 @@ namespace ReadingList.Trello.Helpers
             var stopWatch = Stopwatch.StartNew();
             var addResult = await _readingListService.AddBookToBacklog(book, authors, label);
             stopWatch.Stop();
-            _logger.Info($"AddBookToBacklig: Call took {stopWatch.ElapsedMilliseconds} Ms");
+            _logger.Info($"{nameof(AddBookToBacklog)}: took {stopWatch.ElapsedMilliseconds} ms");
             return addResult;
         }
 
@@ -31,7 +31,7 @@ namespace ReadingList.Trello.Helpers
             var stopWatch = Stopwatch.StartNew();
             var list = await _readingListService.GetReadingList(listName, label);
             stopWatch.Stop();
-            _logger.Info($"GetReadingList: Call for list {listName} took {stopWatch.ElapsedMilliseconds} Ms");
+            _logger.Info($"{nameof(GetReadingList)}: Call for list {listName} took {stopWatch.ElapsedMilliseconds} ms");
             return list;
         }
 
@@ -40,7 +40,7 @@ namespace ReadingList.Trello.Helpers
             var stopWatch = Stopwatch.StartNew();
             var result = await _readingListService.UpdateDoneListFromReadingList(book);
             stopWatch.Stop();
-            _logger.Info($"UpdateDoneList: Call took {stopWatch.ElapsedMilliseconds}");
+            _logger.Info($"{nameof(UpdateDoneListFromReadingList)}: Call took {stopWatch.ElapsedMilliseconds} ms");
             return result;
         }
     }

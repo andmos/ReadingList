@@ -21,7 +21,7 @@ namespace ReadingList.Notes.Github.Services
             var stopWatch = Stopwatch.StartNew();
             var allBookRecords = await _githubBookRecordService.GetAllBookRecords();
             stopWatch.Stop();
-            _logger.Info($"GetAllBookRecords: Call took {stopWatch.ElapsedMilliseconds} Ms");
+            _logger.Info($"{nameof(GetAllBookRecords)}: took {stopWatch.ElapsedMilliseconds} ms");
             return allBookRecords;
         }
     }
