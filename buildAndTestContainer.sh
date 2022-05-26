@@ -20,7 +20,7 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/tests gc
 
 echo "Starting readinglist image and running bats tests"
 docker run --rm --name readinglist -dt -p 1337:1337 -e TrelloAuthSettings__TrelloAPIKey=$TrelloAPIKey -e TrelloAuthSettings__TrelloUserToken=$TrelloUserToken andmos/readinglist:$GIT_REV
-sleep 5
+sleep 7
 docker run --link readinglist:readinglist --rm -e TrelloAPIKey=$TrelloAPIKey -e TrelloUserToken=$TrelloUserToken -v $(pwd):/app graze/bats /app/batsTests
 
 
