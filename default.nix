@@ -13,6 +13,6 @@ in buildDotnetModule rec {
 
   executables = [ "ReadingList.Carter" ]; 
   
-  packNupkg = true; # This packs the project as "foo-0.1.nupkg" at `$out/share`.
+  packNupkg = false; # This packs the project as "foo-0.1.nupkg" at `$out/share`.
   nupkgName = "ReadingList";
 }
