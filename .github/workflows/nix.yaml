@@ -21,4 +21,4 @@ jobs:
           nix_path: nixpkgs=channel:nixos-22.05
 
       - name: Build
-        run: nix build
+        run: nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix { }'
