@@ -4,10 +4,10 @@ using ReadingList.Notes.Github.Models;
 
 namespace ReadingList.Notes.Github.Services
 {
-    public class GitBookRecordCache : IBookRecordCache
+    public class GitGitBookRecordCache : IGitBookRecordCache
     {
         private readonly ConcurrentDictionary<string, GitBookRecord> _cache;
-        public GitBookRecordCache()
+        public GitGitBookRecordCache()
         {
             _cache = new ConcurrentDictionary<string, GitBookRecord>();
         }

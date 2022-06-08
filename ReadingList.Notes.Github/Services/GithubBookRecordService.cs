@@ -11,7 +11,7 @@ namespace ReadingList.Notes.Github.Services
 {
     public class GithubBookRecordService : IGithubBookRecordService
     {
-        private readonly IBookRecordCache _bookRecordCache;
+        private readonly IGitBookRecordCache _gitBookRecordCache;
 
         private const string UserName = "andmos";
         private const string Repo = "ReadingList-Data";
@@ -21,9 +21,9 @@ namespace ReadingList.Notes.Github.Services
 
         private readonly GithubClient _githubFileClient;
 
-        public GithubBookRecordService(IBookRecordCache bookRecordCache, ILogFactory logFactory, GithubClient githubFileClient)
+        public GithubBookRecordService(IGitBookRecordCache gitBookRecordCache, ILogFactory logFactory, GithubClient githubFileClient)
         {
-            _bookRecordCache = bookRecordCache;
+            _gitBookRecordCache = gitBookRecordCache;
             _githubFileClient = githubFileClient;
             _logger = logFactory.GetLogger(GetType());
         }
@@ -45,7 +45,7 @@ namespace ReadingList.Notes.Github.Services
             catch (RateLimitExceededException rateLimitException)
             {
                 _logger.Error("Rate limit exceeded against Github, falling back to cache: ", rateLimitException);
-                return _bookRecordCache.GetAll().Select(r => r.BookRecord);
+                return _gitBookRecordCache.GetAll().Select(r => r.BookRecord);
             }
         }
 
@@ -61,7 +61,7 @@ namespace ReadingList.Notes.Github.Services
             catch (RateLimitExceededException rateLimitException)
             {
                 _logger.Error("Rate limit exceeded against Github, falling back to cache: ", rateLimitException);
-                return _bookRecordCache.GetAll()
+                return _gitBookRecordCache.GetAll()
                     .FirstOrDefault(r => r.FileName.ToLower().Contains(book.ToLower()))
                     ?.BookRecord;
             }
@@ -69,13 +69,13 @@ namespace ReadingList.Notes.Github.Services
 
         private async ValueTask<BookRecord> GetBookRecord(RepositoryContentInfo content)
         {
-            if (_bookRecordCache.TryGetValue(content.Sha, out var gitBookRecord))
+            if (_gitBookRecordCache.TryGetValue(content.Sha, out var gitBookRecord))
             {
                 return gitBookRecord.BookRecord;
             }
             _logger.Info($"Cache miss for {content.Name} with sha {content.Sha}");
             gitBookRecord = await GetBookRecordFromApi(content);
-            _bookRecordCache.TryAdd(content.Sha, gitBookRecord);
+            _gitBookRecordCache.TryAdd(content.Sha, gitBookRecord);
             return gitBookRecord.BookRecord;
         }
 
