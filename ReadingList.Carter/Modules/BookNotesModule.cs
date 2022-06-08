@@ -1,4 +1,5 @@
 ﻿using Carter;
+using Carter.Request;
 using Carter.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,11 @@ namespace ReadingList.Carter.Modules
             app.MapGet($"{BaseUri}/all", async (HttpRequest req, HttpResponse res) =>
             {
                 await res.AsJson(await _bookNotesService.GetAllBookNotes());
+            });
+            
+            app.MapGet($"{BaseUri}/book", async (HttpRequest req, HttpResponse res) =>
+            {
+                await res.AsJson(await _bookNotesService.GetBookNotes(req.Query.As<string>("title")));
             });
         }
 

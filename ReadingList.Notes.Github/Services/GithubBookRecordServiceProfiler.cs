@@ -24,5 +24,14 @@ namespace ReadingList.Notes.Github.Services
             _logger.Info($"{nameof(GetAllBookRecords)}: took {stopWatch.ElapsedMilliseconds} ms");
             return allBookRecords;
         }
+
+        public async Task<BookRecord> GetBookNotes(string book)
+        {
+            var stopWatch = Stopwatch.StartNew();
+            var bookNotes = await _githubBookRecordService.GetBookNotes(book);
+            stopWatch.Stop();
+            _logger.Info($"{nameof(GetBookNotes)}: took {stopWatch.ElapsedMilliseconds} ms");
+            return bookNotes;
+        }
     }
 }

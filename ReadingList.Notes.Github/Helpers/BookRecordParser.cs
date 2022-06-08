@@ -25,14 +25,15 @@ namespace ReadingList.Notes.Github.Helpers
         /// - Some Note or quote
         /// - Some Note or quote
         /// - Some Note or quote
-        public static BookRecord CreateBookRecordFromMarkdown(string markdown)
+        public static BookRecord CreateBookRecordFromMarkdown(MarkdownFile markdownFile)
         {
-            var plainText = Markdown.ToPlainText(markdown);
+            var plainText = Markdown.ToPlainText(markdownFile.Content);
 
             return new BookRecord(
                 MapTitle(plainText),
                 MapAuthors(plainText),
-                MapNotes(plainText));
+                MapNotes(plainText),
+                markdownFile.FileName);
         }
 
         private static string MapTitle(string plainText)

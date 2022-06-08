@@ -20,6 +20,11 @@ namespace ReadingList.Notes.Github.Repositories
         {
             return await _githubBookRecordService.GetAllBookRecords();
         }
+
+        public Task<BookRecord> GetBookNotes(string book)
+        {
+            return _githubBookRecordService.GetBookNotes(book);
+        }
     }
 }
 

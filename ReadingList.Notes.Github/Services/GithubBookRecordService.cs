@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Octokit;
 using ReadingList.Logging;
@@ -14,7 +15,7 @@ namespace ReadingList.Notes.Github.Services
         private const string UserName = "andmos";
         private const string Repo = "ReadingList-Data";
         private const string NotesFolder = "BookNotes";
-
+        
         private readonly ILog _logger;
 
         private readonly GithubClient _githubFileClient;
@@ -47,6 +48,23 @@ namespace ReadingList.Notes.Github.Services
             }
         }
 
+        public async Task<BookRecord> GetBookNotes(string book)
+        {
+            try
+            {
+                var repo = await _githubFileClient.GetRepositoryContent(UserName, Repo, NotesFolder);
+                
+                var bookContent = repo?.FirstOrDefault(b => b.Name.ToLower().Contains(book.ToLower()));
+                return await GetBookRecord(bookContent);
+            }
+            catch (RateLimitExceededException rateLimitException)
+            {
+                _logger.Error("Rate limit exceeded against Github, falling back to cache: ", rateLimitException);
+                return _bookRecordCache.GetAll()
+                    .FirstOrDefault(r => r.RawFileName.ToLower().Equals(book.ToLower()));
+            }
+        }
+
         private async ValueTask<BookRecord> GetBookRecord(RepositoryContentInfo content)
         {
             if (_bookRecordCache.TryGetValue(content.Sha, out var bookRecord))
@@ -63,7 +81,7 @@ namespace ReadingList.Notes.Github.Services
         {
             var rawBookRecord = await _githubFileClient.GetRepositoryTextFile(content.DownloadUrl);
 
-            return BookRecordParser.CreateBookRecordFromMarkdown(rawBookRecord);
+            return BookRecordParser.CreateBookRecordFromMarkdown(new MarkdownFile(rawBookRecord, content.Name));
         }
     }
 }
