@@ -32,6 +32,12 @@ readingListUrl="http://readinglist:1337/api/notes"
     [ "$result" == "Matthew Walker" ]
 }
 
+@test "GET: Book endpoint should return correct book notes with enough part of given title" {
+    result="$(curl -s $readingListUrl/book?title=why.we.sl | jq '.authors[0]' --raw-output)"
+    echo $result
+    [ "$result" == "Matthew Walker" ]
+}
+
 function teardown {
   echo "Teardown: result value was $result"
 }
