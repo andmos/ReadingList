@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using Readinglist.Notes.Logic.Models;
+using ReadingList.Notes.Github.Models;
 
 namespace ReadingList.Notes.Github.Services
 {
     public interface IBookRecordCache
     {
-        bool TryAdd(string key, BookRecord bookRecord);
-        bool TryGetValue(string key, out BookRecord bookRecord);
-        IEnumerable<BookRecord> GetAll();
+        bool TryAdd(string key, GitBookRecord bookRecord);
+        bool TryGetValue(string key, out GitBookRecord bookRecord);
+        IEnumerable<GitBookRecord> GetAll();
     }
 }

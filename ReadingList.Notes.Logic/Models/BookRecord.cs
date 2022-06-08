@@ -8,14 +8,11 @@ namespace Readinglist.Notes.Logic.Models
         public string Title { get; }
         public IEnumerable<string> Authors { get; }
         public IEnumerable<string> Notes { get; }
-        public string RawFileName { get; }
-
-        public BookRecord(string title, IEnumerable<string> authors, IEnumerable<string> notes, string rawFileName)
+        public BookRecord(string title, IEnumerable<string> authors, IEnumerable<string> notes)
         {
             Title = title;
             Authors = authors;
             Notes = notes;
-            RawFileName = rawFileName;
         }
     }
 }

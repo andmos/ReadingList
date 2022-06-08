@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Octokit;
 using ReadingList.Logging;
 using ReadingList.Notes.Github.Helpers;
+using ReadingList.Notes.Github.Models;
 using Readinglist.Notes.Logic.Models;
 
 namespace ReadingList.Notes.Github.Services
@@ -44,7 +45,7 @@ namespace ReadingList.Notes.Github.Services
             catch (RateLimitExceededException rateLimitException)
             {
                 _logger.Error("Rate limit exceeded against Github, falling back to cache: ", rateLimitException);
-                return _bookRecordCache.GetAll();
+                return _bookRecordCache.GetAll().Select(r => r.BookRecord);
             }
         }
 
@@ -61,27 +62,33 @@ namespace ReadingList.Notes.Github.Services
             {
                 _logger.Error("Rate limit exceeded against Github, falling back to cache: ", rateLimitException);
                 return _bookRecordCache.GetAll()
-                    .FirstOrDefault(r => r.RawFileName.ToLower().Equals(book.ToLower()));
+                    .FirstOrDefault(r => r.FileName.ToLower().Contains(book.ToLower()))
+                    ?.BookRecord;
             }
         }
 
         private async ValueTask<BookRecord> GetBookRecord(RepositoryContentInfo content)
         {
-            if (_bookRecordCache.TryGetValue(content.Sha, out var bookRecord))
+            if (_bookRecordCache.TryGetValue(content.Sha, out var gitBookRecord))
             {
-                return bookRecord;
+                return gitBookRecord.BookRecord;
             }
             _logger.Info($"Cache miss for {content.Name} with sha {content.Sha}");
-            bookRecord = await GetBookRecordFromApi(content);
-            _bookRecordCache.TryAdd(content.Sha, bookRecord);
-            return bookRecord;
+            gitBookRecord = await GetBookRecordFromApi(content);
+            _bookRecordCache.TryAdd(content.Sha, gitBookRecord);
+            return gitBookRecord.BookRecord;
         }
 
-        private async Task<BookRecord> GetBookRecordFromApi(RepositoryContentInfo content)
+        private async Task<GitBookRecord> GetBookRecordFromApi(RepositoryContentInfo content)
         {
             var rawBookRecord = await _githubFileClient.GetRepositoryTextFile(content.DownloadUrl);
+            var bookRecord = BookRecordParser.CreateBookRecordFromMarkdown(
+                new MarkdownFile(rawBookRecord));
 
-            return BookRecordParser.CreateBookRecordFromMarkdown(new MarkdownFile(rawBookRecord, content.Name));
+            return new GitBookRecord(
+                content.Sha, 
+                content.Name, 
+                bookRecord);
         }
     }
 }
