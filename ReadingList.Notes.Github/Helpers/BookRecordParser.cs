@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Markdig;
+using ReadingList.Notes.Github.Models;
 using Readinglist.Notes.Logic.Models;
 
 namespace ReadingList.Notes.Github.Helpers
@@ -25,9 +26,9 @@ namespace ReadingList.Notes.Github.Helpers
         /// - Some Note or quote
         /// - Some Note or quote
         /// - Some Note or quote
-        public static BookRecord CreateBookRecordFromMarkdown(string markdown)
+        public static BookRecord CreateBookRecordFromMarkdown(MarkdownFile markdownFile)
         {
-            var plainText = Markdown.ToPlainText(markdown);
+            var plainText = Markdown.ToPlainText(markdownFile.Content);
 
             return new BookRecord(
                 MapTitle(plainText),
@@ -51,7 +52,7 @@ namespace ReadingList.Notes.Github.Helpers
 
         private static IEnumerable<string> MapNotes(string plainText)
         {
-            var regexLocationTag = @"\(Location.*?\)";
+            const string regexLocationTag = @"\(Location.*?\)";
             var notes = plainText[plainText.IndexOf("Highlights", StringComparison.Ordinal)..]
                 .Split(Environment.NewLine)
                 .Select(l => Regex.Replace(l, regexLocationTag, string.Empty).TrimEnd()).ToList();

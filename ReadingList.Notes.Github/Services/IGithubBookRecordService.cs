@@ -7,6 +7,7 @@ namespace ReadingList.Notes.Github.Services
     public interface IGithubBookRecordService
     {
         Task<IEnumerable<BookRecord>> GetAllBookRecords();
+        public Task<BookRecord> GetBookNotes(string book);
     }
 }
 

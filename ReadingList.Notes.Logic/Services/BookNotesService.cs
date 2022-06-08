@@ -22,6 +22,11 @@ namespace Readinglist.Notes.Logic.Services
             return await _bookRecordRepository.GetAllBookRecords();
         }
 
+        public async Task<BookRecord> GetBookNotes(string book)
+        {
+            return await _bookRecordRepository.GetBookNotes(book);
+        }
+
         public async Task<BookNote> GetRandomBookNote()
         {
             var records = (await _bookRecordRepository.GetAllBookRecords()).ToList();

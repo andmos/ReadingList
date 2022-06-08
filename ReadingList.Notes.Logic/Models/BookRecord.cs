@@ -8,7 +8,6 @@ namespace Readinglist.Notes.Logic.Models
         public string Title { get; }
         public IEnumerable<string> Authors { get; }
         public IEnumerable<string> Notes { get; }
-
         public BookRecord(string title, IEnumerable<string> authors, IEnumerable<string> notes)
         {
             Title = title;
