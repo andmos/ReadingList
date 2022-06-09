@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-readingListUrl="http://readinglist:1337/api/notes"
+readingListUrl="${1:-http://readinglist:1337/api/notes}"
 
 @test "GET: Random endpoint should return random book note with non-empty title attribute" {
     result="$(curl -s $readingListUrl/random | jq '.title' --raw-output)"
