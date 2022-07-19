@@ -88,7 +88,7 @@ namespace ReadingList.Trello.Services
             }
             return updateSuccessful;
         }
-        
+
         private string FormatCardName(string book, string author) => $"{book} - {author}";
     }
 }

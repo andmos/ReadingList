@@ -119,7 +119,7 @@ namespace ReadingList.Carter.Modules
                 var updateStatus = await _readingListService.UpdateDoneListFromReadingList(bookTitle);
 
                 await res.AsJson(updateStatus);
-            });            
+            });
         }
 
         private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(HttpRequest request)

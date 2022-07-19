@@ -37,7 +37,7 @@ namespace ReadingList.Trello.Services
             {
                 return !string.IsNullOrEmpty(label) ? cachedBooks.Where(b => b.Label.ToString().ToLower().Equals(label.ToLower())) : cachedBooks;
             }
-            
+
             _logger.Info($"Cache miss for {listName}, {label}");
             var booksFromService = await _readingListService.GetReadingList(listName, label);
             _readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), booksFromService);
