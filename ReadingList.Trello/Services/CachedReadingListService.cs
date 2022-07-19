@@ -20,8 +20,9 @@ namespace ReadingList.Trello.Services
             ILogFactory logFactory)
         {
             _readingListService = readingListService;
-            _logger = logFactory.GetLogger(this.GetType());
             _readingListCache = readingListCache;
+            _logger = logFactory.GetLogger(this.GetType());
+
         }
 
         public async Task<bool> AddBookToBacklog(string book, string authors, string label)
