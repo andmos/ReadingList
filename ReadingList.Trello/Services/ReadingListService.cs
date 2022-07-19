@@ -6,6 +6,7 @@ using Manatee.Trello;
 using ReadingList.Logging;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
+using ReadingList.Trello.Models;
 using ILog = ReadingList.Logging.ILog;
 
 namespace ReadingList.Trello.Services
@@ -18,11 +19,10 @@ namespace ReadingList.Trello.Services
 
         public ReadingListService(
             ITrelloFactory factory,
-            string boardId,
             IBookFactory bookFactory,
             ILogFactory logFactory)
         {
-            _board = factory.Board(boardId);
+            _board = factory.Board(TrelloBoardConstants.BoardId);
 
             _bookFactory = bookFactory;
             _logger = logFactory.GetLogger(this.GetType());

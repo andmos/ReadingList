@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Manatee.Trello;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
+using ReadingList.Trello.Models;
 
 namespace ReadingList.Trello.Services
 {
@@ -14,11 +15,10 @@ namespace ReadingList.Trello.Services
 
         public ReadingBoardService(
             ITrelloFactory factory,
-            IReadingListService readingListService,
-            string boardId)
+            IReadingListService readingListService)
         {
             _readingListService = readingListService;
-            _readingListBoard = factory.Board(boardId);
+            _readingListBoard = factory.Board(TrelloBoardConstants.BoardId);
         }
 
         public async Task<ReadingListCollection> GetAllReadingLists(string label)
