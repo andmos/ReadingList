@@ -32,16 +32,16 @@ namespace ReadingList.Trello.Services
 
         public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
         {
-            IEnumerable<Book> books;
-            if (_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out books))
+            IEnumerable<Book> cachedBooks;
+            if (_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out cachedBooks))
             {
-                return !string.IsNullOrEmpty(label) ? books.Where(b => b.Label.ToString().ToLower().Equals(label.ToLower())) : books;
+                return !string.IsNullOrEmpty(label) ? cachedBooks.Where(b => b.Label.ToString().ToLower().Equals(label.ToLower())) : cachedBooks;
             }
-
+            
             _logger.Info($"Cache miss for {listName}, {label}");
-            books = await _readingListService.GetReadingList(listName, label);
-            _readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), books);
-            return books;
+            var booksFromService = await _readingListService.GetReadingList(listName, label);
+            _readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), booksFromService);
+            return booksFromService;
 
         }
 
