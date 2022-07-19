@@ -1,7 +1,7 @@
 namespace ReadingList.Notes.Github.Models
 {
-    public record MarkdownFile(string Content)
+    public record MarkdownFile
     {
-        public string Content { get; } = Content;
+        public string Content { get; init; }
     }
 }
