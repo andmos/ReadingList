@@ -11,8 +11,8 @@ namespace ReadingList.Trello.Services
     public class CachedReadingListService : IReadingListService
     {
         private readonly IReadingListService _readingListService;
-        private readonly ILog _logger;
         private readonly IReadingListCache _readingListCache;
+        private readonly ILog _logger;
 
         public CachedReadingListService(
             IReadingListService readingListService,
@@ -33,16 +33,17 @@ namespace ReadingList.Trello.Services
         public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
         {
             IEnumerable<Book> cachedBooks;
-            if (_readingListCache.TryGetValue(new KeyValuePair<string, string>(listName, label), out cachedBooks))
+
+            // The KeyValuePair is used to make the cache key unique for the list name and label.
+            if (_readingListCache.TryGetValue(new KeyValuePair<string, Label>(listName, BookMapper.MapBookTypeLabel(label)), out cachedBooks))
             {
                 return !string.IsNullOrEmpty(label) ? cachedBooks.Where(b => b.Label.ToString().ToLower().Equals(label.ToLower())) : cachedBooks;
             }
 
             _logger.Info($"Cache miss for {listName}, {label}");
             var booksFromService = await _readingListService.GetReadingList(listName, label);
-            _readingListCache.TryAdd(new KeyValuePair<string, string>(listName, label), booksFromService);
+            _readingListCache.TryAdd(new KeyValuePair<string, Label>(listName, BookMapper.MapBookTypeLabel(label)), booksFromService);
             return booksFromService;
-
         }
 
         public async Task<bool> UpdateDoneListFromReadingList(string book)

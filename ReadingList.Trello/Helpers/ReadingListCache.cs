@@ -6,19 +6,19 @@ namespace ReadingList.Trello.Helpers
 {
     public class ReadingListCache : IReadingListCache
     {
-        private readonly ConcurrentDictionary<KeyValuePair<string, string>, IEnumerable<Book>> _cache;
+        private readonly ConcurrentDictionary<KeyValuePair<string, Label>, IEnumerable<Book>> _cache;
 
         public ReadingListCache()
         {
-            _cache = new ConcurrentDictionary<KeyValuePair<string, string>, IEnumerable<Book>>();
+            _cache = new ConcurrentDictionary<KeyValuePair<string, Label>, IEnumerable<Book>>();
         }
 
-        public bool TryGetValue(KeyValuePair<string, string> listLabelPair, out IEnumerable<Book> bookListOut)
+        public bool TryGetValue(KeyValuePair<string, Label> listLabelPair, out IEnumerable<Book> bookListOut)
         {
             return _cache.TryGetValue(listLabelPair, out bookListOut);
         }
 
-        public bool TryAdd(KeyValuePair<string, string> listLabelPair, IEnumerable<Book> listOut)
+        public bool TryAdd(KeyValuePair<string, Label> listLabelPair, IEnumerable<Book> listOut)
         {
             return _cache.TryAdd(listLabelPair, listOut);
         }
