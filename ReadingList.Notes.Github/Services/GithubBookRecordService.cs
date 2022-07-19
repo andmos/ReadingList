@@ -16,12 +16,15 @@ namespace ReadingList.Notes.Github.Services
         private const string UserName = "andmos";
         private const string Repo = "ReadingList-Data";
         private const string NotesFolder = "BookNotes";
-        
+
         private readonly ILog _logger;
 
         private readonly GithubClient _githubFileClient;
 
-        public GithubBookRecordService(IGitBookRecordCache gitBookRecordCache, ILogFactory logFactory, GithubClient githubFileClient)
+        public GithubBookRecordService(
+            IGitBookRecordCache gitBookRecordCache,
+            GithubClient githubFileClient,
+            ILogFactory logFactory)
         {
             _gitBookRecordCache = gitBookRecordCache;
             _githubFileClient = githubFileClient;
@@ -54,7 +57,7 @@ namespace ReadingList.Notes.Github.Services
             try
             {
                 var repo = await _githubFileClient.GetRepositoryContent(UserName, Repo, NotesFolder);
-                
+
                 var bookContent = repo?.FirstOrDefault(b => b.Name.ToLower().Contains(book.ToLower()));
                 return await GetBookRecord(bookContent);
             }
@@ -83,12 +86,9 @@ namespace ReadingList.Notes.Github.Services
         {
             var rawBookRecord = await _githubFileClient.GetRepositoryTextFile(content.DownloadUrl);
             var bookRecord = BookRecordParser.CreateBookRecordFromMarkdown(
-                new MarkdownFile(rawBookRecord));
+                new MarkdownFile{ Content = rawBookRecord });
 
-            return new GitBookRecord(
-                content.Sha, 
-                content.Name, 
-                bookRecord);
+            return new GitBookRecord { Sha = content.Sha, FileName = content.Name, BookRecord = bookRecord };
         }
     }
 }
