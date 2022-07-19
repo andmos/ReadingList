@@ -5,6 +5,5 @@ namespace ReadingList.Trello.Models
         public string TrelloAPIKey { get; set; }
 
         public string TrelloUserToken { get; set; }
-
     }
 }

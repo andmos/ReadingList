@@ -6,6 +6,7 @@ using Manatee.Trello;
 using ReadingList.Logging;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
+using ReadingList.Trello.Helpers;
 using ReadingList.Trello.Models;
 using ILog = ReadingList.Logging.ILog;
 
@@ -14,17 +15,13 @@ namespace ReadingList.Trello.Services
     public class ReadingListService : IReadingListService
     {
         private readonly IBoard _board;
-        private readonly IBookFactory _bookFactory;
         private readonly ILog _logger;
 
         public ReadingListService(
             ITrelloFactory factory,
-            IBookFactory bookFactory,
             ILogFactory logFactory)
         {
             _board = factory.Board(TrelloBoardConstants.BoardId);
-
-            _bookFactory = bookFactory;
             _logger = logFactory.GetLogger(this.GetType());
         }
 
@@ -36,7 +33,7 @@ namespace ReadingList.Trello.Services
                 _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards :
                 _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
 
-            return cardList?.Select(card => _bookFactory.Create(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel)).ToList();
+            return cardList?.Select(card => BookMapper.CreateBook(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel)).ToList();
         }
 
         public async Task<bool> AddBookToBacklog(string book, string authors, string label)
