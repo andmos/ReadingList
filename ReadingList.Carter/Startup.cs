@@ -38,11 +38,7 @@ namespace ReadingList.Carter
             services.AddAuthentication()
                 .AddScheme<TrelloApiKeyAuthenticationOptions, TrelloApiKeyAuthenticationHandler>(TrelloApiKeyAuthenticationOptions.DefaultScheme, null);
             services.AddAuthentication(TrelloApiKeyAuthenticationOptions.DefaultScheme);
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("TrelloUpdatePolicy",
-                    policyBuilder => policyBuilder.RequireClaim("AddOrUpdate"));
-            });
+            services.AddAuthorization();
             services.AddCarter(
                 configurator: configurator =>
                 {
