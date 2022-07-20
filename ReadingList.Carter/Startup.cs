@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using ReadingList.Carter.ApiKeyAuthentication;
 using ReadingList.Carter.Trello;
 using ReadingList.Notes.Github.Services;
 using ReadingList.Trello.Models;
@@ -33,6 +34,11 @@ namespace ReadingList.Carter
         {
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
             services.AddSingleton<ITrelloAuthModel>(sp => sp.GetRequiredService<IOptions<TrelloAuthSettings>>().Value);
+            services.AddScoped<TrelloApiKeyAuthenticationHandler>();
+            services.AddAuthentication()
+                .AddScheme<TrelloApiKeyAuthenticationOptions, TrelloApiKeyAuthenticationHandler>(TrelloApiKeyAuthenticationOptions.DefaultScheme, null);
+            services.AddAuthentication(TrelloApiKeyAuthenticationOptions.DefaultScheme);
+            services.AddAuthorization();
             services.AddCarter(
                 configurator: configurator =>
                 {
@@ -55,6 +61,8 @@ namespace ReadingList.Carter
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCors(AllowSpecificOrigins);
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

@@ -82,9 +82,14 @@ readingListUrl="${1:-http://readinglist:1337}"
     [ "$result" == "TrelloHealthCheck" ]
 }
 
-@test "POST: backlogList endpoint should return FORBIDDEN request is done without correct APIKey and UserToken in header" {
+@test "POST: backlogList endpoint should return 401 UNAUTHORIZED request is done without correct APIKey and UserToken in header" {
     result="$(curl -s -o /dev/null -w '%{http_code}' -X POST "$readingListUrl/api/backlogList?author=Test%20Author&title=Test%20Title&label=fact" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'TrelloAPIKey: 77777777' -H 'TrelloUserToken: 7777777' -d '{ "data": "this is my new testdata from a POST" }')"
-    [ "$result" -eq 403 ]
+    [ "$result" -eq 401 ]
+}
+
+@test "PUT: doneList endpoint should return 401 UNAUTHORIZED request is done without correct APIKey and UserToken in header" {
+    result="$(curl -s -o /dev/null -w '%{http_code}' -X PUT "$readingListUrl/api/doneList?title=Test%20Title" -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'TrelloAPIKey: 77777777' -H 'TrelloUserToken: 7777777' -d '{ "data": "this is my new testdata from a POST" }')"
+    [ "$result" -eq 401 ]
 }
 
 @test "PUT: doneList endpoint should return 'false' if request is done without booktitle present in ReadingList" {
