@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Builder;
@@ -7,8 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
-using ReadingList.Trello.Models;
 using ReadingList.Trello.Services;
+
 
 namespace ReadingList.Carter.Modules
 {
@@ -41,9 +39,9 @@ namespace ReadingList.Carter.Modules
 
             app.MapGet($"{BaseUri}/backlogList", async (HttpRequest req, HttpResponse res) =>
             {
-                 string requestLabel = req.Query["label"];
-                 var readingList = await _readingListService.GetReadingList(ReadingListConstants.Backlog, requestLabel);
-                 await res.AsJson(readingList);
+                string requestLabel = req.Query["label"];
+                var readingList = await _readingListService.GetReadingList(ReadingListConstants.Backlog, requestLabel);
+                await res.AsJson(readingList);
             });
 
             app.MapGet($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res) =>
@@ -65,33 +63,19 @@ namespace ReadingList.Carter.Modules
                 string author = req.Query["author"];
                 string bookTitle = req.Query["title"];
                 string bookLabel = req.Query["label"];
-                
-                var authTokens = CheckHeaderForMandatoryTokens(req);
-                if (!authTokens.Value)
-                {
-                    res.StatusCode = 403;
-                    await res.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
-                    return;
-                }
-                if (!CheckTokens(authTokens.Key))
-                {
-                    res.StatusCode = 403;
-                    await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
-                    return;
-                }
-                
+
                 if (string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(bookTitle) || string.IsNullOrWhiteSpace(bookLabel))
                 {
                     res.StatusCode = 422;
                     await res.AsJson("author, title and label is required.");
                     return;
                 }
-                
+
                 var addBookToBacklog = await _readingListService.AddBookToBacklog(bookTitle, author, bookLabel);
                 res.StatusCode = addBookToBacklog ? 201 : 500;
                 await res.AsJson(addBookToBacklog);
-            });
-            
+            }).RequireAuthorization();
+
             app.MapPut($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res) =>
             {
                 string bookTitle = req.Query["title"];
@@ -102,35 +86,10 @@ namespace ReadingList.Carter.Modules
                     return;
                 }
 
-                var authTokens = CheckHeaderForMandatoryTokens(req);
-                if (!authTokens.Value)
-                {
-                    res.StatusCode = 403;
-                    await res.AsJson("TrelloAPIKey and TrelloUserToken is required in header to do this operation.");
-                    return;
-                }
-                if (!CheckTokens(authTokens.Key))
-                {
-                    res.StatusCode = 403;
-                    await res.AsJson("TrelloAPIKey and TrelloUserToken does not match configured APIKey or Token");
-                    return;
-                }
-                
                 var updateStatus = await _readingListService.UpdateDoneListFromReadingList(bookTitle);
 
                 await res.AsJson(updateStatus);
-            });
+            }).RequireAuthorization();
         }
-
-        private KeyValuePair<ITrelloAuthModel, bool> CheckHeaderForMandatoryTokens(HttpRequest request)
-        {
-            var providedApiKey = request.Headers["TrelloAPIKey"].FirstOrDefault();
-            var providedUserToken = request.Headers["TrelloUserToken"].FirstOrDefault();
-
-            return new KeyValuePair<ITrelloAuthModel, bool>(
-                new TrelloAuthSettings { TrelloAPIKey = providedApiKey, TrelloUserToken = providedUserToken },
-                !string.IsNullOrWhiteSpace(providedApiKey) && !string.IsNullOrWhiteSpace(providedUserToken));
-        }
-        private bool CheckTokens(ITrelloAuthModel authTokens) => _trelloAuthWrapper.IsValidKeys(authTokens);
     }
 }
