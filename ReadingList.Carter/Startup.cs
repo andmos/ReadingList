@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using Carter;
+using Carter.OpenApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using ReadingList.Carter.ApiKeyAuthentication;
 using ReadingList.Carter.Trello;
@@ -29,7 +31,7 @@ namespace ReadingList.Carter
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<TrelloAuthSettings>(Configuration.GetSection(nameof(TrelloAuthSettings)));
@@ -56,8 +58,46 @@ namespace ReadingList.Carter
             });
             services.AddHttpClient<GithubClient>();
             services.AddHealthChecks().AddCheck<TrelloHealthCheck>(nameof(TrelloHealthCheck));
+
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Description = "ReadingList",
+                    Version = "v1",
+                    Title = "ReadingList API",
+                });
+                options.AddSecurityDefinition(TrelloApiKeyAuthenticationOptions.ApiKeyHeaderName, new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Name = TrelloApiKeyAuthenticationOptions.ApiKeyHeaderName,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                options.AddSecurityDefinition(TrelloApiKeyAuthenticationOptions.UserTokenHeaderName, new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Name = TrelloApiKeyAuthenticationOptions.UserTokenHeaderName,
+                    Type = SecuritySchemeType.ApiKey
+                });                
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = TrelloApiKeyAuthenticationOptions.DefaultScheme
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
         }
-        
+
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
@@ -69,12 +109,14 @@ namespace ReadingList.Carter
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
+            app.UseSwagger();
             app.UseSwaggerUI(opt =>
             {
                 opt.RoutePrefix = "openapi/ui";
-                opt.SwaggerEndpoint($"{HostName}/openapi", "ReadingList");
+                opt.SwaggerEndpoint($"{HostName}/swagger/v1/swagger.json", "ReadingList");
                 opt.DocumentTitle = "ReadingList";
             });
+
             app.UseEndpoints(builder =>
             {
                 builder.MapCarter();
