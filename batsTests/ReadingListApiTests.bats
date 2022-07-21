@@ -3,7 +3,7 @@
 readingListUrl="${1:-http://readinglist:1337}"
 
  @test "GET: Swagger endpoint should be HTTP Statuscode 200" {
-     result="$(curl -s -o /dev/null -w '%{http_code}' $readingListUrl//swagger/v1/swagger.json)"
+     result="$(curl -s -o /dev/null -w '%{http_code}' $readingListUrl/swagger/v1/swagger.json)"
      [ "$result" -eq 200 ]
  }
 
