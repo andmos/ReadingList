@@ -63,7 +63,7 @@ namespace ReadingList.Trello.Services
             await _board.Lists.Refresh();
 
             bool updateSuccessful;
-            string doneCardListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.DoneReading))?.Id;
+            var doneCardListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.DoneReading))?.Id;
             var doneCardList = new List(doneCardListId);
             try
             {
@@ -86,6 +86,6 @@ namespace ReadingList.Trello.Services
             return updateSuccessful;
         }
 
-        private string FormatCardName(string book, string author) => $"{book} - {author}";
+        private static string FormatCardName(string book, string author) => $"{book} - {author}";
     }
 }
