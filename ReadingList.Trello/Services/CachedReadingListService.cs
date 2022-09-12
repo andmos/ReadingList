@@ -42,7 +42,7 @@ namespace ReadingList.Trello.Services
             }
 
             _logger.Info($"Cache miss for {listName}, {label}");
-            var booksFromService = await _readingListService.GetReadingList(listName, label);
+            var booksFromService = (await _readingListService.GetReadingList(listName, label)).ToList();
             _readingListCache.TryAdd(new KeyValuePair<string, Label>(listName, BookMapper.MapBookTypeLabel(label)), booksFromService);
             return booksFromService;
         }
@@ -54,7 +54,7 @@ namespace ReadingList.Trello.Services
 
         }
 
-        public void InvalidateCache()
+        private void InvalidateCache()
         {
             _logger.Info("Invalidating cache");
             _readingListCache.InvalidateCache();
