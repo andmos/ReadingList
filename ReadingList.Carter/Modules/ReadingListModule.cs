@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using ReadingList.Logic.Models;
 using ReadingList.Logic.Services;
-using ReadingList.Trello.Services;
 
 
 namespace ReadingList.Carter.Modules
@@ -14,16 +13,13 @@ namespace ReadingList.Carter.Modules
     {
         private readonly IReadingListService _readingListService;
         private readonly IReadingListCollectionService _readingListCollectionService;
-        private readonly ITrelloAuthorizationWrapper _trelloAuthWrapper;
 
         private const string BaseUri = "/api";
 
         public ReadingListModule(
-            ITrelloAuthorizationWrapper trelloAuthWrapper,
             IReadingListService readingListService,
             IReadingListCollectionService readingListCollectionService)
         {
-            _trelloAuthWrapper = trelloAuthWrapper;
             _readingListService = readingListService;
             _readingListCollectionService = readingListCollectionService;
         }
