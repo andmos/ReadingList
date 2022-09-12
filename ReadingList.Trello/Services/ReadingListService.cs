@@ -71,7 +71,7 @@ namespace ReadingList.Trello.Services
                 if (card == null)
                 {
                     _logger.Info($"Could not find {book} in {ReadingListConstants.CurrentlyReading}, so can't move to {ReadingListConstants.DoneReading}.");
-                    return updateSuccessful = false;
+                    return false;
                 }
                 card.List = doneCardList;
                 card.Position = new Position(1);
