@@ -1,5 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.301-alpine3.14 AS builder
-LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
+FROM mcr.microsoft.com/dotnet/sdk:7.0.100-alpine3.16 AS builder
 
 WORKDIR /app
 
@@ -16,7 +15,11 @@ WORKDIR /app/ReadingList.Carter
 RUN dotnet restore
 RUN dotnet publish ReadingList.Carter.csproj -c Release -o ../publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.6-alpine3.14 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.0-alpine3.16 AS runtime
+
+LABEL org.opencontainers.image.source="https://github.com/andmos/ReadingList"
+LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
+
 ENV PORT 1337
 ENV ASPNETCORE_URLS=http://+:$PORT
 

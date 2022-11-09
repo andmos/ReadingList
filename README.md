@@ -1,7 +1,7 @@
 # ReadingList
 Simple service proxy for my Trello-powered readinglist.
 
-Simple build with Docker: `docker run -v $(pwd):/workspace -w "/workspace" -it mcr.microsoft.com/dotnet/sdk:6.0-alpine ./build.sh`
+Simple build with Docker: `docker run -v $(pwd):/workspace -w "/workspace" -it mcr.microsoft.com/dotnet/sdk:7.0-alpine ./build.sh`
 
 ### Running API tests:
 
