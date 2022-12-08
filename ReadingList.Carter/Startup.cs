@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using Carter;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ReadingList.Carter.ApiKeyAuthentication;
+using ReadingList.Carter.Helpers;
 using ReadingList.Carter.Trello;
 using ReadingList.Notes.Github.Services;
 using ReadingList.Trello.Models;
@@ -56,6 +59,9 @@ namespace ReadingList.Carter
             });
             services.AddHttpClient<GithubClient>();
             services.AddHealthChecks().AddCheck<TrelloHealthCheck>(nameof(TrelloHealthCheck));
+            services.AddHangfire(storage => storage.UseMemoryStorage());
+            services.AddHangfireServer();
+
         }
         
         public void Configure(IApplicationBuilder app)
@@ -80,6 +86,10 @@ namespace ReadingList.Carter
                 builder.MapCarter();
                 builder.MapHealthChecks("/health", CreateHealthCheckOptions());
             });
+
+            var warmUpService = app.ApplicationServices.GetService<CacheWarmUpService>();
+            BackgroundJob.Enqueue(() => warmUpService.WarmUpCaches());
+
         }
 
         private static HealthCheckOptions CreateHealthCheckOptions()
