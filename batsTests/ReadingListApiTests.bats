@@ -62,7 +62,7 @@ readingListUrl="${1:-http://readinglist:1337}"
     [ "$result" == '"Fiction"' ]
 }
 
-@test "GET: doneList endpoint should return the first book in the list as JSON containing the title 'Trist Som Faen' with label 'fiction' and '-' character in name" {
+@test "GET: doneList endpoint should return the first book in the list as JSON containing the title 'Trist Som Faen' with label 'fiction'" {
     result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Trist Som Faen") | .label')"
     [ "$result" == '"Fiction"' ]
 }
