@@ -19,8 +19,10 @@ namespace ReadingList.Trello.Services
 
         public ReadingListService(
             ITrelloFactory factory,
-            ILogFactory logFactory)
+            ILogFactory logFactory,
+            ITrelloAuthorizationWrapper trelloAuthorizationWrapper)
         {
+            trelloAuthorizationWrapper.Authenticate();
             _board = factory.Board(TrelloBoardConstants.BoardId);
             _logger = logFactory.GetLogger(this.GetType());
         }
