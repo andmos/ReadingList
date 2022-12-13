@@ -8,5 +8,6 @@ namespace ReadingList.Trello.Services
     public interface ITrelloAuthorizationWrapper
     {
         bool IsValidKeys(ITrelloAuthModel authModel);
+        void Authenticate();
     }
 }

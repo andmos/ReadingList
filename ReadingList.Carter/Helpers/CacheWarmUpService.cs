@@ -19,7 +19,7 @@ namespace ReadingList.Carter.Helpers
         {
             _readingListService = readingListService;
             _bookNotesService = bookNotesService;
-            _logger = logFactory.GetLogger(this.GetType());
+            _logger = logFactory.GetLogger(GetType());
         }
 
         public async Task WarmUpCaches()
