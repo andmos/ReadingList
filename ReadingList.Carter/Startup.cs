@@ -3,7 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using Carter;
+<<<<<<< HEAD
 using Carter.OpenApi;
+=======
+using Hangfire;
+using Hangfire.MemoryStorage;
+>>>>>>> cc5b0d0c8de1cfd2f4365f74fa343b107c8466e1
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using ReadingList.Carter.ApiKeyAuthentication;
+using ReadingList.Carter.Helpers;
 using ReadingList.Carter.Trello;
 using ReadingList.Notes.Github.Services;
 using ReadingList.Trello.Models;
@@ -96,6 +102,9 @@ namespace ReadingList.Carter
                     }
                 });
             });
+            services.AddHangfire(storage => storage.UseMemoryStorage());
+            services.AddHangfireServer();
+
         }
 
         public void Configure(IApplicationBuilder app)
@@ -122,6 +131,10 @@ namespace ReadingList.Carter
                 builder.MapCarter();
                 builder.MapHealthChecks("/health", CreateHealthCheckOptions());
             });
+
+            var warmUpService = app.ApplicationServices.GetService<CacheWarmUpService>();
+            BackgroundJob.Enqueue(() => warmUpService.WarmUpCaches());
+
         }
 
         private static HealthCheckOptions CreateHealthCheckOptions()
