@@ -3,12 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using Carter;
-<<<<<<< HEAD
 using Carter.OpenApi;
-=======
 using Hangfire;
 using Hangfire.MemoryStorage;
->>>>>>> cc5b0d0c8de1cfd2f4365f74fa343b107c8466e1
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
