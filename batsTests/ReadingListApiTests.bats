@@ -2,10 +2,10 @@
 
 readingListUrl="${1:-http://readinglist:1337}"
 
-# @test "GET: openapi endpoint should be HTTP Statuscode 200" {
-#     result="$(curl -s -o /dev/null -w '%{http_code}' $readingListUrl/openapi/)"
-#     [ "$result" -eq 200 ]
-# }
+ @test "GET: Swagger endpoint should be HTTP Statuscode 200" {
+     result="$(curl -s -o /dev/null -w '%{http_code}' $readingListUrl/swagger/v1/swagger.json)"
+     [ "$result" -eq 200 ]
+ }
 
 @test "GET: Swagger UI endpoint should be HTTP Statuscode 200 after redirect" {
     result="$(curl -L -s -o /dev/null -w '%{http_code}' $readingListUrl/openapi/ui)"
