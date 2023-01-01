@@ -1,16 +1,26 @@
 #! /bin/bash
 
-set -e
+set -eo pipefail
+
+if [ -z "${TrelloAPIKey}" ]; then
+    echo "TrelloAPIKey env variable not set"
+    exit 1
+fi
+
+if [ -z "${TrelloUserToken}" ]; then
+    echo "TrelloUserToken env variable not set"
+    exit 1
+fi
 
 export GIT_REV=$(git rev-parse --short HEAD)
 
-cleanup(){
+function cleanup {
     echo "cleaning up containers"
     docker stop readinglist
     echo "cleanup completed"
 }
 
-trap "cleanup" ERR
+trap cleanup EXIT
 
 echo "Building readinglist image with git rev $GIT_REV"
 docker build -t andmos/readinglist:$(git rev-parse --short HEAD) .
@@ -23,5 +33,3 @@ docker run --rm --name readinglist -dt -p 1337:1337 -e TrelloAuthSettings__Trell
 sleep 7
 docker run --link readinglist:readinglist --rm -e TrelloAPIKey=$TrelloAPIKey -e TrelloUserToken=$TrelloUserToken -v $(pwd):/app graze/bats /app/batsTests
 
-
-cleanup
