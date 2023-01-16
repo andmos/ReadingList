@@ -16,7 +16,7 @@
     <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Octokit" Version="4.0.3" />
+    <PackageReference Include="Octokit" Version="4.0.4" />
     <PackageReference Include="LightInject" Version="6.6.3" />
     <PackageReference Include="Markdig" Version="0.30.4" />
   </ItemGroup>
