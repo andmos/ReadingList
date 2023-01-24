@@ -15,6 +15,7 @@ namespace ReadingList.Trello
             serviceRegistry.Register<ITrelloFactory, TrelloFactory>();
             serviceRegistry.Register<ITrelloAuthorizationWrapper, TrelloAuthorizationWrapper>(new PerContainerLifetime());
             serviceRegistry.Register<IWebHookCaller, WebHookCaller>();
+            serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesService>();
             serviceRegistry.Register<IReadingListCache, ReadingListCache>(new PerContainerLifetime());
             serviceRegistry.Register<IReadingListService, ReadingListService>(new PerContainerLifetime());
             serviceRegistry.Register<IReadingListCollectionService, ReadingBoardService>(new PerContainerLifetime());

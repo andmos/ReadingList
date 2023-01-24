@@ -1,7 +1,7 @@
 using System.Linq;
 using ReadingList.Logging;
 using ReadingList.Trello.Helpers;
-using ReadingList.Trello.Models;
+using ReadingList.Trello.Services;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Routing;
@@ -13,7 +13,7 @@ namespace ReadingList.Web.Modules
     public class CallbackModule : ICarterModule
     {
         private readonly IReadingListCache _readingListCache;
-        private readonly ITrelloWebHookSources _webHookSource;
+        private readonly ITrelloWebHookSources _webHookSourceService;
         private readonly ILog _logger;
 
         private const string BaseUri = "/api";
@@ -25,7 +25,7 @@ namespace ReadingList.Web.Modules
         {
             _logger = logger.GetLogger(GetType());
             _readingListCache = readingListCache;
-            _webHookSource = webHookSource;
+            _webHookSourceService = webHookSource;
         }
 
         public void AddRoutes(IEndpointRouteBuilder app)
@@ -38,18 +38,19 @@ namespace ReadingList.Web.Modules
 
             app.MapPost($"{BaseUri}/callBack", async (HttpRequest req, HttpResponse res) =>
             {
-
                 var callerIp = req.HttpContext.Connection.RemoteIpAddress;
-                if (_webHookSource.ValidWebhookSources().ToList().Any(source => source.Equals(callerIp)))
+                if (_webHookSourceService.IsValidWebHookSource(callerIp))
                 {
                     _logger.Info($"Got Callback from valid source: {callerIp}");
+                    _readingListCache.InvalidateCache();
+                    _logger.Info("Invalidating cache");
+                    res.StatusCode = 200;
+                    await res.AsJson("Callback received");
                 }
-
-                _readingListCache.InvalidateCache();
-                _logger.Info("Invalidating cache");
-
-                res.StatusCode = 200;
-                await res.AsJson("Callback received");
+                else
+                {
+                    _logger.Info($"Got Callback from non-valid source: {callerIp}");
+                }
             });
         }
     }
