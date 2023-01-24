@@ -17,8 +17,6 @@ namespace ReadingList.Carter
             serviceRegistry.RegisterConstructorDependency(
             (factory, info) => factory.GetInstance<Type, ILog>(info.Member.DeclaringType));
 
-            serviceRegistry.Register<ITrelloWebHookSources, TrelloWebHookSourcesConfigFileReader>();
-
             serviceRegistry.RegisterFrom<ReadingList.Trello.CompositionRoot>();
 
             serviceRegistry.RegisterFrom<ReadingList.Notes.Github.CompositionRoot>();
