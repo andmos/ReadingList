@@ -2,8 +2,6 @@
 using LightInject;
 using ReadingList.Logging;
 using ReadingList.Carter.Logging;
-using ReadingList.Trello.Models;
-using ReadingList.Trello.Services;
 using ReadingList.Carter.Helpers;
 
 namespace ReadingList.Carter
