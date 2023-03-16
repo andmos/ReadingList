@@ -9,7 +9,7 @@
    <LangVersion>latest</LangVersion>
 </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Carter" Version="7.0.0" />
+    <PackageReference Include="Carter" Version="7.0.1" />
     <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.5.3" />
     <PackageReference Include="Hangfire" Version="1.7.33" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.33" />
