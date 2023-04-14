@@ -2,8 +2,8 @@
 
 namespace Readinglist.Notes.Logic.Models
 {
-	public class BookNote
-	{
+    public class BookNote
+    {
         public string Title { get; }
         public IEnumerable<string> Authors { get; }
         public string Note { get; }
@@ -16,4 +16,3 @@ namespace Readinglist.Notes.Logic.Models
         }
     }
 }
-
