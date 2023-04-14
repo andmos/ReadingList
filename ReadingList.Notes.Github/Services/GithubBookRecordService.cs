@@ -86,9 +86,9 @@ namespace ReadingList.Notes.Github.Services
         {
             var rawBookRecord = await _githubFileClient.GetRepositoryTextFile(content.DownloadUrl);
             var bookRecord = BookRecordParser.CreateBookRecordFromMarkdown(
-                new MarkdownFile{ Content = rawBookRecord });
+                new MarkdownFile(Content: rawBookRecord));
 
-            return new GitBookRecord { Sha = content.Sha, FileName = content.Name, BookRecord = bookRecord };
+            return new GitBookRecord(Sha: content.Sha, FileName: content.Name, BookRecord: bookRecord);
         }
     }
 }
