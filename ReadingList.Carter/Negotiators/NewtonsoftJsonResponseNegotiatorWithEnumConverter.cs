@@ -33,7 +33,8 @@ namespace ReadingList.Carter
         {
             return accept.MediaType.ToString().IndexOf("json", StringComparison.OrdinalIgnoreCase) >= 0;
         }
-        public Task Handle(HttpRequest req, HttpResponse res, object model, CancellationToken cancellationToken)
+
+        public Task Handle<T>(HttpRequest req, HttpResponse res, T model, CancellationToken cancellationToken)
         {
             res.ContentType = "application/json; charset=utf-8";
             return res.WriteAsync(JsonConvert.SerializeObject(model, this.jsonSettings), cancellationToken);
