@@ -10,7 +10,7 @@
 </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Carter" Version="7.1.0" />
-    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.5.3" />
+    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.6.0" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.34" />
     <PackageReference Include="Hangfire" Version="1.7.34" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
