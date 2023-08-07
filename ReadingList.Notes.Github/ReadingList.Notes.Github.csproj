@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="Octokit" Version="7.1.0" />
     <PackageReference Include="LightInject" Version="6.6.4" />
-    <PackageReference Include="Markdig" Version="0.31.0" />
+    <PackageReference Include="Markdig" Version="0.32.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
