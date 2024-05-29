@@ -15,7 +15,7 @@ WORKDIR /app/ReadingList.Carter
 RUN dotnet restore
 RUN dotnet publish ReadingList.Carter.csproj -c Release -o ../publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0.5-alpine3.18 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0.6-alpine3.18 AS runtime
 
 LABEL org.opencontainers.image.source="https://github.com/andmos/ReadingList"
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
