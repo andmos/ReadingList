@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Manatee.Trello" Version="4.4.3" />
     <PackageReference Include="Manatee.Trello.WebApi" Version="2.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="LightInject" Version="7.0.0" />
