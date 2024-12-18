@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="LightInject" Version="7.0.1" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
-    <PackageReference Include="IPAddressRange" Version="6.0.0" />
+    <PackageReference Include="IPAddressRange" Version="6.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReadingList.Logging\ReadingList.Logging.csproj" />
