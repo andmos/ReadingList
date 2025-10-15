@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.305-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.306-alpine3.21 AS builder
 
 WORKDIR /app
 
