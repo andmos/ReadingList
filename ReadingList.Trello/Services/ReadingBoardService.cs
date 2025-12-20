@@ -25,15 +25,13 @@ namespace ReadingList.Trello.Services
         {
             await _readingListBoard.Lists.Refresh();
             var listNames = _readingListBoard.Lists.Select(l => l.Name).ToList();
-            
-            var tasks = listNames.Select(async listName => 
-                (listName, books: await _readingListService.GetReadingList(listName, label)));
-            var results = await Task.WhenAll(tasks);
-            
-            var readingBoard = new ReadingListCollection 
-            { 
-                ReadingLists = results.ToDictionary(r => r.listName, r => r.books) 
-            };
+            var readingBoard = new ReadingListCollection { ReadingLists = new Dictionary<string, IEnumerable<Book>>() };
+
+            foreach (var listName in listNames)
+            {
+                var list = await _readingListService.GetReadingList(listName, label);
+                readingBoard.ReadingLists.Add(listName, list);
+            }
 
             return readingBoard;
         }

@@ -10,33 +10,25 @@ namespace ReadingList.Carter.Modules
 {
     public class BookNotesModule : ICarterModule
     {
-        private readonly IBookNotesService _bookNotesService;
-
         private const string BaseUri = "/api/notes";
-
-        public BookNotesModule(IBookNotesService bookNotesService)
-        {
-            _bookNotesService = bookNotesService;
-        }
 
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet($"{BaseUri}/random", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/random", async (HttpResponse res, IBookNotesService bookNotesService) =>
             {
-                await res.AsJson(await _bookNotesService.GetRandomBookNote());
+                await res.Negotiate(await bookNotesService.GetRandomBookNote());
             });
 
-            app.MapGet($"{BaseUri}/all", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/all", async (HttpResponse res, IBookNotesService bookNotesService) =>
             {
-                await res.AsJson(await _bookNotesService.GetAllBookNotes());
+                await res.Negotiate(await bookNotesService.GetAllBookNotes());
             });
             
-            app.MapGet($"{BaseUri}/book", async (HttpRequest req, HttpResponse res) =>
+            app.MapGet($"{BaseUri}/book", async (HttpRequest req, HttpResponse res, IBookNotesService bookNotesService) =>
             {
-                await res.AsJson(await _bookNotesService.GetBookNotes(req.Query.As<string>("title")));
+                await res.Negotiate(await bookNotesService.GetBookNotes(req.Query.As<string>("title")));
             });
         }
-
     }
 }
 
