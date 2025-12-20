@@ -33,7 +33,7 @@ namespace ReadingList.Trello.Services
 
             var cardList = string.IsNullOrEmpty(label) ?
                 _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards :
-                _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.All(l => l.Name.ToLower().Equals(label.ToLower())));
+                _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())));
 
             return cardList?.Select(card => BookMapper.CreateBook(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel)).ToList();
         }
