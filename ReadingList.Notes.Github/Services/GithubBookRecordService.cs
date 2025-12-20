@@ -37,11 +37,8 @@ namespace ReadingList.Notes.Github.Services
             {
                 var repo = await _githubFileClient.GetRepositoryContent(UserName, Repo, NotesFolder);
 
-                var bookFiles = new List<BookRecord>();
-                foreach (var content in repo)
-                {
-                    bookFiles.Add(await GetBookRecord(content));
-                }
+                var bookTasks = repo.Select(content => GetBookRecord(content).AsTask());
+                var bookFiles = await Task.WhenAll(bookTasks);
 
                 return bookFiles;
             }
