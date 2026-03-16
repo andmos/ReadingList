@@ -31,11 +31,29 @@ namespace ReadingList.Trello.Services
         {
             await _board.Lists.Refresh();
 
-            var cardList = string.IsNullOrEmpty(label) ?
-                _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards :
-                _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())));
+            var cards = _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards;
 
-            return cardList?.Select(card => BookMapper.CreateBook(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel)).ToList();
+            if (cards == null)
+                return Enumerable.Empty<Book>();
+
+            var filteredCards = string.IsNullOrEmpty(label)
+                ? cards
+                : cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())));
+
+            var isDoneList = listName.Equals(ReadingListConstants.DoneReading);
+
+            if (isDoneList)
+            {
+                var refreshTasks = filteredCards.Select(c => c.Actions.Refresh()).ToList();
+                await Task.WhenAll(refreshTasks);
+            }
+
+            return filteredCards
+                .Select(card => BookMapper.CreateBook(
+                    card.Name,
+                    card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel,
+                    isDoneList ? card : null))
+                .ToList();
         }
 
         public async Task<bool> AddBookToBacklog(string book, string authors, string label)

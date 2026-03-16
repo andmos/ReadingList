@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +11,14 @@ using ReadingList.Logic.Services;
 
 namespace ReadingList.Carter.Modules
 {
+    public record DoneBookResponse(
+        string Title,
+        IEnumerable<string> Authors,
+        Label Label,
+        DateTime? DateStartedReading,
+        DateTime? DateFinishedReading,
+        double? DaysToRead);
+
     public class ReadingListModule : ICarterModule
     {
         private const string BaseUri = "/api";
@@ -32,7 +43,16 @@ namespace ReadingList.Carter.Modules
             {
                 string requestLabel = req.Query["label"];
                 var result = await readingListService.GetReadingList(ReadingListConstants.DoneReading, requestLabel);
-                await res.Negotiate(result);
+                var response = result.Select(b => new DoneBookResponse(
+                    b.Title,
+                    b.Authors,
+                    b.Label,
+                    b.DateStartedReading,
+                    b.DateFinishedReading,
+                    b.DateStartedReading.HasValue && b.DateFinishedReading.HasValue
+                        ? Math.Round((b.DateFinishedReading.Value - b.DateStartedReading.Value).TotalDays, 1)
+                        : null));
+                await res.Negotiate(response);
             });
 
             app.MapGet($"{BaseUri}/allLists", async (HttpRequest req, HttpResponse res, IReadingListCollectionService readingListCollectionService) =>
