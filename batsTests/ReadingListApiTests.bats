@@ -67,6 +67,33 @@ readingListUrl="${1:-http://readinglist:1337}"
     [ "$result" == '"Fiction"' ]
 }
 
+@test "GET: doneList endpoint should return JSON element with dateFinishedReading attribute" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[0].dateFinishedReading')"
+    [ "$result" != "null" ]
+}
+
+@test "GET: doneList endpoint should return JSON element with dateStartedReading attribute" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[0].dateStartedReading')"
+    [ "$result" != "null" ]
+}
+
+@test "GET: doneList endpoint should return JSON element with daysToRead attribute greater than 0" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[0].daysToRead')"
+    [ "$result" != "null" ]
+    result_int=$(echo "$result" | jq 'floor')
+    [ "$result_int" -gt 0 ]
+}
+
+@test "GET: doneList endpoint 'Inferno' should have dateFinishedReading set" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .dateFinishedReading')"
+    [ "$result" != "null" ]
+}
+
+@test "GET: doneList endpoint 'Inferno' should have dateStartedReading set" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .dateStartedReading')"
+    [ "$result" != "null" ]
+}
+
 @test "GET: allLists endpoint should return JSON with 'done' element containing book entry" {
     result="$(curl -s $readingListUrl/api/allLists | jq '.readingLists.Done | .[1]')"
     [ "$result" != "null" ]
