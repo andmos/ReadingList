@@ -44,6 +44,9 @@ namespace ReadingList.Trello.Helpers
 
         public static ReadingList.Logic.Models.Label MapBookTypeLabel(string label)
         {
+            if (string.IsNullOrWhiteSpace(label))
+                return ReadingList.Logic.Models.Label.Unspecified;
+
             try
             {
                 return (ReadingList.Logic.Models.Label)Enum.Parse(typeof(ReadingList.Logic.Models.Label), label, true);

@@ -36,15 +36,25 @@ namespace ReadingList.Trello.Services
             if (cards == null)
                 return Enumerable.Empty<Book>();
 
-            var filteredCards = string.IsNullOrEmpty(label)
+            var filteredCards = (string.IsNullOrEmpty(label)
                 ? cards
-                : cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())));
+                : cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())))).ToList();
 
             var isDoneList = listName.Equals(ReadingListConstants.DoneReading);
 
             if (isDoneList)
             {
-                var refreshTasks = filteredCards.Select(c => c.Actions.Refresh()).ToList();
+                var refreshTasks = filteredCards.Select(async card =>
+                {
+                    try
+                    {
+                        await card.Actions.Refresh();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"Failed to refresh actions for card '{card.Name}', reading dates will be unavailable: ", ex);
+                    }
+                });
                 await Task.WhenAll(refreshTasks);
             }
 
