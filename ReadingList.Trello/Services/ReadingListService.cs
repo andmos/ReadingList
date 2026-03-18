@@ -48,6 +48,7 @@ namespace ReadingList.Trello.Services
                 {
                     try
                     {
+                        card.Actions.Filter(ActionType.UpdateCard);
                         await card.Actions.Refresh();
                     }
                     catch (Exception ex)
