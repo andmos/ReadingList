@@ -49,6 +49,8 @@ namespace ReadingList.Trello.Services
                     try
                     {
                         card.Actions.Filter(ActionType.UpdateCard);
+                        if (card.Actions is ReadOnlyActionCollection actionCollection)
+                            actionCollection.Limit = 1000;
                         await card.Actions.Refresh();
                     }
                     catch (Exception ex)
