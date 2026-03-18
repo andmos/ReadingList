@@ -42,16 +42,23 @@ namespace ReadingList.Carter.Modules
             app.MapGet($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res, IReadingListService readingListService) =>
             {
                 string requestLabel = req.Query["label"];
-                var result = await readingListService.GetReadingList(ReadingListConstants.DoneReading, requestLabel);
-                var response = result.Select(b => new DoneBookResponse(
-                    b.Title,
-                    b.Authors,
-                    b.Label,
-                    b.DateStartedReading,
-                    b.DateFinishedReading,
-                    b.DateStartedReading.HasValue && b.DateFinishedReading.HasValue
-                        ? Math.Round((b.DateFinishedReading.Value - b.DateStartedReading.Value).TotalDays, 1)
-                        : null));
+                var result = await readingListService.GetReadingList(ReadingListConstants.DoneReading, requestLabel, includeReadingDates: true);
+                var response = result.Select(b =>
+                {
+                    double? daysToRead = null;
+                    if (b.DateStartedReading.HasValue && b.DateFinishedReading.HasValue)
+                    {
+                        var days = Math.Round((b.DateFinishedReading.Value - b.DateStartedReading.Value).TotalDays, 1);
+                        daysToRead = days >= 0 ? days : (double?)null;
+                    }
+                    return new DoneBookResponse(
+                        b.Title,
+                        b.Authors,
+                        b.Label,
+                        b.DateStartedReading,
+                        b.DateFinishedReading,
+                        daysToRead);
+                });
                 await res.Negotiate(response);
             });
 

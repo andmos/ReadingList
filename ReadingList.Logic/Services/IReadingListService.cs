@@ -12,7 +12,7 @@ namespace ReadingList.Logic.Services
         /// <returns>The reading list.</returns>
         /// <param name="listName">List name.</param>
         /// <param name="label">Label.</param>
-        Task<IEnumerable<Book>> GetReadingList(string listName, string label = null);
+        Task<IEnumerable<Book>> GetReadingList(string listName, string label = null, bool includeReadingDates = false);
         /// <summary>
         /// Adds the book to backlog.
         /// </summary>

@@ -26,10 +26,10 @@ namespace ReadingList.Trello.Helpers
             return addResult;
         }
 
-        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
+        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null, bool includeReadingDates = false)
         {
             var stopWatch = Stopwatch.StartNew();
-            var list = await _readingListService.GetReadingList(listName, label);
+            var list = await _readingListService.GetReadingList(listName, label, includeReadingDates);
             stopWatch.Stop();
             _logger.Info($"{nameof(GetReadingList)}: Call for list {listName} took {stopWatch.ElapsedMilliseconds} ms");
             return list;

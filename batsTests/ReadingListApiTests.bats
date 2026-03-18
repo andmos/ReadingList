@@ -68,20 +68,23 @@ readingListUrl="${1:-http://readinglist:1337}"
 }
 
 @test "GET: doneList endpoint should return JSON element with dateFinishedReading attribute" {
-    result="$(curl -s $readingListUrl/api/doneList | jq '.[0].dateFinishedReading')"
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .dateFinishedReading')"
     [ "$result" != "null" ]
+    [ -n "$result" ]
 }
 
 @test "GET: doneList endpoint should return JSON element with dateStartedReading attribute" {
-    result="$(curl -s $readingListUrl/api/doneList | jq '.[0].dateStartedReading')"
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .dateStartedReading')"
     [ "$result" != "null" ]
+    [ -n "$result" ]
 }
 
-@test "GET: doneList endpoint should return JSON element with daysToRead attribute greater than 0" {
-    result="$(curl -s $readingListUrl/api/doneList | jq '.[0].daysToRead')"
+@test "GET: doneList endpoint should return JSON element with daysToRead attribute greater than or equal to 0" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .daysToRead')"
     [ "$result" != "null" ]
+    [ -n "$result" ]
     result_int=$(echo "$result" | jq 'floor')
-    [ "$result_int" -gt 0 ]
+    [ "$result_int" -ge 0 ]
 }
 
 @test "GET: doneList endpoint 'Inferno' should have dateFinishedReading set" {

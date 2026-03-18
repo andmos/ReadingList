@@ -27,7 +27,7 @@ namespace ReadingList.Trello.Services
             _logger = logFactory.GetLogger(this.GetType());
         }
 
-        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
+        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null, bool includeReadingDates = false)
         {
             await _board.Lists.Refresh();
 
@@ -40,12 +40,12 @@ namespace ReadingList.Trello.Services
                 ? cards
                 : cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())))).ToList();
 
-            var isDoneList = listName.Equals(ReadingListConstants.DoneReading);
-
-            if (isDoneList)
+            if (includeReadingDates)
             {
+                var semaphore = new System.Threading.SemaphoreSlim(5);
                 var refreshTasks = filteredCards.Select(async card =>
                 {
+                    await semaphore.WaitAsync();
                     try
                     {
                         card.Actions.Filter(ActionType.UpdateCard);
@@ -57,6 +57,10 @@ namespace ReadingList.Trello.Services
                     {
                         _logger.Error($"Failed to refresh actions for card '{card.Name}', reading dates will be unavailable: ", ex);
                     }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
                 });
                 await Task.WhenAll(refreshTasks);
             }
@@ -65,7 +69,7 @@ namespace ReadingList.Trello.Services
                 .Select(card => BookMapper.CreateBook(
                     card.Name,
                     card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel,
-                    isDoneList ? card : null))
+                    includeReadingDates ? card : null))
                 .ToList();
         }
 

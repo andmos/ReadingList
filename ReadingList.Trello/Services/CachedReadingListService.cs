@@ -31,19 +31,22 @@ namespace ReadingList.Trello.Services
             return await _readingListService.AddBookToBacklog(book, authors, label);
         }
 
-        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
+        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null, bool includeReadingDates = false)
         {
             IEnumerable<Book> cachedBooks;
 
             // The KeyValuePair is used to make the cache key unique for the list name and label.
-            if (_readingListCache.TryGetValue(new KeyValuePair<string, Label>(listName, BookMapper.MapBookTypeLabel(label)), out cachedBooks))
+            // includeReadingDates is encoded in the list name portion of the key so that reading-dates
+            // and non-reading-dates responses are cached independently.
+            var cacheListKey = includeReadingDates ? $"{listName}:withDates" : listName;
+            if (_readingListCache.TryGetValue(new KeyValuePair<string, Label>(cacheListKey, BookMapper.MapBookTypeLabel(label)), out cachedBooks))
             {
                 return !string.IsNullOrEmpty(label) ? cachedBooks.Where(b => b.Label.ToString().ToLower().Equals(label.ToLower())) : cachedBooks;
             }
 
             _logger.Info($"Cache miss for {listName}, {label}");
-            var booksFromService = (await _readingListService.GetReadingList(listName, label)).ToList();
-            _readingListCache.TryAdd(new KeyValuePair<string, Label>(listName, BookMapper.MapBookTypeLabel(label)), booksFromService);
+            var booksFromService = (await _readingListService.GetReadingList(listName, label, includeReadingDates)).ToList();
+            _readingListCache.TryAdd(new KeyValuePair<string, Label>(cacheListKey, BookMapper.MapBookTypeLabel(label)), booksFromService);
             return booksFromService;
         }
 
