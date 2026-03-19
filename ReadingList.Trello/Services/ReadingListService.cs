@@ -36,6 +36,11 @@ namespace ReadingList.Trello.Services
             if (cards == null)
                 return Enumerable.Empty<Book>();
 
+            // Resolve list IDs up-front so BookMapper can match by ID instead of Name
+            // (Manatee.Trello does not populate IList.Name from inline action data).
+            var readingListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.CurrentlyReading))?.Id;
+            var doneListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.DoneReading))?.Id;
+
             var filteredCards = (string.IsNullOrEmpty(label)
                 ? cards
                 : cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())))).ToList();
@@ -69,7 +74,9 @@ namespace ReadingList.Trello.Services
                 .Select(card => BookMapper.CreateBook(
                     card.Name,
                     card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel,
-                    includeReadingDates ? card : null))
+                    includeReadingDates ? card : null,
+                    includeReadingDates ? readingListId : null,
+                    includeReadingDates ? doneListId : null))
                 .ToList();
         }
 

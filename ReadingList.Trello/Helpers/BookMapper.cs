@@ -11,7 +11,7 @@ namespace ReadingList.Trello.Helpers
         private static char _bookTitleDelimiter => '-';
         private static char _authorsDelimiter => ',';
 
-        public static Book CreateBook(string bookString, string listLabel, ICard card = null)
+        public static Book CreateBook(string bookString, string listLabel, ICard card = null, string readingListId = null, string doneListId = null)
         {
             var bookArray = bookString.Split(_bookTitleDelimiter);
 
@@ -20,17 +20,23 @@ namespace ReadingList.Trello.Helpers
 
             if (card != null)
             {
+                // Manatee.Trello does not populate IList.Name from inline action data — it only sets the Id.
+                // Compare by Id when list IDs are available; fall back to Name otherwise.
                 var listMoveActions = card.Actions
                     .Where(a => a.Type == ActionType.UpdateCard && a.Data.ListAfter != null)
                     .OrderBy(a => a.Date)
                     .ToList();
 
                 dateStarted = listMoveActions
-                    .LastOrDefault(a => a.Data.ListAfter?.Name == ReadingList.Logic.Models.ReadingListConstants.CurrentlyReading)
+                    .LastOrDefault(a => readingListId != null
+                        ? a.Data.ListAfter?.Id == readingListId
+                        : a.Data.ListAfter?.Name == ReadingList.Logic.Models.ReadingListConstants.CurrentlyReading)
                     ?.Date;
 
                 dateFinished = listMoveActions
-                    .LastOrDefault(a => a.Data.ListAfter?.Name == ReadingList.Logic.Models.ReadingListConstants.DoneReading)
+                    .LastOrDefault(a => doneListId != null
+                        ? a.Data.ListAfter?.Id == doneListId
+                        : a.Data.ListAfter?.Name == ReadingList.Logic.Models.ReadingListConstants.DoneReading)
                     ?.Date;
             }
 
