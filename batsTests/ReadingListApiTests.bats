@@ -87,13 +87,13 @@ readingListUrl="${1:-http://readinglist:1337}"
     [ "$result_int" -ge 0 ]
 }
 
-@test "GET: doneList endpoint 'Inferno' should have dateFinishedReading set" {
-    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .dateFinishedReading')"
+@test "GET: doneList endpoint 'Hobbiten' should have dateFinishedReading set" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Hobbiten") | .dateFinishedReading')"
     [ "$result" != "null" ]
 }
 
-@test "GET: doneList endpoint 'Inferno' should have dateStartedReading set" {
-    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Inferno") | .dateStartedReading')"
+@test "GET: doneList endpoint 'Hobbiten' should have dateStartedReading set" {
+    result="$(curl -s $readingListUrl/api/doneList | jq '.[] | select(.title=="Hobbiten") | .dateStartedReading')"
     [ "$result" != "null" ]
 }
 
