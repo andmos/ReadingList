@@ -31,7 +31,7 @@ namespace ReadingList.Carter.Helpers
                 _bookNotesService.GetAllBookNotes(),
                 _readingListService.GetReadingList(ReadingListConstants.Backlog),
                 _readingListService.GetReadingList(ReadingListConstants.CurrentlyReading),
-                _readingListService.GetReadingList(ReadingListConstants.DoneReading)
+                _readingListService.GetReadingList(ReadingListConstants.DoneReading, includeReadingDates: true)
             };
             
             await Task.WhenAll(cacheTasks);

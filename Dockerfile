@@ -20,7 +20,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0.11-alpine3.21 AS runtime
 LABEL org.opencontainers.image.source="https://github.com/andmos/ReadingList"
 LABEL maintainer="Andreas Mosti(andreas.mosti[at]gmail.com)"
 
-ENV PORT 1337
+ENV PORT=1337
 ENV ASPNETCORE_URLS=http://+:$PORT
 
 WORKDIR /app

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Carter;
 using Carter.Response;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +11,14 @@ using ReadingList.Logic.Services;
 
 namespace ReadingList.Carter.Modules
 {
+    public record DoneBookResponse(
+        string Title,
+        IEnumerable<string> Authors,
+        Label Label,
+        DateTime? DateStartedReading,
+        DateTime? DateFinishedReading,
+        double? DaysToRead);
+
     public class ReadingListModule : ICarterModule
     {
         private const string BaseUri = "/api";
@@ -31,8 +42,24 @@ namespace ReadingList.Carter.Modules
             app.MapGet($"{BaseUri}/doneList", async (HttpRequest req, HttpResponse res, IReadingListService readingListService) =>
             {
                 string requestLabel = req.Query["label"];
-                var result = await readingListService.GetReadingList(ReadingListConstants.DoneReading, requestLabel);
-                await res.Negotiate(result);
+                var result = await readingListService.GetReadingList(ReadingListConstants.DoneReading, requestLabel, includeReadingDates: true);
+                var response = result.Select(b =>
+                {
+                    double? daysToRead = null;
+                    if (b.DateStartedReading.HasValue && b.DateFinishedReading.HasValue)
+                    {
+                        var days = Math.Round((b.DateFinishedReading.Value - b.DateStartedReading.Value).TotalDays, 1);
+                        daysToRead = days >= 0 ? days : (double?)null;
+                    }
+                    return new DoneBookResponse(
+                        b.Title,
+                        b.Authors,
+                        b.Label,
+                        b.DateStartedReading,
+                        b.DateFinishedReading,
+                        daysToRead);
+                });
+                await res.Negotiate(response);
             });
 
             app.MapGet($"{BaseUri}/allLists", async (HttpRequest req, HttpResponse res, IReadingListCollectionService readingListCollectionService) =>

@@ -27,15 +27,57 @@ namespace ReadingList.Trello.Services
             _logger = logFactory.GetLogger(this.GetType());
         }
 
-        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null)
+        public async Task<IEnumerable<Book>> GetReadingList(string listName, string label = null, bool includeReadingDates = false)
         {
             await _board.Lists.Refresh();
 
-            var cardList = string.IsNullOrEmpty(label) ?
-                _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards :
-                _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())));
+            var cards = _board.Lists.FirstOrDefault(l => l.Name.Equals(listName))?.Cards;
 
-            return cardList?.Select(card => BookMapper.CreateBook(card.Name, card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel)).ToList();
+            if (cards == null)
+                return Enumerable.Empty<Book>();
+
+            // Resolve list IDs up-front so BookMapper can match by ID instead of Name
+            // (Manatee.Trello does not populate IList.Name from inline action data).
+            var readingListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.CurrentlyReading))?.Id;
+            var doneListId = _board.Lists.FirstOrDefault(l => l.Name.Equals(ReadingListConstants.DoneReading))?.Id;
+
+            var filteredCards = (string.IsNullOrEmpty(label)
+                ? cards
+                : cards.Where(c => c.Labels.Any(l => l.Name.ToLower().Equals(label.ToLower())))).ToList();
+
+            if (includeReadingDates)
+            {
+                var semaphore = new System.Threading.SemaphoreSlim(5);
+                var refreshTasks = filteredCards.Select(async card =>
+                {
+                    await semaphore.WaitAsync();
+                    try
+                    {
+                        card.Actions.Filter(ActionType.UpdateCard);
+                        if (card.Actions is ReadOnlyActionCollection actionCollection)
+                            actionCollection.Limit = 1000;
+                        await card.Actions.Refresh();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"Failed to refresh actions for card '{card.Name}', reading dates will be unavailable: ", ex);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                });
+                await Task.WhenAll(refreshTasks);
+            }
+
+            return filteredCards
+                .Select(card => BookMapper.CreateBook(
+                    card.Name,
+                    card.Labels.FirstOrDefault()?.Name.ToLower() ?? ReadingListConstants.UnspecifiedLabel,
+                    includeReadingDates ? card : null,
+                    includeReadingDates ? readingListId : null,
+                    includeReadingDates ? doneListId : null))
+                .ToList();
         }
 
         public async Task<bool> AddBookToBacklog(string book, string authors, string label)
